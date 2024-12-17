@@ -5,5 +5,14 @@
 </head>
 <body>
     <h1>Hello, Electron!</h1>
+    <button id="goto-login" onclick="login">LOGIN</button>
 </body>
+<script>
+    let login = document.getElementById('goto-login');
+
+    function goToLogin() {
+        window.open('login.html')
+    }
+    login.addEventListener('click', goToLogin)
+</script>
 </html>

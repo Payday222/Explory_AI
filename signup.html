@@ -4,7 +4,7 @@
 </head>
 
 <body>
-    <form id = "signUp">
+    <form id="signUp">
         <label for="email">Email:</label>
         <input type="text" id="email" name="Email"><br><br>
         <label for="password">Password</label>
@@ -14,69 +14,72 @@
     </form>
     <p id="result"></p>
     <p id="email-result"></p>
+    <button id="submit" style="color: green;">Submit</button>
     <script>
-        const nodemailer = require('nodemailer')
-        const inputElement = document.getElementById('email');
+        let email = document.getElementById('email');
         let password = document.getElementById('password');
         let password1 = document.getElementById('conf-password')
         let result = document.getElementById('result')
         let emailResult = document.getElementById('email-result')
+        let submit = document.getElementById('submit')
         
-        // Function to check if the input contains the '@' character
         function checkForCharacter() {
-            const inputValue = inputElement.value;
+            const inputValue = email.value;
             if (inputValue.includes('@')) {
                 emailResult.textContent = "Valid email"
                 emailResult.style.color = "green"
-
             } else {
                 emailResult.textContent = "Invalid email"
                 emailResult.style.color = "red"
-
             }
         }
 
-        function ComparePass() {
+        function comparePass() {
             const pass = password.value;
             const pass1 = password1.value
-            if(pass != 0 && pass1 != 0) {
-                if(pass1 === pass) {
+            if (pass != 0 && pass1 != 0) {
+                if (pass1 === pass) {
                     result.textContent = "Passwords Match"
                     result.style.color = "green"
-
                 } else {
                     result.textContent = "Passwords do not match"
                     result.style.color = "red"
-
                 }
             }
         }
 
-        password.addEventListener('input', ComparePass);
-        password1.addEventListener('input', ComparePass);
+        function submitForm() {
+            let finalEmail = email.value;
+            let password = password.value;
+            let password1 = password1.value;
+
+            if(email.includes('@') && password === password1 && password1 != '') {
+                fetch('hhtp://localhost:3000/send-email', {
+                    method: 'POST',
+                    headers: {
+                            'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        to: email
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log("works");
+                })
+                .catch((error) => {
+                    console.error(error)
+                    alert("not work")
+                })
+        }
+    }
+
+        password.addEventListener('input', comparePass);
+        password1.addEventListener('input', comparePass);
         email.addEventListener('input', checkForCharacter);
-
-        function sendEmail(to, subject, text) {
-            const transporter = nodemailer.createTransport({
-            service: 'gmail',
-            auth: {
-                user: 'our_mail@gmail.com',
-                pass: 'pass'
-            }
-        });
-            const mailOptions = {
-                from: 'our_mail@gmail.com',
-                to: to,
-                subject: subject,
-                text: text
-            };
-
-            transporter.sendMail(mailOptions, (error, info) => {
-                if(error) {
-                    return console.log(error);
-                }
-                console.log('mail sent: %s', info.messageId);
-            });    
-        }
+        submit.addEventListener('click', submitForm );
+        
     </script>
 </body>
+
+
