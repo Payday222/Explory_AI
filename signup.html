@@ -18,68 +18,70 @@
     <script>
         let email = document.getElementById('email');
         let password = document.getElementById('password');
-        let password1 = document.getElementById('conf-password')
-        let result = document.getElementById('result')
-        let emailResult = document.getElementById('email-result')
-        let submit = document.getElementById('submit')
-        
+        let password1 = document.getElementById('conf-password');
+        let result = document.getElementById('result');
+        let emailResult = document.getElementById('email-result');
+        let submit = document.getElementById('submit');
+    
         function checkForCharacter() {
             const inputValue = email.value;
             if (inputValue.includes('@')) {
-                emailResult.textContent = "Valid email"
-                emailResult.style.color = "green"
+                emailResult.textContent = "Valid email";
+                emailResult.style.color = "green";
             } else {
-                emailResult.textContent = "Invalid email"
-                emailResult.style.color = "red"
+                emailResult.textContent = "Invalid email";
+                emailResult.style.color = "red";
             }
         }
-
+    
         function comparePass() {
             const pass = password.value;
-            const pass1 = password1.value
-            if (pass != 0 && pass1 != 0) {
+            const pass1 = password1.value;
+            if (pass !== 0 && pass1 !== 0) {
                 if (pass1 === pass) {
-                    result.textContent = "Passwords Match"
-                    result.style.color = "green"
+                    result.textContent = "Passwords Match";
+                    result.style.color = "green";
                 } else {
-                    result.textContent = "Passwords do not match"
-                    result.style.color = "red"
+                    result.textContent = "Passwords do not match";
+                    result.style.color = "red";
                 }
             }
         }
-
+    
         function submitForm() {
-            let finalEmail = email.value;
-            let password = password.value;
-            let password1 = password1.value;
-
-            if(email.includes('@') && password === password1 && password1 != '') {
-                fetch('hhtp://localhost:3000/send-email', {
+            const emailValue = email.value;
+            const pass = password.value;
+            const pass1 = password1.value;
+    
+            if (emailValue.includes('@') && pass === pass1 && pass1 !== '') {
+                result.textContent = "Form sent!!!!!!!"; // integrity test
+    
+                fetch('http://localhost:3000/send-email', {
                     method: 'POST',
                     headers: {
-                            'Content-Type': 'application/json',
+                        'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({
-                        to: email
+                        to: emailValue
                     })
                 })
                 .then(response => response.json())
                 .then(data => {
-                    console.log("works");
+                    console.log("Works");
                 })
                 .catch((error) => {
-                    console.error(error)
-                    alert("not work")
-                })
+                    console.error(error);
+                    alert("Not work" + error);
+                });
+            }
         }
-    }
-
+    
         password.addEventListener('input', comparePass);
         password1.addEventListener('input', comparePass);
         email.addEventListener('input', checkForCharacter);
-        submit.addEventListener('click', submitForm );
-        
+        submit.addEventListener('click', submitForm);
     </script>
+    
 </body>
 
 
