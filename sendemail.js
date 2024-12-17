@@ -13,7 +13,7 @@ app.post('/send-email', (req, res) => {
         service: 'gmail',
         auth: {
             user: 'learnlaboffice.ai@gmail.com',
-            pass: 'Learnlab123#'
+            pass: 'goiu pnja lzvi ltjp'
         }
     });
 
