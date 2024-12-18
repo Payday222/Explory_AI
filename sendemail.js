@@ -6,8 +6,10 @@ const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-app.post('/send-email', (req, res) => {
+app.post('/send-email', async (req, res) => {
     const { email, password } = req.body;
+
+    console.log('Received request to send email to:', email);
 
     const transporter = nodemailer.createTransport({
         service: 'gmail',
@@ -24,12 +26,14 @@ app.post('/send-email', (req, res) => {
         text: `Welcome! Your password is ${password}`
     };
 
-    transporter.sendMail(mailOptions, (error, info) => {
-        if (error) {
-            return res.status(500).send(error.toString());
-        }
+    try {
+        const info = await transporter.sendMail(mailOptions);
+        console.log('Email sent: ' + info.response);
         res.send('Email sent: ' + info.response);
-    });
+    } catch (error) {
+        console.error('Error sending email:', error);
+        res.status(500).send(error.toString());
+    }
 });
 
 app.listen(3000, () => {
