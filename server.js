@@ -1,5 +1,5 @@
 const express = require('express');
-const mysql = require('mysql');
+const mysql = require('mysql2');
 const bodyParser = require('body-parser');
 const dotenv = require('dotenv');
 dotenv.config({ path: './db.env'});
