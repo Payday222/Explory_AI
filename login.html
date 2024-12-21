@@ -1,42 +1,22 @@
 <!DOCTYPE html>
+<html lang="en">
 <head>
-<title>Login</title>
+    <meta charset="UTF-8">
+    <title>Login</title>
 </head>
 <body>
-<div class="Login-container">
-    <form id="login">
-        <label for="email">Email:</label>
-        <input type="text" id="email" name="Email"><br><br>
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="Password"><br><br>
-    </form>
-    <button id="create-acc">Sign up</button>
-    <p id="email-result"></p>
-</div>
+    <div class="Login-container">
+        <form id="login">
+            <label for="email">Email:</label>
+            <input type="text" id="email" name="Email"><br><br>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="Password"><br><br>
+        </form>
+        <button id="create-acc">Sign up</button>
+        <button id="login-button">Log in</button>
+        <p id="email-result"></p>
+        <p id="tester">abc</p>
+    </div>
+    <script src="login.js"></script>
 </body>
-<script>
-    document.getElementById('create-acc').addEventListener('click', () => {
-        window.open('signup.html', '_blank');
-    });
-
-    const inputElement = document.getElementById('email');
-    const emailResult = document.getElementById('email-result');
-    
-    // Function to check if the input contains the '@' character
-    function checkForCharacter() {
-        const inputValue = inputElement.value;
-        if (inputValue.includes('@')) {
-            emailResult.textContent = "Email Valid"
-            emailResult.style.color = "green"
-
-        } else {
-            emailResult.textContent = "Email Invalid"
-            emailResult.style.color = "red"
-        }
-    }
-
-    // Add an event listener to call the function whenever the input changes
-    inputElement.addEventListener('input', checkForCharacter);
-</script>
-
 </html>
