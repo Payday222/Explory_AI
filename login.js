@@ -40,6 +40,8 @@ function login() {
         .then(data => {
             if (data.message === 'Query success') {
                 tester.textContent = "Query success";
+                window.location.replace('user_panel.html');
+                // window.close('login.html');
             } else {
                 tester.textContent = "error inserting data";
             }
