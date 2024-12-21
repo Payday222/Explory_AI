@@ -49,32 +49,34 @@
         }
     
         function submitForm() {
-            const emailValue = email.value;
-            const pass = password.value;
-            const pass1 = password1.value;
-    
-            if (emailValue.includes('@') && pass === pass1 && pass1 !== '') {
-                result.textContent = "Form sent!!!!!!!"; // integrity test
-    
-                fetch('http://localhost:3000/send-email', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        to: emailValue
-                    })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    console.log("Works");
-                })
-                .catch((error) => {
-                    console.error(error);
-                    alert("Not work" + error);
-                });
-            }
-        }
+    const emailValue = email.value;
+    const pass = password.value;
+    const pass1 = password1.value;
+
+    if (emailValue.includes('@') && pass === pass1 && pass1 !== '') {
+        result.textContent = "Form sent!!!!!!!"; // integrity test
+
+        fetch('http://localhost:3001/send-email', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                email: emailValue,
+                password: pass
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log("Works");
+        })
+        .catch((error) => {
+            console.error(error);
+            alert("Not work" + error);
+        });
+    }
+}
+
     
         password.addEventListener('input', comparePass);
         password1.addEventListener('input', comparePass);
