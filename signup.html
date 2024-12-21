@@ -1,5 +1,8 @@
 <!DOCTYPE html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign Up</title>
 </head>
 
@@ -22,8 +25,8 @@
         let result = document.getElementById('result');
         let emailResult = document.getElementById('email-result');
         let submit = document.getElementById('submit');
-    
-        function checkForCharacter() {
+
+        function validateEmail() {
             const inputValue = email.value;
             if (inputValue.includes('@')) {
                 emailResult.textContent = "Valid email";
@@ -33,7 +36,7 @@
                 emailResult.style.color = "red";
             }
         }
-    
+
         function comparePass() {
             const pass = password.value;
             const pass1 = password1.value;
@@ -47,43 +50,72 @@
                 }
             }
         }
-    
+
         function submitForm() {
-    const emailValue = email.value;
-    const pass = password.value;
-    const pass1 = password1.value;
+            const emailValue = email.value;
+            const pass = password.value;
+            const pass1 = password1.value;
 
-    if (emailValue.includes('@') && pass === pass1 && pass1 !== '') {
-        result.textContent = "Form sent!!!!!!!"; // integrity test
+            if (emailValue.includes('@') && pass === pass1 && pass1 !== '') {
+                result.textContent = "Form sent!!!!!!!"; // integrity test
 
-        fetch('http://localhost:3001/send-email', {
+                fetch('http://localhost:3001/send-email', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        email: emailValue,
+                        password: pass
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log("Works", data);
+                })
+                .catch((error) => {
+                    console.error(error);
+                    alert("Not work" + error);
+                });
+            }
+        }
+        function login() {
+    if (validateEmail()) {
+        const email = document.getElementById("email").value;
+        const password = document.getElementById('password').value;
+
+        tester.textContent = "aaaa"; // Passed validation
+
+        fetch('http://localhost:3000/login', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json',
+                'Content-Type': 'application/json'
             },
-            body: JSON.stringify({
-                email: emailValue,
-                password: pass
-            })
+            body: JSON.stringify({ email, password })
         })
         .then(response => response.json())
         .then(data => {
-            console.log("Works");
+            if (data.message === 'Query success') {
+                tester.textContent = "Query success";
+                window.location.replace('user_panel.html');
+                // window.close('login.html');
+            } else {
+                tester.textContent = "error inserting data";
+            }
         })
-        .catch((error) => {
-            console.error(error);
-            alert("Not work" + error);
+        .catch(error => {
+            tester.textContent = "Error executing query";
+            console.error('Error:', error);
         });
     }
 }
 
-    
+        submit.addEventListener('click', login);
         password.addEventListener('input', comparePass);
         password1.addEventListener('input', comparePass);
-        email.addEventListener('input', checkForCharacter);
+        email.addEventListener('input', validateEmail);
         submit.addEventListener('click', submitForm);
     </script>
-    
+
 </body>
-
-
+</html>
