@@ -70,7 +70,7 @@ app.post('/send-email', async (req, res) => {
 
         const info = await transporter.sendMail(mailOptions);
         console.log('Email sent:', info.response);
-        res.send.json('Email sent: ' + info.response);
+        res.send('Email sent: ' + info.response);
     } catch (error) {
         console.error('Error sending email:', error);
         res.status(500).send.json(error.message);
