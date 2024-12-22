@@ -18,6 +18,7 @@
         <p id="result"></p>
 
         <script>
+            const shared = require('./shared');
             document.getElementById('signUp').addEventListener('submit', function(event) {
                 event.preventDefault(); 
         
@@ -25,7 +26,8 @@
                 const password = document.getElementById('password').value;
                 const confirmPassword = document.getElementById('conf-password').value;
                 const result = document.getElementById('result');
-        
+                shared.setSharedVariable(email);
+                console.log('shared');
                 if (email.includes('@') && password === confirmPassword && password !== '') {
                     const data = {
                         email: email,
@@ -74,7 +76,7 @@
                             headers: {
                                 'Content-Type': 'application/json',
                             },
-                            body: JSON.stringify({ email: email }) // Include the email in the request body
+                            body: JSON.stringify({ email: email }) 
                         });
                 } else {
                     result.textContent = "Please ensure all fields are valid.";

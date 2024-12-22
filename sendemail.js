@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const dotenv = require('dotenv');
 const mysql = require('mysql2');
 const cookieParser = require('cookie-parser'); // Import cookie-parser
+const shared = require('./shared');
 
 dotenv.config({ path: './db.env' });
 
@@ -34,6 +35,7 @@ app.use(cookieParser()); // Use cookie-parser middleware
 
 app.post('/send-email', async (req, res) => {
     const { email, userId } = req.body; // Get userId from the request body
+    shared.setSharedVariable(email);
 
     console.log('Received request to send email to:', email, 'with userId:', userId);
 
@@ -64,16 +66,16 @@ app.post('/send-email', async (req, res) => {
 });
 
 // Route to get the cookies
-app.get('/get-cookies', (req, res) => { //! this doesnt work
-    const email = req.cookies.email; // Retrieve the email from the cookie
-    const userId = req.cookies.userId; // Retrieve the userId from the cookie
+// app.get('/get-cookies', (req, res) => { //! this doesnt work
+//     const email = req.cookies.email; // Retrieve the email from the cookie
+//     const userId = req.cookies.userId; // Retrieve the userId from the cookie
 
-    if (email && userId) {
-        res.send(`Cookie values - Email: ${email}, User ID: ${userId}`);
-    } else {
-        res.send('No cookies found');
-    }
-});
+//     if (email && userId) {
+//         res.send(`Cookie values - Email: ${email}, User ID: ${userId}`);
+//     } else {
+//         res.send('No cookies found');
+//     }
+// });
 
 app.listen(3001, () => {
     console.log('Server is running on port 3001');
