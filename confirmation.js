@@ -37,10 +37,9 @@ app.get('/set-cookie', (req, res) => {
         return;
     }
 
-    // Set cookies for userId and email
-    res.cookie('userId', userId, { httpOnly: true, sameSite: 'None', secure: false });
-    res.cookie('email', email, { httpOnly: true, sameSite: 'None', secure: false });
-
+    // res.cookie('userId', userId, { httpOnly: true, sameSite: 'None', secure: false });
+    // res.cookie('email', email, { httpOnly: true, sameSite: 'None', secure: false });
+    //! no point in setting cookies here
     console.log('Cookies set:', { userId, email }); // Log the cookies
 
     // Redirect to /register endpoint
@@ -72,29 +71,6 @@ app.get('/register', (req, res) => {
             console.log('User  verified:', result);
             res.status(200).json({ message: 'User  verified', result });
         }
-    });
-});
-
-// Signup endpoint
-app.post('/signup', (req, res) => {
-    const { email, password } = req.body;
-
-    // Basic validation
-    if (!email || !password) {
-        return res.status(400).json({ message: 'Email and password are required' });
-    }
-
-    // Insert user into the database
-    const sql = 'INSERT INTO users (email, pass, verified) VALUES (?, ?, ?)';
-    const values = [email, password, false]; // Assuming 'verified' is false by default
-
-    conn.query(sql, values, (err, result) => {
-        if (err) {
-            console.error('Error inserting data:', err);
-            return res.status(500).json({ message: 'Error inserting data', error: err });
-        }
-        console.log('User  inserted:', result);
-        res.status(201).json({ message: 'User  created successfully' });
     });
 });
 
