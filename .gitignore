@@ -25,3 +25,4 @@ out/
 
 # Ignore .env files (for sensitive data like API keys)
 .env
+db.env
