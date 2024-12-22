@@ -37,11 +37,6 @@ app.get('/set-cookie', (req, res) => {
         return;
     }
 
-    // res.cookie('userId', userId, { httpOnly: true, sameSite: 'None', secure: false });
-    // res.cookie('email', email, { httpOnly: true, sameSite: 'None', secure: false });
-    //! no point in setting cookies here
-    console.log('Cookies set:', { userId, email }); // Log the cookies
-
     // Redirect to /register endpoint
     res.redirect('/register');
 });
