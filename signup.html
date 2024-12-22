@@ -1,87 +1,123 @@
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Sign Up</title>
-    </head>
-    <body>
-        <form id="signUp">
-            <label for="email">Email:</label>
-            <input type="text" id="email" name="Email" required><br><br>
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="Password" required><br><br>
-            <label for="conf-password">Confirm Password:</label>
-            <input type="password" id="conf-password" name="Conf-Password" required><br><br>
-            <button type="submit" style="color: green;">Submit</button>
-        </form>
-        <p id="result"></p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up</title>
+    <style>
+        /* Add some basic styling for better readability */
+        form {
+            max-width: 400px;
+            margin: auto;
+        }
+        label, input {
+            display: block;
+            margin-bottom: 10px;
+        }
+        button {
+            background-color: green;
+            color: white;
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: darkgreen;
+        }
+        #result {
+            text-align: center;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <form id="signUp">
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="Email" required>
 
-        <script>
-            const shared = require('./shared');
-            document.getElementById('signUp').addEventListener('submit', function(event) {
-                event.preventDefault(); 
-        
-                const email = document.getElementById('email').value;
-                const password = document.getElementById('password').value;
-                const confirmPassword = document.getElementById('conf-password').value;
-                const result = document.getElementById('result');
-                shared.setSharedVariable(email);
-                console.log('shared');
-                if (email.includes('@') && password === confirmPassword && password !== '') {
-                    const data = {
-                        email: email,
-                        password: password
-                    };
-        
-                    // Sign up request
-                    fetch('http://localhost:3003/signup', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify(data)
-                    })
-                    .then(response => {
-                        if (!response.ok) {
-                            return response.text().then(text => { // Get the response text for more details
-                                throw new Error(`Error: ${response.status} - ${text}`);
-                            });
-                        }
-                        return response.json();
-                    })
-                    .then(data => {
-                        result.textContent = "User  registered successfully!";
-                        console.log(data);
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="Password" required>
 
-                    })
-                    .then(response => {
-                        if (!response.ok) {
-                            return response.text().then(text => {
-                                throw new Error(`Error sending email: ${response.status} - ${text}`);
-                            });
-                        }
-                        return response.json();
-                    })
-                    .then(data => {
-                        console.log('Email sent successfully:', data);
-                    })
-                    .catch((error) => {
-                        result.textContent = "Error: " + error.message;
-                        console.error('There was a problem with the fetch operation:', error);
+        <label for="conf-password">Confirm Password:</label>
+        <input type="password" id="conf-password" name="Conf-Password" required>
+
+        <button type="submit">Submit</button>
+    </form>
+
+    <p id="result"></p>
+
+    <script>
+        document.getElementById('signUp').addEventListener('submit', function(event) {
+            event.preventDefault(); 
+
+            // Collect input values
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('conf-password').value;
+            const result = document.getElementById('result');
+
+            // Validate input
+            if (!email.includes('@')) {
+                result.textContent = "Please enter a valid email.";
+                return;
+            }
+            if (password !== confirmPassword || password === '') {
+                result.textContent = "Passwords do not match or are empty.";
+                return;
+            }
+
+            // Data to send
+            const data = {
+                email: email,
+                password: password
+            };
+
+            // Send sign-up request
+            fetch('http://localhost:3003/signup', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    return response.text().then(text => {
+                        throw new Error(`Error: ${response.status} - ${text}`);
                     });
-                    // Send email request
-                    return fetch('http://localhost:3001/send-email', { //! this is not getting accesed
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                            },
-                            body: JSON.stringify({ email: email }) 
-                        });
-                } else {
-                    result.textContent = "Please ensure all fields are valid.";
                 }
+                return response.json();
+            })
+            .then(data => {
+                result.textContent = "User registered successfully!";
+                console.log(data);
+
+                // Send email request
+                return fetch('http://localhost:3001/send-email', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ email: email })
+                });
+            })
+            .then(response => {
+                if (!response.ok) {
+                    return response.text().then(text => {
+                        throw new Error(`Error sending email: ${response.status} - ${text}`);
+                    });
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Email sent successfully:', data);
+                result.textContent += " Verification email sent!";
+            })
+            .catch((error) => {
+                result.textContent = "Error: " + error.message;
+                console.error('There was a problem with the fetch operation:', error);
             });
-        </script>
-    </body>
-    </html>
+        });
+    </script>
+</body>
+</html>
