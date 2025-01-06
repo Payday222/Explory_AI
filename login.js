@@ -3,6 +3,7 @@ document.getElementById('create-acc').addEventListener('click', () => {
 });
 
 const inputElement = document.getElementById('email');
+const password = document.getElementById('password');
 const emailResult = document.getElementById('email-result');
 
 function validateEmail() {
@@ -21,5 +22,35 @@ function validateEmail() {
 inputElement.addEventListener('input', validateEmail);
 const loginButton = document.getElementById('login-button');
 const tester = document.getElementById('tester');
+
+loginButton.addEventListener('click', () => {
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+
+    if (validateEmail()) {
+        fetch('http://localhost:3004/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                email: email,
+                password: password
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                console.log("Login successful!");
+                window.open('user_panel.html');
+            } else {
+                console.log("Invalid credentials.");
+            }
+        })
+        .catch(error => {
+            console.error("Error:", error);
+        });
+    }
+});
 
 
