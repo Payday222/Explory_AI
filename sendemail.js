@@ -65,7 +65,8 @@ app.post('/send-email', async (req, res) => {
             from: 'learnlaboffice.ai@gmail.com',
             to: email,
             subject: 'Register your LearnLabsAI account',
-            html: `<p>Welcome! Click <a href="http://localhost:3002/get-cookies">here</a> to register your account.</p>`
+            html: `<p>Welcome! Click <a href="http://localhost:3002/set-cookie?email=${encodeURIComponent(email)}">here</a> to register your account.</p>`
+
         };
 
         const info = await transporter.sendMail(mailOptions);
