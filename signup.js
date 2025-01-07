@@ -30,11 +30,11 @@ function sqlInsert(email, password, res) {
         }
 
         console.log("Query successful", result);
-        const userId = result.insertId; // Get the userId from the result
+        const userId = result.insertId;
 
-        // Set cookies after successful registration
-        res.cookie('userId', userId, { httpOnly: true, sameSite: 'Strict', secure: true });
-        res.cookie('email', email, { httpOnly: true, sameSite: 'Strict', secure: true });
+
+        res.status(200).json({ message: 'User registered successfully', userId });
+        res.cookie('email', email, { httpOnly: true, sameSite: 'Lax', secure: false });
 
         res.status(200).json({ message: 'User registered successfully', userId });
     });
@@ -47,17 +47,16 @@ function sqlInsert(email, password, res) {
 // Signup endpoint
 app.post('/signup', (req, res) => {
     console.log(req.body);
-    const { email, password } = req.body; // Get email and password from request body
+    const { email, password } = req.body;
 
     if (!email || !password) {
         console.error("Password or email invalid");
         return res.status(400).json({ error: 'Email and password are required' });
     }
 
-    sqlInsert(email, password, res); // Call sqlInsert with email, password, and response object
+    sqlInsert(email, password, res); 
 });
 
-// Start the server
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
 });
