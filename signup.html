@@ -5,148 +5,118 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign Up</title>
     <style>
-        @font-face {
-            font-family: 'Ubuntu';
-            src: url(./fonts/Ubuntu-Regular.ttf);
-            font-style: normal;
-        }
-        @font-face {
-            font-family: 'Ubuntu-Bold';
-            src: url(./fonts/Ubuntu-Bold.ttf);
-        }
-        @font-face {
-            font-family: 'Ubuntu-Medium';
-            src: url(./fonts/Ubuntu-Medium.ttf);
-        }
-
-        body {
-            font-family: 'Ubuntu', sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            background-color: #f0f2f5;
-            margin: 0;
-        }
-
-        .SignUp-container {
-            background-color: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            width: 300px;
-            text-align: center;
-        }
-
+        /* Add some basic styling for better readability */
         form {
-            width: 100%;
+            max-width: 400px;
+            margin: auto;
         }
-
-        label {
+        label, input {
             display: block;
-            margin-bottom: 8px;
-            font-weight: bold;
-        }
-
-        input[type="email"],
-        input[type="password"] {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 16px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            box-sizing: border-box;
-        }
-
-        input.error {
-            border-color: orange;
-        }
-
-        button {
-            width: 100%;
-            padding: 10px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
             margin-bottom: 10px;
-            font-family: 'Ubuntu-Bold', sans-serif;
         }
-
+        button {
+            background-color: green;
+            color: white;
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+        }
         button:hover {
-            background-color: #45a049;
+            background-color: darkgreen;
         }
-
         #result {
+            text-align: center;
             margin-top: 20px;
-        }
-
-        .error-message {
-            color: orange;
-            font-size: 12px;
         }
     </style>
 </head>
 <body>
-    <div class="SignUp-container">
-        <form id="signUp">
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="Email" required>
-            <span class="error-message" id="email-error"></span>
+    <form id="signUp">
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="Email" required>
 
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="Password" required>
-            <span class="error-message" id="password-error"></span>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="Password" required>
 
-            <label for="conf-password">Confirm Password:</label>
-            <input type="password" id="conf-password" name="Conf-Password" required>
-            <span class="error-message" id="conf-password-error"></span>
+        <label for="conf-password">Confirm Password:</label>
+        <input type="password" id="conf-password" name="Conf-Password" required>
 
-            <button type="submit">Submit</button>
-        </form>
+        <button type="submit">Submit</button>
+    </form>
 
-        <p id="result"></p>
-    </div>
+    <p id="result"></p>
 
     <script>
         document.getElementById('signUp').addEventListener('submit', function(event) {
             event.preventDefault(); 
 
-
+            // Collect input values
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
             const confirmPassword = document.getElementById('conf-password').value;
             const result = document.getElementById('result');
 
-            document.getElementById('email-error').textContent = '';
-            document.getElementById('password-error').textContent = '';
-            document.getElementById('conf-password-error').textContent = '';
-            document.getElementById('email').classList.remove('error');
-            document.getElementById('conf-password').classList.remove('error');
-
-            let valid = true;
-
-
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (!emailRegex.test(email)) {
-                document.getElementById('email-error').textContent = 'Invalid email address.';
-                document.getElementById('email').classList.add('error');
-                valid = false;
+            // Validate input
+            if (!email.includes('@')) {
+                result.textContent = "Please enter a valid email.";
+                return;
+            }
+            if (password !== confirmPassword || password === '') {
+                result.textContent = "Passwords do not match or are empty.";
+                return;
             }
 
-            if (password !== confirmPassword) {
-                document.getElementById('conf-password-error').textContent = 'Passwords do not match.';
-                document.getElementById('conf-password').classList.add('error');
-                valid = false;
-            }
+            // Data to send
+            const data = {
+                email: email,
+                password: password
+            };
 
-            if (valid) {
-                result.textContent = 'Form submitted successfully!';
-            } else {
-                result.textContent = '';
-            }
+            // Send sign-up request
+            fetch('http://localhost:3003/signup', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    return response.text().then(text => {
+                        throw new Error(`Error: ${response.status} - ${text}`);
+                    });
+                }
+                return response.json();
+            })
+            .then(data => {
+                result.textContent = "User registered successfully!";
+                console.log(data);
+
+                // Send email request
+                return fetch('http://localhost:3001/send-email', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ email: email })
+                });
+            })
+            .then(response => {
+                if (!response.ok) {
+                    return response.text().then(text => {
+                        throw new Error(`Error sending email: ${response.status} - ${text}`);
+                    });
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Email sent successfully:', data);
+                result.textContent += " Verification email sent!";
+            })
+            .catch((error) => {
+                result.textContent = "Error: " + error.message;
+                console.error('There was a problem with the fetch operation:', error);
+            });
         });
     </script>
 </body>
