@@ -2,17 +2,69 @@
 <html>
 <head>
     <title>LearnLabs</title>
+    <style>
+        
+        @font-face {
+            font-family: 'Ubuntu';
+            src: url(./fonts/Ubuntu-Regular.ttf);
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'Ubuntu-Bold';
+            src: url(./fonts/Ubuntu-Bold.ttf);
+        }
+        @font-face {
+            font-family: 'Ubuntu-Medium';
+            src: url(./fonts/Ubuntu-Medium.ttf);
+        }
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0; 
+        }
+        #card {
+            display: flex;
+            flex-direction: column;
+            align-items: center; 
+        }
+        img {
+            width: auto;
+            height: 50vh;
+        }
+        button {
+            margin-top: 10px; 
+            width: 150px; 
+            height: 40px; 
+            cursor: pointer;
+            font-family:'Ubuntu', sans-serif;
+            font-size: 16px; 
+            background-color: rgba(49, 175, 49, 0.767);
+            border: none;
+            border-radius: 8px;
+        }
+        button:hover {
+            background-color: rgb(102, 224, 102);
+            box-shadow: 10px 10px 0px 0px grey;
+            transform: translateY(-10px);
+            color: white;
+            transition: all 0.3s ease-in-out;
+        }
+    </style>
 </head>
 <body>
-    <h1>Hello, Electron!</h1>
-    <button id="goto-login" onclick="login">LOGIN</button>
+    <div id="card">
+        <img src="./images/learnlabslogo.png" alt="LearnLabs Logo">
+        <button id="goto-login">LOGIN</button>
+    </div>
 </body>
 <script>
     let login = document.getElementById('goto-login');
 
     function goToLogin() {
-        window.open('login.html')
+        window.open('login.html');
     }
-    login.addEventListener('click', goToLogin)
+    login.addEventListener('click', goToLogin);
 </script>
 </html>

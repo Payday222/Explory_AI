@@ -18,7 +18,6 @@ function validateEmail() {
         return false;
     }
 }
-
 inputElement.addEventListener('input', validateEmail);
 const loginButton = document.getElementById('login-button');
 const tester = document.getElementById('tester');

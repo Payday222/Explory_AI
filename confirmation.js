@@ -37,15 +37,15 @@ app.get('/set-cookie', (req, res) => {
         return;
     }
 
-    // Set cookies for userId and email
-    // if (userId) {
-    //     res.cookie('userId', userId, { httpOnly: true, sameSite: 'Lax', secure: false });
-    // }
-    // res.cookie('email', email, { httpOnly: true, sameSite: 'Lax', secure: false });
+    //Set cookies for userId and email
+     if (userId) {
+         res.cookie('userId', userId, { httpOnly: true, sameSite: 'Lax', secure: false });
+     }
+     res.cookie('email', email, { httpOnly: true, sameSite: 'Lax', secure: false });
 
-    // console.log('Cookies set for email:', email);
+     console.log('Cookies set for email:', email);
 
-    // // Redirect to /register endpoint
+     // Redirect to /register endpoint
      res.redirect('/register');
 });
 

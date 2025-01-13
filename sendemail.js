@@ -30,6 +30,7 @@ function getUserIdByEmail(email) {
     return new Promise((resolve, reject) => {
         const sql = 'SELECT id FROM users WHERE email = ? LIMIT 1';
         conn.query(sql, [email], (err, results) => {
+            conn.end(); // Close the connection
             if (err) {
                 return reject(err);
             }
@@ -46,7 +47,7 @@ app.post('/send-email', async (req, res) => {
     const { email } = req.body;
 
     if (!email || !email.includes('@')) {
-        return res.status(400).send('Invalid input data.');
+        return res.status(400).json({ error: 'Invalid input data.' });
     }
 
     try {
@@ -66,15 +67,14 @@ app.post('/send-email', async (req, res) => {
             to: email,
             subject: 'Register your LearnLabsAI account',
             html: `<p>Welcome! Click <a href="http://localhost:3002/set-cookie?email=${encodeURIComponent(email)}">here</a> to register your account.</p>`
-
         };
 
         const info = await transporter.sendMail(mailOptions);
         console.log('Email sent:', info.response);
-        res.send('Email sent: ' + info.response);
+        res.json({ message: 'Email sent successfully', response: info.response });
     } catch (error) {
         console.error('Error sending email:', error);
-        res.status(500).send.json(error.message);
+        res.status(500).json({ error: error.message });
     }
 });
 
@@ -84,9 +84,9 @@ app.get('/get-cookies', (req, res) => {
     const userId = req.cookies.userId;
 
     if (email && userId) {
-        res.send.json(`Cookie values - Email: ${email}, User ID: ${userId}`);
+        res.json({ email, userId });
     } else {
-        res.status(400).send.json('No cookies found');
+        res.status(400).json({ error: 'No cookies found' });
     }
 });
 
