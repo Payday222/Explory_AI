@@ -32,6 +32,8 @@ function sqlInsert(email, password, res) {
         console.log("Query successful", result);
         const userId = result.insertId;
 
+
+        res.status(200).json({ message: 'User registered successfully', userId });
         res.cookie('email', email, { httpOnly: true, sameSite: 'Lax', secure: false });
 
         res.status(200).json({ message: 'User registered successfully', userId });
