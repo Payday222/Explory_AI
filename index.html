@@ -62,9 +62,10 @@
 <script>
     let login = document.getElementById('goto-login');
 
-    function goToLogin() {
-        window.open('login.html');
-    }
-    login.addEventListener('click', goToLogin);
+        document.getElementById('goto-login').onclick = () => {
+            window.open('login.html', '_self');
+            document.documentElement.requestFullscreen();
+        };
+    
 </script>
 </html>

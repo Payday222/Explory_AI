@@ -9,6 +9,7 @@ app.on('ready', () => {
         webPreferences: {
             nodeIntegration: true,
         },
+        fullscreen: true,
     });
     
     mainWindow.loadFile('index.html');

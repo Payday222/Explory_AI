@@ -26,17 +26,16 @@ app.post('/login', async (req, res) => {
         const conn = await mysql.createConnection(config);
         console.log('Connected to the MySQL database!');
 
-        
-        const query = 'SELECT * FROM users WHERE email = ? AND pass = ?';
+        const query = 'SELECT verified FROM users WHERE email = ? AND pass = ?';
         const [results] = await conn.execute(query, [email, password]);
 
         if (results.length > 0) {
-           
-            const isVerified = await checkVerified(email, conn);
-            if (isVerified) {
+            const { verified } = results[0];
+
+            if (verified === 1) {
                 return res.send({ success: true, message: 'Login successful' });
             } else {
-                return res.status(401).send({ success: false, message: 'User  not verified' });
+                return res.status(401).send({ success: false, message: 'User not verified' });
             }
         } else {
             console.log('Invalid credentials');
@@ -47,19 +46,6 @@ app.post('/login', async (req, res) => {
         return res.status(500).send({ success: false, message: 'Database error' });
     }
 });
-
-async function checkVerified(email, conn) {
-    const query = 'SELECT * FROM users WHERE email = ? AND verified = 1';
-    const [results] = await conn.execute(query, [email]);
-
-    if (results.length > 0) {
-        console.log('Verification successful:', results);
-        return true;
-    } else {
-        console.log('User  not verified');
-        return false;
-    }
-}
 
 app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
