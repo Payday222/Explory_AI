@@ -3,9 +3,10 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link id="styleSheet" rel="styleSheet" href="lightmode.css">
         <title>Sign Up</title>
         <style>
-            @font-face {
+            /* @font-face {
                 font-family: 'Ubuntu';
                 src: url(./fonts/Ubuntu-Regular.ttf);
                 font-style: normal;
@@ -86,7 +87,7 @@
             .error-message {
                 color: orange;
                 font-size: 12px;
-            }
+            } */
         </style>
     </head>
     <body>
@@ -113,13 +114,13 @@
         document.getElementById('signUp').addEventListener('submit', function(event) {
             event.preventDefault(); 
 
-            // Collect input values
+            
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
             const confirmPassword = document.getElementById('conf-password').value;
             const result = document.getElementById('result');
 
-            // Validate input
+           
             if (!email.includes('@')) {
                 result.textContent = "Please enter a valid email.";
                 return;
@@ -129,13 +130,13 @@
                 return;
             }
 
-            // Data to send
+           
             const data = {
                 email: email,
                 password: password
             };
 
-            // Send sign-up request
+            
             fetch('http://localhost:3003/signup', {
                 method: 'POST',
                 headers: {
@@ -155,7 +156,7 @@
                 result.textContent = "User registered successfully!";
                 console.log(data);
 
-                // Send email request
+                
                 return fetch('http://localhost:3001/send-email', {
                     method: 'POST',
                     headers: {

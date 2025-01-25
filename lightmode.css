@@ -1,0 +1,255 @@
+/* index */
+@font-face {
+    font-family: 'Ubuntu';
+    src: url(./fonts/Ubuntu-Regular.ttf);
+    font-style: normal;
+}
+@font-face {
+    font-family: 'Ubuntu-Bold';
+    src: url(./fonts/Ubuntu-Bold.ttf);
+}
+@font-face {
+    font-family: 'Ubuntu-Medium';
+    src: url(./fonts/Ubuntu-Medium.ttf);
+}
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0; 
+}
+#card {
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+}
+img {
+    width: auto;
+    height: 50vh;
+}
+button {
+    margin-top: 10px; 
+    width: 150px; 
+    height: 40px; 
+    cursor: pointer;
+    font-family:'Ubuntu', sans-serif;
+    font-size: 16px; 
+    background-color: rgba(49, 175, 49, 0.767);
+    border: none;
+    border-radius: 8px;
+}
+button:hover {
+    background-color: rgb(102, 224, 102);
+    box-shadow: 10px 10px 0px 0px grey;
+    transform: translateY(-10px);
+    color: white;
+    transition: all 0.3s ease-in-out;
+}
+.switch {
+position: relative;
+display: inline-block;
+width: 50px;
+height: 25px;
+}
+
+.switch input {
+display: none;
+}
+
+.slider {
+position: absolute;
+cursor: pointer;
+top: 0;
+left: 0;
+right: 0;
+bottom: 0;
+background-color: #ccc;
+transition: 0.4s;
+border-radius: 25px;
+}
+
+.slider::before {
+position: absolute;
+content: "";
+height: 19px;
+width: 19px;
+left: 3px;
+bottom: 3px;
+background-color: white;
+transition: 0.4s;
+border-radius: 50%;
+}
+
+input:checked + .slider {
+background-color: #4CAF50;
+}
+
+input:checked + .slider::before {
+transform: translateX(25px);
+}
+
+/* login */
+
+@font-face {
+    font-family: 'Ubuntu';
+    src: url(./fonts/Ubuntu-Regular.ttf);
+    font-style: normal;
+}
+@font-face {
+    font-family: 'Ubuntu-Bold';
+    src: url(./fonts/Ubuntu-Bold.ttf);
+}
+@font-face {
+    font-family: 'Ubuntu-Medium';
+    src: url(./fonts/Ubuntu-Medium.ttf);
+}
+
+body {
+    font-family: 'Ubuntu', sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: #f0f2f5;
+    margin: 0;
+}
+
+.Login-container {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 300px;
+    text-align: center;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+input[type="text"],
+input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-bottom: 10px;
+    font-family: 'Ubuntu-Bold', sans-serif;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+#create-acc {
+    background-color: #008CBA;
+}
+
+#create-acc:hover {
+    background-color: #007bb5;
+}
+
+#email-result, #tester {
+    margin-top: 20px;
+}
+
+/* signup */
+
+@font-face {
+    font-family: 'Ubuntu';
+    src: url(./fonts/Ubuntu-Regular.ttf);
+    font-style: normal;
+}
+@font-face {
+    font-family: 'Ubuntu-Bold';
+    src: url(./fonts/Ubuntu-Bold.ttf);
+}
+@font-face {
+    font-family: 'Ubuntu-Medium';
+    src: url(./fonts/Ubuntu-Medium.ttf);
+}
+
+body {
+    font-family: 'Ubuntu', sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: #f0f2f5;
+    margin: 0;
+}
+
+.SignUp-container {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 300px;
+    text-align: center;
+}
+
+form {
+    width: 100%;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+input[type="email"],
+input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+input.error {
+    border-color: orange;
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-bottom: 10px;
+    font-family: 'Ubuntu-Bold', sans-serif;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+#result {
+    margin-top: 20px;
+}
+
+.error-message {
+    color: orange;
+    font-size: 12px;
+}

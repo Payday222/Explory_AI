@@ -2,9 +2,10 @@
 <html>
 <head>
     <title>LearnLabs</title>
+    <link id="styleSheet" rel="styleSheet" href="lightmode.css">
     <style>
         
-        @font-face {
+        /* @font-face {
             font-family: 'Ubuntu';
             src: url(./fonts/Ubuntu-Regular.ttf);
             font-style: normal;
@@ -51,6 +52,48 @@
             color: white;
             transition: all 0.3s ease-in-out;
         }
+        .switch {
+      position: relative;
+      display: inline-block;
+      width: 50px;
+      height: 25px;
+    }
+
+    .switch input {
+      display: none;
+    }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #ccc;
+      transition: 0.4s;
+      border-radius: 25px;
+    }
+
+    .slider::before {
+      position: absolute;
+      content: "";
+      height: 19px;
+      width: 19px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: 0.4s;
+      border-radius: 50%;
+    }
+
+    input:checked + .slider {
+      background-color: #4CAF50;
+    }
+
+    input:checked + .slider::before {
+      transform: translateX(25px);
+    } */
     </style>
 </head>
 <body>
@@ -58,6 +101,11 @@
         <img src="./images/learnlabslogo.png" alt="LearnLabs Logo">
         <button id="goto-login">LOGIN</button>
     </div>
+    <h5>Toggle darkmode</h5>
+    <label class="switch">
+        <input type="checkbox">
+        <span class="slider"></span>
+      </label>
 </body>
 <script>
     let login = document.getElementById('goto-login');
@@ -67,5 +115,13 @@
             document.documentElement.requestFullscreen();
         };
     
+    const Tswitch = document.getElementById('switch');
+    const styleSheet = document.getElementById('darkmode');
+
+    if(Tswitch.checked) {
+        styleSheet.href = 'darkmode.css'
+    } else {
+        styleSheet.href = 'lightmode.css'
+    }
 </script>
 </html>
