@@ -103,7 +103,7 @@
     </div>
     <h5>Toggle darkmode</h5>
     <label class="switch">
-        <input type="checkbox">
+        <input type="checkbox" id="toggle">
         <span class="slider"></span>
       </label>
 </body>
@@ -115,8 +115,8 @@
             document.documentElement.requestFullscreen();
         };
     
-    const Tswitch = document.getElementById('switch');
-    const styleSheet = document.getElementById('darkmode');
+    const Tswitch = document.getElementById('toggle');
+    const styleSheet = document.getElementById('styleSheet');
 
     if(Tswitch.checked) {
         styleSheet.href = 'darkmode.css'

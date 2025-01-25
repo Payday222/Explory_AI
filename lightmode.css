@@ -90,21 +90,6 @@ transform: translateX(25px);
 }
 
 /* login */
-
-@font-face {
-    font-family: 'Ubuntu';
-    src: url(./fonts/Ubuntu-Regular.ttf);
-    font-style: normal;
-}
-@font-face {
-    font-family: 'Ubuntu-Bold';
-    src: url(./fonts/Ubuntu-Bold.ttf);
-}
-@font-face {
-    font-family: 'Ubuntu-Medium';
-    src: url(./fonts/Ubuntu-Medium.ttf);
-}
-
 body {
     font-family: 'Ubuntu', sans-serif;
     display: flex;
@@ -170,20 +155,6 @@ button:hover {
 }
 
 /* signup */
-
-@font-face {
-    font-family: 'Ubuntu';
-    src: url(./fonts/Ubuntu-Regular.ttf);
-    font-style: normal;
-}
-@font-face {
-    font-family: 'Ubuntu-Bold';
-    src: url(./fonts/Ubuntu-Bold.ttf);
-}
-@font-face {
-    font-family: 'Ubuntu-Medium';
-    src: url(./fonts/Ubuntu-Medium.ttf);
-}
 
 body {
     font-family: 'Ubuntu', sans-serif;
