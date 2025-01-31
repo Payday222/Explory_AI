@@ -3,86 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <title>LearnLabs - Login</title>
-    <link id="styleSheet" rel="styleSheet" href="lightmode.css">
-    <style>
-        /* @font-face {
-            font-family: 'Ubuntu';
-            src: url(./fonts/Ubuntu-Regular.ttf);
-            font-style: normal;
-        }
-        @font-face {
-            font-family: 'Ubuntu-Bold';
-            src: url(./fonts/Ubuntu-Bold.ttf);
-        }
-        @font-face {
-            font-family: 'Ubuntu-Medium';
-            src: url(./fonts/Ubuntu-Medium.ttf);
+    <link id="styleSheet" rel="stylesheet" href="lightmode.css">
+
+    <script>
+        function getCookie(name) {
+            const cookies = document.cookie.split("; ");
+            for (let cookie of cookies) {
+                let [key, value] = cookie.split("=");
+                if (key === name) return value;
+            }
+            return null;
         }
 
-        body {
-            font-family: 'Ubuntu', sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            background-color: #f0f2f5;
-            margin: 0;
-        }
-
-        .Login-container {
-            background-color: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            width: 300px;
-            text-align: center;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: bold;
-        }
-
-        input[type="text"],
-        input[type="password"] {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 16px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            box-sizing: border-box;
-        }
-
-        button {
-            width: 100%;
-            padding: 10px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            margin-bottom: 10px;
-            font-family: 'Ubuntu-Bold', sans-serif;
-        }
-
-        button:hover {
-            background-color: #45a049;
-        }
-
-        #create-acc {
-            background-color: #008CBA;
-        }
-
-        #create-acc:hover {
-            background-color: #007bb5;
-        }
-
-        #email-result, #tester {
-            margin-top: 20px;
-        } */
-    </style>
+        // Get saved theme from the cookie (default to lightmode.css)
+        const savedTheme = getCookie("theme") || "lightmode.css";
+        console.log("Saved theme:", savedTheme);
+        // Update the href of the link tag to reflect the theme
+        document.addEventListener("DOMContentLoaded", () => {
+            const stylesheet = document.getElementById("styleSheet");
+            stylesheet.setAttribute("href", savedTheme);
+        });
+    </script>
+    <script src="theme.js"></script>
 </head>
 <body>
     <div class="Login-container">
@@ -92,12 +34,13 @@
             <label for="password">Password:</label>
             <input type="password" id="password" name="Password"><br><br>
         </form>
-        <h5>Don't have an account?</h1>
+        <h5>Don't have an account?</h5>
         <button id="create-acc">Sign up</button>
         <button id="login-button">Log in</button>
         <p id="email-result"></p>
         <p id="tester">abc</p>
     </div>
-    <script src="login.js"></script>
+    
+    <script src="login.js"></script>    
 </body>
 </html>
