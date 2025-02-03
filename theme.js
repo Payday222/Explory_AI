@@ -1,8 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
     const Tswitch = document.getElementById("toggle");
     const stylesheet = document.getElementById("styleSheet");
-
-    // Function to get cookie by name
     function getCookie(name) {
         const cookies = document.cookie.split("; ");
         for (let cookie of cookies) {
@@ -30,6 +28,26 @@ document.addEventListener("DOMContentLoaded", () => {
         console.log(`Theme changed to: ${newTheme}`);
         savedTheme = Tswitch.checked ? "darkmode.css" : "lightmode.css";
     console.log("savedTheme: ", savedTheme);
-        
+        // set();
     });
+
+    if(getCookie('style') === 'darkmode') {
+        stylesheet.setAttribute('href', "darkmode.css");
+        console.log('darkmode');
+        
+    } else if (getCookie('style') === 'lightmode') {
+        stylesheet.setAttribute('href', "lightmode.css");
+        console.log('lightmode');
+        
+    }
+    function set() {
+        if(savedTheme != !(Tswitch.checked ? 'darkmode.css' : 'lightmode.css')) {
+            console.log("the shitfuck expression is true");
+        } else {
+            console.log("is false");
+            
+        }
+    }
+
+    console.log('reached end of file');
 });
