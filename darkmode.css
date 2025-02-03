@@ -26,7 +26,6 @@ body {
 img {
     width: auto;
     height: 50vh;
-    filter: invert(100%);
 }
 
 /* Button styling for dark mode */

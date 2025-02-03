@@ -3,7 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <title>LearnLabs - Login</title>
-    <link id="styleSheet" rel="stylesheet" href="lightmode.css">
+    <link id="styleSheet" rel="styleSheet" href="lightmode.css">
+    <style>
+        /* @font-face {
+            font-family: 'Ubuntu';
+            src: url(./fonts/Ubuntu-Regular.ttf);
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'Ubuntu-Bold';
+            src: url(./fonts/Ubuntu-Bold.ttf);
+        }
+        @font-face {
+            font-family: 'Ubuntu-Medium';
+            src: url(./fonts/Ubuntu-Medium.ttf);
+        }
 
     <script>
         function getCookie(name) {
@@ -15,16 +29,59 @@
             return null;
         }
 
-        // Get saved theme from the cookie (default to lightmode.css)
-        const savedTheme = getCookie("theme") || "lightmode.css";
-        console.log("Saved theme:", savedTheme);
-        // Update the href of the link tag to reflect the theme
-        document.addEventListener("DOMContentLoaded", () => {
-            const stylesheet = document.getElementById("styleSheet");
-            stylesheet.setAttribute("href", savedTheme);
-        });
-    </script>
-    <script src="theme.js"></script>
+        .Login-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            text-align: center;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-bottom: 10px;
+            font-family: 'Ubuntu-Bold', sans-serif;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        #create-acc {
+            background-color: #008CBA;
+        }
+
+        #create-acc:hover {
+            background-color: #007bb5;
+        }
+
+        #email-result, #tester {
+            margin-top: 20px;
+        } */
+    </style>
 </head>
 <body>
     <div class="Login-container">

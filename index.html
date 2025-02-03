@@ -3,9 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <title>LearnLabs</title>
-    <link id="styleSheet" rel="stylesheet" href="lightmode.css">
+    <link id="styleSheet" rel="styleSheet" href="lightmode.css">
     <style>
-      /*  body {
+        
+        /* @font-face {
+            font-family: 'Ubuntu';
+            src: url(./fonts/Ubuntu-Regular.ttf);
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'Ubuntu-Bold';
+            src: url(./fonts/Ubuntu-Bold.ttf);
+        }
+        @font-face {
+            font-family: 'Ubuntu-Medium';
+            src: url(./fonts/Ubuntu-Medium.ttf);
+        }
+        body {
             display: flex;
             justify-content: center;
             align-items: center;
@@ -40,42 +54,47 @@
             transition: all 0.3s ease-in-out;
         }
         .switch {
-            position: relative;
-            display: inline-block;
-            width: 50px;
-            height: 25px;
-        }
-        .switch input {
-            display: none;
-        }
-        .slider {
-            position: absolute;
-            cursor: pointer;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: #ccc;
-            transition: 0.4s;
-            border-radius: 25px;
-        }
-        .slider::before {
-            position: absolute;
-            content: "";
-            height: 19px;
-            width: 19px;
-            left: 3px;
-            bottom: 3px;
-            background-color: white;
-            transition: 0.4s;
-            border-radius: 50%;
-        }
-        input:checked + .slider {
-            background-color: #4CAF50;
-        }
-        input:checked + .slider::before {
-            transform: translateX(25px);
-        } */
+      position: relative;
+      display: inline-block;
+      width: 50px;
+      height: 25px;
+    }
+
+    .switch input {
+      display: none;
+    }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #ccc;
+      transition: 0.4s;
+      border-radius: 25px;
+    }
+
+    .slider::before {
+      position: absolute;
+      content: "";
+      height: 19px;
+      width: 19px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: 0.4s;
+      border-radius: 50%;
+    }
+
+    input:checked + .slider {
+      background-color: #4CAF50;
+    }
+
+    input:checked + .slider::before {
+      transform: translateX(25px);
+    } */
     </style>
 </head>
 <body>
@@ -83,11 +102,14 @@
         <img src="./images/learnlabslogo.png" alt="LearnLabs Logo">
         <button id="goto-login">LOGIN</button>
     </div>
-    <h5>Toggle dark mode</h5>
+    <h5>Toggle darkmode</h5>
     <label class="switch">
         <input type="checkbox" id="toggle">
         <span class="slider"></span>
-    </label>
+      </label>
+</body>
+<script>
+    let login = document.getElementById('goto-login');
 
     <script>
         // Function to navigate to the login page and request fullscreen
@@ -96,9 +118,14 @@
             window.open('login.html', '_self');
             document.documentElement.requestFullscreen();
         };
-    </script>
+    
+    const Tswitch = document.getElementById('toggle');
+    const styleSheet = document.getElementById('styleSheet');
 
-    <script src="renderer.js"></script>
-    <script src="theme.js"></script>
-</body>
+    if(Tswitch.checked) {
+        styleSheet.href = 'darkmode.css'
+    } else {
+        styleSheet.href = 'lightmode.css'
+    }
+</script>
 </html>
