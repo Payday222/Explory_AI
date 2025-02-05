@@ -24,7 +24,7 @@
         };
 
         const Tswitch = document.getElementById('toggle');
-        const styleSheet = document.getElementById('styleSheet');
+        const styleSheet = document.getElementById('stylesheet');
 
         // Check cookie on page load and apply theme
         window.onload = () => {
@@ -46,7 +46,10 @@
         // Change theme and immediately apply it
         Tswitch.addEventListener('change', () => {
             let newTheme = Tswitch.checked ? "darkmode.css" : "lightmode.css";
-            styleSheet.setAttribute('href', newTheme);
+            console.log('bastard');
+            console.log(styleSheet, " stylesheet");
+            console.log(newTheme, " newtheme");
+            styleSheet.setAttribute('href', newTheme); //!this throws 404 error
 
             // Set cookie for theme and apply it to the page
             window.electron.setCookie('theme', newTheme)
@@ -56,5 +59,6 @@
                 .catch(err => console.log("Error setting cookie: ", err));
         });
     </script>
+    <script src="theme.js"></script>
 </body>
 </html>

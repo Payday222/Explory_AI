@@ -1,26 +1,38 @@
-function getCookie(name) {
-    const cookies = document.cookie.split("; ");
-    for (let cookie of cookies) {
-        let [key, value] = cookie.split("=");
-        if (key === name) return value;
-    }
-    // console.log("All cookies:", document.cookie);
-// console.log("Theme cookie:", getCookie("theme"));
+document.addEventListener("DOMContentLoaded", async () => {
+    console.log("🚀 themeget.js loaded");
 
-    return null;
-}
-
-document.addEventListener("DOMContentLoaded", () => {
-    const stylesheet = document.getElementById("styleSheet");
-
-    if (!stylesheet) {
-        console.error("Error: Stylesheet link element not found!");
+    const styleSheet = document.getElementById("styleSheet");
+    if (!styleSheet) {
+        console.error("Error: styleSheet element not found!");
         return;
     }
 
-    let savedTheme = getCookie("theme") || "lightmode.css";
+    function getCookie(name) {
+        const cookies = document.cookie.split("; ");
+        for (let cookie of cookies) {
+            let [key, value] = cookie.split("=");
+            if (key === name) return value;
+        }
+        return null;
+    }
 
-    stylesheet.setAttribute("href", savedTheme);
+    let savedTheme;
+
+    if (window.electron) {
+        try {
+            savedTheme = await window.electron.getCookie("theme");
+        } catch (err) {
+            console.error("Error getting theme cookie:", err);
+        }
+    } else {
+        savedTheme = getCookie("theme") || "lightmode.css";
+    }
 
     console.log(`Theme applied: ${savedTheme}`);
+
+    if (styleSheet) {
+        styleSheet.setAttribute("href", savedTheme);
+    } else {
+        console.error("Error: styleSheet element is not available to set theme.");
+    }
 });

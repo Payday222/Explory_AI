@@ -1,6 +1,15 @@
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
+    console.log("🚀 theme.js loaded");
+
+    const styleSheet = document.getElementById("styleSheet");
     const Tswitch = document.getElementById("toggle");
-    const stylesheet = document.getElementById("styleSheet");
+
+    if (!styleSheet || !Tswitch) {
+        console.error("Error: Elements not found!");
+        return;
+    }
+
+    // Function to get cookies in Browser
     function getCookie(name) {
         const cookies = document.cookie.split("; ");
         for (let cookie of cookies) {
@@ -10,44 +19,37 @@ document.addEventListener("DOMContentLoaded", () => {
         return null;
     }
 
-    let savedTheme = getCookie("theme") || "lightmode.css";
-    console.log("Saved theme:", savedTheme);
+    let savedTheme;
 
-    stylesheet.setAttribute("href", savedTheme);
-
-    if (savedTheme === "darkmode.css" && Tswitch) {
-        Tswitch.checked = true;
-    }
-
-    Tswitch.addEventListener("change", () => {
-        let newTheme = Tswitch.checked ? "darkmode.css" : "lightmode.css";
-        stylesheet.setAttribute("href", newTheme);
-
-        document.cookie = `theme=${newTheme}; path=/; max-age=${30 * 24 * 60 * 60}; secure; SameSite=Lax`;
-
-        console.log(`Theme changed to: ${newTheme}`);
-        savedTheme = Tswitch.checked ? "darkmode.css" : "lightmode.css";
-    console.log("savedTheme: ", savedTheme);
-        // set();
-    });
-
-    if(getCookie('style') === 'darkmode') {
-        stylesheet.setAttribute('href', "darkmode.css");
-        console.log('darkmode');
-        
-    } else if (getCookie('style') === 'lightmode') {
-        stylesheet.setAttribute('href', "lightmode.css");
-        console.log('lightmode');
-        
-    }
-    function set() {
-        if(savedTheme != !(Tswitch.checked ? 'darkmode.css' : 'lightmode.css')) {
-            console.log("the shitfuck expression is true");
-        } else {
-            console.log("is false");
-            
+    // Check if Electron environment
+    if (window.electron) {
+        try {
+            savedTheme = await window.electron.getCookie("theme");
+        } catch (err) {
+            console.error("Error getting theme cookie:", err);
         }
+    } else {
+        savedTheme = getCookie("theme") || "lightmode.css";
     }
 
-    console.log('reached end of file');
+    console.log(`Theme applied: ${savedTheme}`);
+    styleSheet.setAttribute("href", savedTheme);
+    Tswitch.checked = savedTheme === "darkmode.css";
+
+    Tswitch.addEventListener("change", async () => {
+        let newTheme = Tswitch.checked ? "darkmode.css" : "lightmode.css";
+        styleSheet.setAttribute("href", newTheme);
+
+        console.log(`Saving theme to cookie: ${newTheme}`);
+
+        if (window.electron) {
+            try {
+                await window.electron.setCookie("theme", newTheme);
+            } catch (err) {
+                console.error("Error setting theme cookie:", err);
+            }
+        } else {
+            document.cookie = `theme=${newTheme}; path=/; max-age=${30 * 24 * 60 * 60}; secure;`;
+        }
+    });
 });

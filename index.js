@@ -9,18 +9,18 @@ app.whenReady().then(() => {
     mainWindow = new BrowserWindow({
         width: 800,
         height: 600,
-        fullscreen: true, // Keep fullscreen as per your request
+        fullscreen: true,
         webPreferences: {
             preload: path.join(__dirname, 'preload.js'),
-            nodeIntegration: false, // Better security
-            contextIsolation: true,
-            webSecurity: true, // Keep enabled unless you have CORS issues
+            contextIsolation: true, 
+            enableRemoteModule: false,
+            nodeIntegration: false
         },
     });
+    
 
     const url = 'http://localhost:8080';
 
-    // Ensure server is actually running before loading
     console.log(`Loading URL: ${url}`);
     mainWindow.loadURL(url).catch((err) => {
         console.error("Failed to load URL:", err);
@@ -28,16 +28,14 @@ app.whenReady().then(() => {
 
     mainWindow.webContents.openDevTools();
 
-    // IPC: Handle setting cookies
-    ipcMain.handle('set-cookie', async (event, name, value) => {
+    ipcMain.handle("set-cookie", async (event, name, value) => {
         try {
             await session.defaultSession.cookies.set({
-                url: url, 
+                url: "http://localhost", // Use correct domain
                 name: name,
                 value: value,
                 expirationDate: Math.floor(Date.now() / 1000) + (30 * 24 * 60 * 60), // 30 days
-                secure: false, // Change to true if using HTTPS
-                sameSite: 'Lax' 
+                secure: false, // Set to true for HTTPS
             });
             console.log(`Cookie set: ${name}=${value}`);
         } catch (error) {
@@ -45,10 +43,9 @@ app.whenReady().then(() => {
         }
     });
 
-    // IPC: Handle getting cookies
-    ipcMain.handle('get-cookie', async (event, name) => {
+    ipcMain.handle("get-cookie", async (event, name) => {
         try {
-            const cookies = await session.defaultSession.cookies.get({ url: url });
+            const cookies = await session.defaultSession.cookies.get({ url: "http://localhost" });
             const cookie = cookies.find(cookie => cookie.name === name);
             return cookie ? cookie.value : null;
         } catch (error) {
@@ -57,15 +54,13 @@ app.whenReady().then(() => {
         }
     });
 
-    // Handle window closed event
-    mainWindow.on('closed', () => {
+    mainWindow.on("closed", () => {
         mainWindow = null;
     });
 });
 
-// Ensure app quits properly (except macOS)
-app.on('window-all-closed', () => {
-    if (process.platform !== 'darwin') {
+app.on("window-all-closed", () => {
+    if (process.platform !== "darwin") {
         app.quit();
     }
 });
