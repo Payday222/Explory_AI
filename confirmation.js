@@ -111,10 +111,12 @@ app.get('/register', (req, res) => {
             console.error('Error executing query:', err);
             res.status(500).json({ message: 'Error executing query', error: err });
             //here redirect user to error with confirmation site
+            window.open('error_confirmation.html');
         } else {
             console.log('User  verified:', result);
             res.status(200).json({ message: 'User  verified', result, userId, email });
             //here redirect user to confirmed site
+            window.open('confirmed.html');
         }
     });
 });
