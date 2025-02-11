@@ -52,7 +52,7 @@
             };
 
             
-            fetch('http://localhost:3003/signup', {
+            fetch('http://188.127.1.110:3003/signup', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -72,7 +72,7 @@
                 console.log(data);
 
                 
-                return fetch('http://localhost:3001/send-email', {
+                return fetch('http://188.127.1.110:3001/send-email', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
