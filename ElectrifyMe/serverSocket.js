@@ -2,7 +2,7 @@ const express = require('express');
 const path = require('path');
 const { Server } = require('socket.io');
 const fs = require('fs');
-const { exec } = require('child_process'); // To call Electron process
+const axios = require('axios');
 
 const PORT = 3005;
 const appExpress = express();
@@ -89,46 +89,18 @@ function StoreData(message) {
     fs.appendFileSync(tempFilePath, message + '\n');
     console.log(`Appended: ${message}`);
     if(message === 'save') {
-        SaveArray();
+        SaveArrayToServer();
     }
 }
 
-function SaveArray() {
-    fs.readFile(tempFilePath, 'utf8', (err, data) => {
-        if(err) {
-            console.log(err);
-            return;
-        }
+function SaveArrayToServer() {
+    const data = { messages: stringArray };
 
-        const lines = data.split('\n').map(line => line.trim()).filter(Boolean);
-
-        const jsonData = JSON.stringify(lines, null, 2);
-
-        // Check if the process is running in an Electron environment
-        if (isElectron()) {
-            // Save JSON on the local machine (Electron)
-            const electronFilePath = path.join(__dirname, 'data.json');
-            fs.writeFile(electronFilePath, jsonData, (err) => {
-                if(err){
-                    console.log(err);
-                } else {
-                    console.log('Electron: wrote file to data.json');
-                }
-            });
-        } else {
-            // Save JSON on the server
-            const serverFilePath = path.join(__dirname, 'data.json');
-            fs.writeFile(serverFilePath, jsonData, (err) => {
-                if(err){
-                    console.log(err);
-                } else {
-                    console.log('Server: wrote file to data.json');
-                }
-            });
-        }
-    });
-}
-
-function isElectron() {
-    return typeof process.versions.electron !== 'undefined';
+    axios.post('http://localhost:3006/save-data', data)
+        .then(response => {
+            console.log('Data successfully saved on the local machine:', response.data);
+        })
+        .catch(error => {
+            console.error('Error saving data to the local machine:', error);
+        });
 }
