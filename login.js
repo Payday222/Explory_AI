@@ -7,6 +7,7 @@ const password = document.getElementById('password');
 const emailResult = document.getElementById('email-result');
 
 function validateEmail() {
+    console.log('example log');
     const inputValue = inputElement.value;
     if (inputValue.includes('@')) {
         emailResult.textContent = "Email Valid";

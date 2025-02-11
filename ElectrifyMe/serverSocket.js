@@ -88,8 +88,13 @@ if (fs.existsSync(filePath)) {
 function StoreData(message) {
     fs.appendFileSync(tempFilePath, message + '\n');
     console.log(`Appended: ${message}`);
+    
+    // When 'save' message is received, save all messages in stringArray
     if(message === 'save') {
         SaveArrayToServer();
+    } else {
+        // Append the message to stringArray to ensure it's saved for future use
+        stringArray.push({ text: message, timestamp: new Date().toISOString() });
     }
 }
 

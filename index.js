@@ -8,10 +8,11 @@ const appExpress = express();
 let mainWindow;
 
 const PORT = 3006;
-appExpress.use(bodyParser.json()); // Middleware to parse JSON requests
+appExpress.use(bodyParser.json());
 
 
 appExpress.post('/save-data', (req, res) => {
+    console.log('savedata endpoint reached');
     const { messages } = req.body;
 
     if (messages && Array.isArray(messages)) {

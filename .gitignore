@@ -20,3 +20,5 @@ out/
 .env
 db.env
 *.env
+
+savedData.json
