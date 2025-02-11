@@ -104,12 +104,31 @@ function SaveArray() {
 
         const jsonData = JSON.stringify(lines, null, 2);
 
-        fs.writeFile('data.json', jsonData, (err) => {
-            if(err){
-            console.log(err);
-            } else {
-                console.log('wrote file to JSON');
-            }
-        });
+        // Check if the process is running in an Electron environment
+        if (isElectron()) {
+            // Save JSON on the local machine (Electron)
+            const electronFilePath = path.join(__dirname, 'data.json');
+            fs.writeFile(electronFilePath, jsonData, (err) => {
+                if(err){
+                    console.log(err);
+                } else {
+                    console.log('Electron: wrote file to data.json');
+                }
+            });
+        } else {
+            // Save JSON on the server
+            const serverFilePath = path.join(__dirname, 'data.json');
+            fs.writeFile(serverFilePath, jsonData, (err) => {
+                if(err){
+                    console.log(err);
+                } else {
+                    console.log('Server: wrote file to data.json');
+                }
+            });
+        }
     });
+}
+
+function isElectron() {
+    return typeof process.versions.electron !== 'undefined';
 }
