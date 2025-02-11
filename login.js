@@ -41,7 +41,9 @@ loginButton.addEventListener('click', () => {
         .then(data => {
             if (data.success) {
                 console.log("Login successful!");
-                window.open('user_panel.html');
+                window.open('http://localhost:3000');
+                window.open('http://localhost:3000');
+
             } else {
                 console.log("Invalid credentials.");
             }
