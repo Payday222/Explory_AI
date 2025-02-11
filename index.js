@@ -9,33 +9,35 @@ app.whenReady().then(() => {
     mainWindow = new BrowserWindow({
         width: 800,
         height: 600,
-        fullscreen: true,
+        fullscreen: true, // Keep fullscreen as per your request
         webPreferences: {
             preload: path.join(__dirname, 'preload.js'),
-            contextIsolation: true, 
-            enableRemoteModule: false,
-            nodeIntegration: false
+            nodeIntegration: false, // Better security
+            contextIsolation: true,
+            webSecurity: true, // Keep enabled unless you have CORS issues
         },
     });
-    
 
-    const url = 'http://188.127.1.110:8080';
+    // Path to the local index.html file
+    const indexPath = path.join(__dirname, 'index.html');
 
-    console.log(`Loading URL: ${url}`);
-    mainWindow.loadURL(url).catch((err) => {
-        console.error("Failed to load URL:", err);
+    console.log(`Loading local HTML file: ${indexPath}`);
+    mainWindow.loadFile(indexPath).catch((err) => {
+        console.error("Failed to load file:", err);
     });
 
     mainWindow.webContents.openDevTools();
 
-    ipcMain.handle("set-cookie", async (event, name, value) => {
+    // IPC: Handle setting cookies
+    ipcMain.handle('set-cookie', async (event, name, value) => {
         try {
             await session.defaultSession.cookies.set({
-                url: "http://188.127.1.110", // Use correct domain
+                url: 'http://localhost', // Use the appropriate URL or remove this for local files
                 name: name,
                 value: value,
                 expirationDate: Math.floor(Date.now() / 1000) + (30 * 24 * 60 * 60), // 30 days
-                secure: false, // Set to true for HTTPS
+                secure: false, // Change to true if using HTTPS
+                sameSite: 'Lax' 
             });
             console.log(`Cookie set: ${name}=${value}`);
         } catch (error) {
@@ -43,9 +45,10 @@ app.whenReady().then(() => {
         }
     });
 
-    ipcMain.handle("get-cookie", async (event, name) => {
+    // IPC: Handle getting cookies
+    ipcMain.handle('get-cookie', async (event, name) => {
         try {
-            const cookies = await session.defaultSession.cookies.get({ url: "http://188.127.1.110" });
+            const cookies = await session.defaultSession.cookies.get({ url: 'http://localhost' });
             const cookie = cookies.find(cookie => cookie.name === name);
             return cookie ? cookie.value : null;
         } catch (error) {
@@ -54,13 +57,15 @@ app.whenReady().then(() => {
         }
     });
 
-    mainWindow.on("closed", () => {
+    // Handle window closed event
+    mainWindow.on('closed', () => {
         mainWindow = null;
     });
 });
 
-app.on("window-all-closed", () => {
-    if (process.platform !== "darwin") {
+// Ensure app quits properly (except macOS)
+app.on('window-all-closed', () => {
+    if (process.platform !== 'darwin') {
         app.quit();
     }
 });
