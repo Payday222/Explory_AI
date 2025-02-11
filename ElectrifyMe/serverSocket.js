@@ -1,16 +1,24 @@
 const express = require('express');
+//const http = require('http'); // maybe destroy
 const path = require('path');
 const { Server } = require('socket.io');
 
-appExpress.use(express.static(path.join(__dirname, 'Public')));
+const PORT = 3005
+const app = express();
 
-const expressServer = appExpress.listen(PORT, () => console.log(`Listening on port ${PORT}`));
 
-const io = new Server(expressServer, {
-    cors: {
-        origin: process.env.NODE_ENV === "production" ? false : ["http://localhost:3500", "http://127.0.0.1:3500"]
+app.use(express.static(path.join(__dirname,'Public')));
+
+
+const expressServer = app.listen(PORT, () => console.log(`listen on port ${PORT}`))
+
+const io = new Server(expressServer,{
+    cors:{
+        origin: process.env.NODE_ENV === "production" ?  false : ["http://localhost:3500", "http://127.0.0.1:3500"]
     }
-});
+})
+
+
 
 let rooms = {};
 
@@ -20,6 +28,9 @@ io.on('connection', (socket) => {
     socket.on('createRoom', (roomCode) => {
         rooms[roomCode] = { host: socket.id, clients: [] };
         socket.join(roomCode);
+
+        
+
         socket.emit('roomCreated', roomCode);
     });
 
@@ -37,7 +48,6 @@ io.on('connection', (socket) => {
     socket.on('sendMessage', (data) => {
         const { roomCode, message } = data;
         io.to(rooms[roomCode].host).emit('messageReceived', { clientId: socket.id, message });
-        StoreData(message);
     });
 
     socket.on('disconnect', () => {
@@ -51,18 +61,27 @@ io.on('connection', (socket) => {
             }
         }
     });
-
+    // MARCEL
     socket.on('sendMessageToClient', ({ room, socketId, message }) => {
-        const clientsInRoom = io.sockets.adapter.rooms[room]?.sockets;
+     
 
-        if (clientsInRoom) {
+        const clientsInRoom = io.sockets.adapter.rooms[room]?.sockets;
+        
+
+        if (clientsInRoom !== null ) {
             io.to(socketId).emit('receiveMessage', {
                 from: socket.id,
                 message: message
             });
             console.log(`Message sent to ${socketId} in room ${room}: ${message}`);
-        } else {
-            console.log("Room does not exist.");
         }
+        else{
+            console.log("fuck u");
+        } 
     });
 });
+
+// const PORT = process.env.PORT || 3000;
+// server.listen(PORT, () => {
+//     console.log(`Server is running on port ${PORT}`);
+// });
