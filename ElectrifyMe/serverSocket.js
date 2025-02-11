@@ -2,13 +2,14 @@ const express = require('express');
 const path = require('path');
 const { Server } = require('socket.io');
 const fs = require('fs');
+const { ipcRenderer } = require('electron'); 
 
 const PORT = 3005;
-const app = express();
+const appExpress = express();
 
-app.use(express.static(path.join(__dirname, 'Public')));
+appExpress.use(express.static(path.join(__dirname, 'Public')));
 
-const expressServer = app.listen(PORT, () => console.log(`Listening on port ${PORT}`));
+const expressServer = appExpress.listen(PORT, () => console.log(`Listening on port ${PORT}`));
 
 const io = new Server(expressServer, {
     cors: {
@@ -101,6 +102,12 @@ function saveFinalArray() {
 }
 
 
-process.on('beforeExit', saveFinalArray);
+process.on('SIGINT', () => {
+    ipcRenderer.send('save-data-before-quit');
+    process.exit();
+});
 
-app.on('will-quit', saveFinalArray);
+process.on('SIGTERM', () => {
+    ipcRenderer.send('save-data-before-quit'); 
+    process.exit();
+});
