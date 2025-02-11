@@ -19,7 +19,7 @@ app.whenReady().then(() => {
     });
     
 
-    const url = 'http://localhost:8080';
+    const url = 'http://188.127.1.110:8080';
 
     console.log(`Loading URL: ${url}`);
     mainWindow.loadURL(url).catch((err) => {
@@ -31,7 +31,7 @@ app.whenReady().then(() => {
     ipcMain.handle("set-cookie", async (event, name, value) => {
         try {
             await session.defaultSession.cookies.set({
-                url: "http://localhost", // Use correct domain
+                url: "http://188.127.1.110", // Use correct domain
                 name: name,
                 value: value,
                 expirationDate: Math.floor(Date.now() / 1000) + (30 * 24 * 60 * 60), // 30 days
@@ -45,7 +45,7 @@ app.whenReady().then(() => {
 
     ipcMain.handle("get-cookie", async (event, name) => {
         try {
-            const cookies = await session.defaultSession.cookies.get({ url: "http://localhost" });
+            const cookies = await session.defaultSession.cookies.get({ url: "http://188.127.1.110" });
             const cookie = cookies.find(cookie => cookie.name === name);
             return cookie ? cookie.value : null;
         } catch (error) {

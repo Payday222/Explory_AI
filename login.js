@@ -27,7 +27,7 @@ loginButton.addEventListener('click', () => {
     const password = document.getElementById('password').value;
 
     if (validateEmail()) {
-        fetch('http://localhost:3004/login', {
+        fetch('http://188.127.1.110:3004/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

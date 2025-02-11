@@ -58,5 +58,5 @@ app.post('/signup', (req, res) => {
 });
 
 app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
+    console.log(`Server is running on http://188.127.1.110:${PORT}`);
 });

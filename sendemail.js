@@ -12,9 +12,8 @@ const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cookieParser());
-app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
+app.use(cors({ origin: 'http://188.127.1.110:3000', credentials: true }));
 
-// MySQL configuration
 const config = {
     host: process.env.DB_HOST,
     user: process.env.DB_USER,
@@ -23,7 +22,6 @@ const config = {
     port: process.env.DB_PORT
 };
 
-// Helper function to fetch userId from database
 function getUserIdByEmail(email) {
     const conn = mysql.createConnection(config);
 
@@ -42,7 +40,6 @@ function getUserIdByEmail(email) {
     });
 }
 
-// Send-email endpoint
 app.post('/send-email', async (req, res) => {
     const { email } = req.body;
 
@@ -66,7 +63,7 @@ app.post('/send-email', async (req, res) => {
             from: 'learnlaboffice.ai@gmail.com',
             to: email,
             subject: 'Register your LearnLabsAI account',
-            html: `<p>Welcome! Click <a href="http://localhost:3002/set-cookie?email=${encodeURIComponent(email)}">here</a> to register your account.</p>`
+            html: `<p>Welcome! Click <a href="http://188.127.1.110:3002/set-cookie?email=${encodeURIComponent(email)}">here</a> to register your account.</p>`
         };
 
         const info = await transporter.sendMail(mailOptions);
