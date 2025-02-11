@@ -56,26 +56,37 @@
         // history
         let arr = [];
 
-        function SaveMessage() {
-            const message = document.getElementById('messageInput').value;  // Fixed the case here
-            if (message.trim() !== '') {
-                arr.push(message + " ");
-                console.log(arr);
-                document.getElementById('messageInput').value = "";  // Fixed case here
-            }
-        }
+function SaveMessage() {
+    const message = document.getElementById('messageInput').value;
+    if (message.trim() !== '') {
+        arr.push(message);
+        console.log(arr);
+        document.getElementById('messageInput').value = "";
+    }
+}
 
-        const sendButton = document.getElementById('sendMessage');
-        sendButton.onclick = () => {
-            SaveMessage();
-        };
+document.getElementById('sendMessage').onclick = () => {
+    SaveMessage();
+};
 
-        // Save history to a JSON file
-        document.getElementById('saveHistory').onclick = () => {
-            const jsonData = JSON.stringify(arr, null, 2);  // Convert array to a JSON string with indentation
-            const blob = new Blob([jsonData], { type: 'application/json' });
-            saveAs(blob, 'messageHistory.json');  // Save the file as messageHistory.json using FileSaver.js
-        };
+
+document.getElementById('saveHistory').onclick = async () => {
+    if (arr.length === 0) return alert("No messages to save!");
+
+    const response = await fetch('http://localhost:3000/saveMessages', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ messages: arr })
+    });
+
+    const data = await response.json();
+    console.log(data);
+    if (data.success) {
+        alert("Messages saved to MongoDB!");
+        arr = []; // Clear array after saving
+    }
+};
+
     </script>
 </body>
 </html>

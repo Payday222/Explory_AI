@@ -15,6 +15,7 @@ app.whenReady().then(() => {
             nodeIntegration: false, // Better security
             contextIsolation: true,
             webSecurity: true, // Keep enabled unless you have CORS issues
+            partition: 'persist:no-cache',
         },
     });
 
