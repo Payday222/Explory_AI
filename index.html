@@ -3,61 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <title>LearnLabs</title>
-    <link id="styleSheet" rel="stylesheet" href="lightmode.css">
+    <link id="styleSheet" rel="stylesheet" href="darkmode.css">
 </head>
 <body>
     <div id="card">
         <img src="./images/learnlabslogo.png" alt="LearnLabs Logo">
         <button id="goto-login">LOGIN</button>
     </div>
-    <h5>Toggle darkmode</h5>
-    <label class="switch">
-        <input type="checkbox" id="toggle">
-        <span class="slider"></span>
-    </label>
     <script>
         let login = document.getElementById('goto-login');
         login.onclick = () => {
             window.open('login.html', '_self');
             document.documentElement.requestFullscreen();
-        };
-
-        const Tswitch = document.getElementById('toggle');
-        const styleSheet = document.getElementById('stylesheet');
-
-        // Check cookie on page load and apply theme
-        window.onload = () => {
-            window.electron.getCookie('theme')
-                .then(theme => {
-                    if (theme) {
-                        // Apply the theme from the cookie
-                        styleSheet.setAttribute('href', theme);
-                        console.log(`Theme applied: ${theme}`);
-                        // Set the switch to reflect the saved theme
-                        Tswitch.checked = theme === 'darkmode.css';
-                    } else {
-                        console.log('No theme cookie found, defaulting to light mode');
-                    }
-                })
-                .catch(err => console.log("Error getting cookie: ", err));
-        };
-
-        // Change theme and immediately apply it
-        Tswitch.addEventListener('change', () => {
-            let newTheme = Tswitch.checked ? "darkmode.css" : "lightmode.css";
-            console.log('bastard');
-            console.log(styleSheet, " stylesheet");
-            console.log(newTheme, " newtheme");
-            styleSheet.setAttribute('href', newTheme); //!this throws 404 error
-
-            // Set cookie for theme and apply it to the page
-            window.electron.setCookie('theme', newTheme)
-                .then(() => {
-                    console.log(`Theme changed and cookie set to: ${newTheme}`);
-                })
-                .catch(err => console.log("Error setting cookie: ", err));
-        });
+        };        
     </script>
-    <script src="theme.js"></script>
 </body>
 </html>
