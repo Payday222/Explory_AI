@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Join Room</title>
+    <script src="/socket.io/socket.io.js"></script>
+</head>
+<body>
+    <h1>Join Room</h1>
+    <input type="text" id="roomCodeInput" placeholder="Enter Room Code" />
+    <button id="joinRoom">Join Room</button>
+    <div id="status"></div>
+    <input type="text" id="messageInput" placeholder="Type your message" />
+    <button id="sendMessage">Send Message</button>
+    <div id="receive"></div>
+
+    <script>
+        const socket = io();
+        let currentRoomCode = '';
+
+        document.getElementById('joinRoom').onclick = () => {
+            const roomCode = document.getElementById('roomCodeInput').value;
+            socket.emit('joinRoom', roomCode);
+        };
+
+        socket.on('joinedRoom', (roomCode) => {
+            currentRoomCode = roomCode;
+            document.getElementById('status').innerText = `Joined Room: ${roomCode}`;
+        });
+
+        socket.on('roomNotFound', () => {
+            document.getElementById('status').innerText = 'Room not found. Please check the code.';
+        });
+
+
+        socket.on('receiveMessage', (data) => {
+
+
+            console.log("message received");
+            const { from, message } = data
+
+           // document.getElementById('receive').appendChild(from + " " + messageDiv);
+           const messageDiv = document.createElement('div');
+            messageDiv.innerText = `Admin: ${message}`; // Format the message
+            document.getElementById('receive').appendChild(messageDiv);
+        });
+
+        document.getElementById('sendMessage').onclick = () => {
+            const message = document.getElementById('messageInput').value;
+            if (currentRoomCode) {
+                socket.emit('sendMessage', { roomCode: currentRoomCode, message });
+                document.getElementById('messageInput').value = ''; 
+            }
+        };
+    </script>
+</body>
+</html>
