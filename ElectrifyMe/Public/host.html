@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Host Room</title>
+    <script src="/socket.io/socket.io.js"></script>
+</head>
+<body>
+    <h1>Host Room</h1>
+    <button id="createRoom">Create Room</button>
+    <br>
+    <input type ="text" id="clientName" placeholder="Enter client name"/>
+    <br>
+    <input type ="text" id="clientMessage" placeholder="Message"/>
+    <button id="sendMessageAdmin">Send to client</button>
+    <div id="roomCode"></div>
+    <div id="messages"></div>
+
+
+   
+    <script>
+        let currentRoomCode = '';
+
+        const socket = io();
+        document.getElementById('createRoom').onclick = () => {
+            const roomCode = Math.random().toString(36).substring(2, 8);
+            currentRoomCode = roomCode;
+            socket.emit('createRoom', roomCode);
+        };
+
+        socket.on('roomCreated', (roomCode) => {
+            document.getElementById('roomCode').innerText = `Room Code: ${roomCode}`;
+        });
+
+        socket.on('messageReceived', (data) => {
+            const messageDiv = document.createElement('div');
+            messageDiv.innerText = `Client ${data.clientId}: ${data.message}`;
+            document.getElementById('messages').appendChild(messageDiv);
+        });
+// MARCEL
+document.getElementById('sendMessageAdmin').onclick = () => {
+    const message = document.getElementById('clientMessage').value;
+    const socketId = document.getElementById('clientName').value; 
+            
+            
+    if (currentRoomCode && socketId) {
+        
+        socket.emit('sendMessageToClient', {
+            room: currentRoomCode,
+            socketId: socketId,
+            message: message
+        });
+        document.getElementById('clientName').value = ''; 
+        document.getElementById('clientMessage').value = '';
+    } else {
+        alert('Please enter a valid socket ID and message.');
+    }
+}
+
+
+        socket.on()
+    </script>
+</body>
+</html>
