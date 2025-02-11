@@ -3,7 +3,7 @@ const express = require('express');
 const path = require('path');
 const { Server } = require('socket.io');
 
-const PORT = process.env.PORT || 3000
+const PORT = 3005
 const app = express();
 
 
