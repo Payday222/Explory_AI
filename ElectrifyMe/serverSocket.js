@@ -2,6 +2,7 @@ const express = require('express');
 //const http = require('http'); // maybe destroy
 const path = require('path');
 const { Server } = require('socket.io');
+const fs = require('fs');
 
 const PORT = 3005
 const app = express();
@@ -47,6 +48,7 @@ io.on('connection', (socket) => {
 
     socket.on('sendMessage', (data) => {
         const { roomCode, message } = data;
+        StoreData(data);
         io.to(rooms[roomCode].host).emit('messageReceived', { clientId: socket.id, message });
     });
 
@@ -80,6 +82,36 @@ io.on('connection', (socket) => {
         } 
     });
 });
+
+//history
+const filePath = path.join(__dirname, 'history.json');
+const tempFilePath = path.join(__dirname, 'temp.txt');
+let arr = [];
+if (fs.existsSync(filePath)) {
+    try {
+        stringArray = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+    } catch (error) {
+        console.error("Error reading JSON file:", error);
+    }
+}
+function StoreData(data) {
+    fs.appendFileSync(tempFilePath, newString + '\n'); // Appends to a text file
+    console.log(`Appended: ${newString}`);
+}
+
+function saveFinalArray() {
+    if (fs.existsSync(tempFilePath)) {
+        const lines = fs.readFileSync(tempFilePath, 'utf8').split('\n').filter(Boolean);
+        stringArray.push(...lines); // Add all new lines to the array
+
+        // Write to JSON
+        fs.writeFileSync(filePath, JSON.stringify(stringArray, null, 2));
+        fs.unlinkSync(tempFilePath); // Clean up temp file
+        console.log("Final array saved:", stringArray);
+    }
+}
+
+app.on('exit',saveFinalArray());
 
 // const PORT = process.env.PORT || 3000;
 // server.listen(PORT, () => {
