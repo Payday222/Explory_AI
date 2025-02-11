@@ -88,26 +88,28 @@ if (fs.existsSync(filePath)) {
 function StoreData(message) {
     fs.appendFileSync(tempFilePath, message + '\n');
     console.log(`Appended: ${message}`);
-}
-
-function saveFinalArray() {
-    if (fs.existsSync(tempFilePath)) {
-        const lines = fs.readFileSync(tempFilePath, 'utf8').split('\n').filter(Boolean);
-        stringArray.push(...lines);
-
-        fs.writeFileSync(filePath, JSON.stringify(stringArray, null, 2));
-        fs.unlinkSync(tempFilePath);
-        console.log("Final array saved:", stringArray);
+    if(message === 'save') {
+        SaveArray();
     }
 }
 
-// On shutdown, save data
-process.on('SIGINT', () => {
-    exec('electron path/to/your/electronApp main --save-data'); // Call Electron main process
-    process.exit();
-});
+function SaveArray() {
+    fs.readFile(tempFilePath, 'utf8', (err, data) => {
+        if(err) {
+            console.log(err);
+            return;
+        }
 
-process.on('SIGTERM', () => {
-    exec('electron path/to/your/electronApp main --save-data'); // Call Electron main process
-    process.exit();
-});
+        const lines = data.split('\n').map(line => line.trim()).filter(Boolean);
+
+        const jsonData = JSON.stringify(lines, null, 2);
+
+        fs.writeFile('data.json', jsonData, (err) => {
+            if(err){
+            console.log(err);
+            } else {
+                console.log('wrote file to JSON');
+            }
+        });
+    });
+}

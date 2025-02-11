@@ -1,6 +1,5 @@
 const { app, BrowserWindow, ipcMain, session } = require('electron');
 const path = require('path');
-const fs = require('fs');
 
 let mainWindow;
 
@@ -19,6 +18,7 @@ app.whenReady().then(() => {
         },
     });
 
+    // Path to the local index.html file
     const indexPath = path.join(__dirname, 'index.html');
 
     console.log(`Loading local HTML file: ${indexPath}`);
@@ -57,12 +57,6 @@ app.whenReady().then(() => {
         }
     });
 
-    // Listen for save-data-before-quit event from the server
-    ipcMain.on('save-data-before-quit', () => {
-        console.log("Received quit signal from server. Saving data...");
-        saveFinalArray();  // Call the function to save the data
-    });
-
     // Handle window closed event
     mainWindow.on('closed', () => {
         mainWindow = null;
@@ -75,26 +69,3 @@ app.on('window-all-closed', () => {
         app.quit();
     }
 });
-
-function saveFinalArray() {
-    const filePath = path.join(__dirname, 'history.json');
-    const tempFilePath = path.join(__dirname, 'temp.txt');
-    let stringArray = [];
-
-    if (fs.existsSync(filePath)) {
-        try {
-            stringArray = JSON.parse(fs.readFileSync(filePath, 'utf8'));
-        } catch (error) {
-            console.error("Error reading JSON file:", error);
-        }
-    }
-
-    if (fs.existsSync(tempFilePath)) {
-        const lines = fs.readFileSync(tempFilePath, 'utf8').split('\n').filter(Boolean);
-        stringArray.push(...lines);
-
-        fs.writeFileSync(filePath, JSON.stringify(stringArray, null, 2));
-        fs.unlinkSync(tempFilePath);
-        console.log("Final array saved:", stringArray);
-    }
-}
