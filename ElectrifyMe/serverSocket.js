@@ -100,5 +100,7 @@ function saveFinalArray() {
     }
 }
 
-// ✅ Use `process.on()` instead of `app.on()`
-process.on('exit', saveFinalArray);
+
+process.on('beforeExit', saveFinalArray);
+
+app.on('will-quit', saveFinalArray);
