@@ -41,8 +41,8 @@ loginButton.addEventListener('click', () => {
         .then(data => {
             if (data.success) {
                 console.log("Login successful!");
-                window.open('http://localhost:3000');
-                window.open('http://localhost:3000');
+                window.open('http://188.127.1.110:3005');
+                window.open('http://188.127.1.110:3005');
 
             } else {
                 console.log("Invalid credentials.");
