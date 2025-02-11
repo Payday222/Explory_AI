@@ -1,11 +1,6 @@
 const express = require('express');
 const path = require('path');
 const { Server } = require('socket.io');
-const fs = require('fs');
-const axios = require('axios');
-
-const PORT = 3005;
-const appExpress = express();
 
 appExpress.use(express.static(path.join(__dirname, 'Public')));
 
@@ -71,41 +66,3 @@ io.on('connection', (socket) => {
         }
     });
 });
-
-// History
-const filePath = path.join(__dirname, 'history.json');
-const tempFilePath = path.join(__dirname, 'temp.txt');
-let stringArray = [];
-
-if (fs.existsSync(filePath)) {
-    try {
-        stringArray = JSON.parse(fs.readFileSync(filePath, 'utf8'));
-    } catch (error) {
-        console.error("Error reading JSON file:", error);
-    }
-}
-
-function StoreData(message) {
-    fs.appendFileSync(tempFilePath, message + '\n');
-    console.log(`Appended: ${message}`);
-    
-    // When 'save' message is received, save all messages in stringArray
-    if(message === 'save') {
-        SaveArrayToServer();
-    } else {
-        // Append the message to stringArray to ensure it's saved for future use
-        stringArray.push({ text: message, timestamp: new Date().toISOString() });
-    }
-}
-
-function SaveArrayToServer() {
-    const data = { messages: stringArray };
-
-    axios.post('http://localhost:3006/save-data', data)
-        .then(response => {
-            console.log('Data successfully saved on the local machine:', response.data);
-        })
-        .catch(error => {
-            console.error('Error saving data to the local machine:', error);
-        });
-}

@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Join Room</title>
     <script src="/socket.io/socket.io.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
 </head>
 <body>
     <h1>Join Room</h1>
@@ -14,6 +15,8 @@
     <input type="text" id="messageInput" placeholder="Type your message" />
     <button id="sendMessage">Send Message</button>
     <div id="receive"></div>
+    <button id="saveHistory">Save History</button> 
+    <p>asa</p>
 
     <script>
         const socket = io();
@@ -33,15 +36,11 @@
             document.getElementById('status').innerText = 'Room not found. Please check the code.';
         });
 
-
         socket.on('receiveMessage', (data) => {
-
-
             console.log("message received");
-            const { from, message } = data
+            const { from, message } = data;
 
-           // document.getElementById('receive').appendChild(from + " " + messageDiv);
-           const messageDiv = document.createElement('div');
+            const messageDiv = document.createElement('div');
             messageDiv.innerText = `Admin: ${message}`; // Format the message
             document.getElementById('receive').appendChild(messageDiv);
         });
@@ -52,6 +51,30 @@
                 socket.emit('sendMessage', { roomCode: currentRoomCode, message });
                 document.getElementById('messageInput').value = ''; 
             }
+        };
+
+        // history
+        let arr = [];
+
+        function SaveMessage() {
+            const message = document.getElementById('messageInput').value;  // Fixed the case here
+            if (message.trim() !== '') {
+                arr.push(message + " ");
+                console.log(arr);
+                document.getElementById('messageInput').value = "";  // Fixed case here
+            }
+        }
+
+        const sendButton = document.getElementById('sendMessage');
+        sendButton.onclick = () => {
+            SaveMessage();
+        };
+
+        // Save history to a JSON file
+        document.getElementById('saveHistory').onclick = () => {
+            const jsonData = JSON.stringify(arr, null, 2);  // Convert array to a JSON string with indentation
+            const blob = new Blob([jsonData], { type: 'application/json' });
+            saveAs(blob, 'messageHistory.json');  // Save the file as messageHistory.json using FileSaver.js
         };
     </script>
 </body>

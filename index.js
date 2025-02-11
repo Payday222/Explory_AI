@@ -1,42 +1,7 @@
 const { app, BrowserWindow, ipcMain, session } = require('electron');
 const path = require('path');
-const express = require('express');
-const fs = require('fs');
-const bodyParser = require('body-parser'); // To parse JSON data
-const appExpress = express();
 
 let mainWindow;
-
-const PORT = 3006;
-appExpress.use(bodyParser.json());
-
-
-appExpress.post('/save-data', (req, res) => {
-    console.log('savedata endpoint reached');
-    const { messages } = req.body;
-
-    if (messages && Array.isArray(messages)) {
-        const jsonData = JSON.stringify(messages, null, 2);
-        const filePath = path.join(__dirname, 'savedData.json');
-
-        fs.writeFile(filePath, jsonData, (err) => {
-            if (err) {
-                console.error('Error saving data:', err);
-                res.status(500).send('Error saving data');
-            } else {
-                console.log('Data successfully saved!');
-                res.status(200).send('Data saved successfully');
-            }
-        });
-    } else {
-        res.status(400).send('Invalid data format');
-    }
-});
-
-
-appExpress.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-});
 
 app.whenReady().then(() => {
     console.log("App is ready, creating main window...");
