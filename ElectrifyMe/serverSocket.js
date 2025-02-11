@@ -2,7 +2,7 @@ const express = require('express');
 const path = require('path');
 const { Server } = require('socket.io');
 const fs = require('fs');
-const { ipcRenderer } = require('electron'); 
+const { exec } = require('child_process'); // To call Electron process
 
 const PORT = 3005;
 const appExpress = express();
@@ -101,13 +101,13 @@ function saveFinalArray() {
     }
 }
 
-
+// On shutdown, save data
 process.on('SIGINT', () => {
-    ipcRenderer.send('save-data-before-quit');
+    exec('electron path/to/your/electronApp main --save-data'); // Call Electron main process
     process.exit();
 });
 
 process.on('SIGTERM', () => {
-    ipcRenderer.send('save-data-before-quit'); 
+    exec('electron path/to/your/electronApp main --save-data'); // Call Electron main process
     process.exit();
 });
