@@ -6,6 +6,7 @@ const fs = require("fs");
 const express = require('express');
 const http = require('http');
 const { Socket } = require("socket.io");
+const server = express();
 dotenv.config();
 
 const textData = fs.readFileSync('data.txt', 'utf-8').split('\n').filter(line => line.trim() !== '');
@@ -21,7 +22,7 @@ async function getChatCompletion() {
   let propmcik = " ";
   // * You can add onclick with a boolean or some shit if you want to have the while true for a reason
   //! I added the loop so that I can test the save history shit if you don't want it, the unsaved version is commented below [ctrl k u]
-while(true){
+// while(true){
   
   
   
@@ -65,7 +66,7 @@ while(true){
     clienResponse = response;
     console.log('no split token found in response');
   }
-  io.emit('botResponseClient', clienResponse);
+  io.emit('botResponseClient', clienResponse);  
   io.emit('botResponseHost', hostResponse);
   
 
@@ -78,7 +79,8 @@ while(true){
   chatHistory.push(['user', propmcik]);
   chatHistory.push(['assistant',chatCompletion.choices[0].message.content]);
   propmcik = '';
-}}
+}
+// }
 getChatCompletion();
 
 // const app = express();
