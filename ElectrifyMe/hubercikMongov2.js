@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const express = require('express');
 const url = "mongodb://188.127.1.110:27017/";
 
 mongoose.connect(url, function(err, db) {
@@ -16,3 +17,9 @@ mongoose.connect(url, function(err, db) {
         }
     });
 });
+
+
+const PORT = 3007;
+app.listen(PORT, () => {
+    console.log('version2 running on ', PORT);
+})

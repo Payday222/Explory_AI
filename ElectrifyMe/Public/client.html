@@ -5,6 +5,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Join Room</title>
     <script src="/socket.io/socket.io.js"></script>
+
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            font-family: 'Ubuntu', sans-serif;
+            text-align: center;
+        }
+        button {
+            padding: 16px 128px;
+            background-color: green;
+            border: none;
+            border-radius: 8px;
+            margin-top: 10px;
+            color: white;
+            font-size: medium;
+        }
+        button:hover {
+            transform: translateY(-20%);
+            box-shadow: 15px 15px 0px black;
+            transition: all 0.1s ease-in-out;
+        }
+    </style>
 </head>
 <body>
     <h1>Join Room</h1>
@@ -15,6 +41,8 @@
     <button id="sendMessage">Send Message</button>
     <div id="receive"></div>
     <button id="saveHistory">Save history</button>
+
+    
 
 
     <script>
