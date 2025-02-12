@@ -6,19 +6,31 @@
     <title>Host Room</title>
     <script src="/socket.io/socket.io.js"></script>
 
-    <!-- <style>
+    <style>
         body {
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
+            justify-content: flex-start;
             height: 100vh;
             font-family: 'Ubuntu', sans-serif;
             text-align: center;
             background-color: #121212;
             color: white;
+            padding: 20px;
         }
         
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        #adminPanel {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
         button {
             padding: 16px 128px;
             background-color: #1e8e3e;
@@ -51,29 +63,55 @@
         input::placeholder {
             color: #bbb;
         }
-    </style> -->
 
+        /* Message display containers */
+        .message-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            width: 100%;
+            max-width: 1200px;
+            margin-top: 20px;
+        }
+
+        .message-container div {
+            background-color: #333;
+            border-radius: 10px;
+            padding: 20px;
+            height: 200px;
+            overflow-y: auto;
+        }
+
+        #messages0, #messages1, #messages2, #messages3, #messages4, #messages5 {
+            font-size: 14px;
+        }
+
+    </style>
 </head>
 
 <body>
     <h1>Host Room</h1>
-    <button id="createRoom">Create Room</button>
-    <br>
-    <input type ="text" id="clientName" placeholder="Enter client name"/>
-    <br>
-    <input type ="text" id="clientMessage" placeholder="Message"/>
-    <button id="sendMessageAdmin">Send to client</button>
-    <div id="roomCode"></div>
-    <div id="messages"></div> 
-  
+    <div id="adminPanel">
+        <button id="createRoom">Create Room</button>
+        <input type="text" id="clientName" placeholder="Enter client name" />
+        <input type="text" id="clientMessage" placeholder="Message" />
+        <button id="sendMessageAdmin">Send to client</button>
+        <div id="roomCode"></div>
+    </div>
 
-    
+    <div class="message-container">
+        <div id="messages0"></div>
+        <div id="messages1"></div>
+        <div id="messages2"></div>
+        <div id="messages3"></div>
+        <div id="messages4"></div>
+        <div id="messages5"></div>
+    </div>
 
-   
     <script>
         let currentRoomCode = '';
-
-        let messageArr = new Array();
+        let messageCount = 0;
+        let divNo = 0;
         
         const socket = io();
         document.getElementById('createRoom').onclick = () => {
@@ -87,32 +125,33 @@
         });
 
         socket.on('messageReceived', (data) => {
+            messageCount++;
+            if(messageCount > 6) {
+                messageCount = 0;
+                divNo++;
+            }
+            let messageDisplayDiv = document.getElementById(`messages${divNo}`)
             const messageDiv = document.createElement('div');
-            messageDiv.innerText = `Client ${data.clientId}: ${data.message}`;
-            document.getElementById('messages').appendChild(messageDiv);
+            messageDisplayDiv.innerText = `Client ${data.clientId}: ${data.message}`;
+            messageDisplayDiv.appendChild(messageDiv);
         });
-// MARCEL
-document.getElementById('sendMessageAdmin').onclick = () => {
-    const message = document.getElementById('clientMessage').value;
-    const socketId = document.getElementById('clientName').value; 
-            
-            
-    if (currentRoomCode && socketId) {
-        
-        socket.emit('sendMessageToClient', {
-            room: currentRoomCode,
-            socketId: socketId,
-            message: message
-        });
-        document.getElementById('clientName').value = ''; 
-        document.getElementById('clientMessage').value = '';
-    } else {
-        alert('Please enter a valid socket ID and message.');
-    }
-}
 
-
-        socket.on()
+        document.getElementById('sendMessageAdmin').onclick = () => {
+            const message = document.getElementById('clientMessage').value;
+            const socketId = document.getElementById('clientName').value; 
+            
+            if (currentRoomCode && socketId) {
+                socket.emit('sendMessageToClient', {
+                    room: currentRoomCode,
+                    socketId: socketId,
+                    message: message
+                });
+                document.getElementById('clientName').value = ''; 
+                document.getElementById('clientMessage').value = '';
+            } else {
+                alert('Please enter a valid socket ID and message.');
+            }
+        };
     </script>
 </body>
 </html>
