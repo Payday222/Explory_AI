@@ -233,7 +233,7 @@
     </script>
 
     <script>
-        const socketbot = io('http://188.127.1.110:3007');  // Ensure the correct server URL
+        const socketbot = io('http://188.127.1.110:3007'); 
 
         socketbot.on('connect', () => {
             console.log('Client connected to bot socket.');
@@ -241,7 +241,7 @@
             socketbot.on('botResponseClient', (message) => {
                 console.log("Client received message: ", message);
                 // Update the #test div with the client response
-                document.getElementById('test').innerText = message; // Set the test div content to the client response
+                document.getElementById('test').innerText = message; 
             });
         });
     </script>
