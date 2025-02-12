@@ -28,10 +28,10 @@ const openai = new OpenAI({
 
 const chatHistory = [];
 
-io.on('connection', (socket) => {
+io.on('connection', async (socket) => {
   console.log('bot socket connected', socket.id);
   socket.emit('testMessage', "servers good");
-  
+  await getChatCompletion('Create a test on the topic of: what is my favorite color? with the difficulty appropriate for the level of: grade 1, make it so that the test will be structured accordingly: 1 question multiple choice.Furthermore, ensure all information in the test are merithorically correct.Provide the answers to the test. Splitting the answers and the test with "HUBERCIKLUBCHLOPCOW"', socket);
   socket.on('SendData', async (fullPrompt) => {
     console.log('Prompt from client: ', fullPrompt);
     await getChatCompletion(fullPrompt, socket);
@@ -59,6 +59,7 @@ async function getChatCompletion(prompt, socket) {
     });
 
     const response = chatCompletion.choices[0].message.content;
+    console.log(response);
     const splitToken = "HUBERCIKLUBCHLOPCOW";
     const tokenIndex = response.indexOf(splitToken);
     let clientResponse = "";
