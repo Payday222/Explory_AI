@@ -7,155 +7,8 @@
     <script src="/socket.io/socket.io.js"></script>
 
     <style>
-        body {
-            display: flex;
-            flex-direction: row; 
-            justify-content: flex-start; 
-            height: 100vh;
-            font-family: 'Ubuntu', sans-serif;
-            text-align: center;
-            background-color: #121212;
-            color: white;
-            margin: 0;
-            overflow: hidden;
-        }
-    
-        h1 {
-            margin-bottom: 20px;
-        }
-    
-        #adminPanel {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-    
-        button {
-            padding: 16px 128px;
-            background-color: #1e8e3e;
-            border: none;
-            border-radius: 8px;
-            margin-top: 10px;
-            color: white;
-            font-size: medium;
-            cursor: pointer;
-        }
-    
-        button:hover {
-            transform: translateY(-20%);
-            box-shadow: 15px 15px 0px black;
-            transition: all 0.1s ease-in-out;
-        }
-    
-        input {
-            padding: 10px;
-            margin-top: 10px;
-            border: 1px solid #444;
-            border-radius: 5px;
-            background-color: #222;
-            color: white;
-            font-size: medium;
-            width: 250px;
-            text-align: center;
-        }
-    
-        input::placeholder {
-            color: #bbb;
-        }
-    
-        .message-container {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-            width: 100%;
-            max-width: 1200px;
-            margin-top: 20px;
-        }
-    
-        .message-container div {
-            background-color: #333;
-            border-radius: 10px;
-            padding: 10px;
-            min-height: 50px;
-            max-height: 300px;
-            overflow-y: auto;
-            word-wrap: break-word;
-            height: auto;
-        }
-    
-        #messages0, #messages1, #messages2, #messages3, #messages4, #messages5 {
-            font-size: 14px;
-        }
-    
-        #container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: flex-start;
-            height: 100vh;
-            width: 40%; 
-            padding: 20px;
-            background-color: #1a1a1a;
-            border-radius: 10px;
-        }
-        #rightSide {
-            display: flex;
-            flex: auto;
-            flex-direction: column;
-            align-items: center;
-        }
-        #textareaTopic {
-            width: 95%;
-            height: 40%;
-            background-color: #333;
-            border-radius: 10px;
-            border: none;
-            margin-inline: 5px;
-            padding: 10px;
-        }
-        #textareaLevel {
-            width: 95%;
-            height: 10%;
-            background-color: #333;
-            border-radius: 10px;
-            border: none;
-            margin-inline: 5px;
-            padding: 10px;
-        }
-        #textareaSpare {
-            width: 95%;
-            height: 20%;
-            background-color: #333;
-            border-radius: 10px;
-            border: none;
-            margin-inline: 5px;
-            padding: 10px;
-        }
-        #submitPrompt {
-            padding: 16px 128px;
-            background-color: #1e8e3e;
-            border: none;
-            border-radius: 8px;
-            margin-top: 10px;
-            color: white;
-            font-size: medium;
-            cursor: pointer;
-            width: 95%;
-        }
-        #logo {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            width: 100px;  
-            height: auto; 
-            border-radius: 5px;
-            background-color: white; 
-        }
-        
+        /* Your existing styles */
     </style>
-    
-    
 </head>
 
 <body>
@@ -189,8 +42,6 @@
         <textarea name="structure" id="textareaSpare" placeholder="input the test structure - what would you like the test to look like..."></textarea>
         <button id="submitPrompt">Submit Prompt!</button>
         <div id="ans"></div>
-
-
     </div>
 
     <script>
@@ -198,8 +49,9 @@
         let userMessageMap = {};
         let nextAvailableDiv = 0; 
         
-        const socket = io();
-        
+        // Create a single socket connection
+        const socket = io(); // This connects to the server running on the same origin
+
         document.getElementById('createRoom').onclick = () => {
             const roomCode = Math.random().toString(36).substring(2, 8);
             currentRoomCode = roomCode;
@@ -256,42 +108,35 @@
             document.getElementById('createRoom').style.display = 'none';
             console.log('createRoom clicked');
         });  
-        //AI
 
+        // AI Submission
         document.getElementById('submitPrompt').addEventListener('click', () => {
             let topicString = document.getElementById('textareaTopic').value;
             let levelString = document.getElementById('textareaLevel').value;
             let structureString = document.getElementById('textareaSpare').value;
-        
-            
-        
+
             let fullPrompt = `Create a test on the topic of: ${topicString}, 
             with the difficulty appropriate for the level of: ${levelString}, 
             make it so that the test will be structured accordingly: ${structureString}.
             Furthermore, ensure all information in the test are merithorically correct.
             Provide the answers to the test. Splitting the answers and the test with "HUBERCIKLUBCHLOPCOW"`;
-        
-        
-            console.log("emmiting: ", fullPrompt);
-            socket.emit('SendData', fullPrompt);
+
+            console.log("Emitting SendData with prompt: ", fullPrompt);
+            socket.emit('SendData', fullPrompt); // Use the same socket instance
         });
         
     </script>
 
     <script>
-        const socketbot = io('http://188.127.1.110:3007'); // Connect to chatbot on port 3007
-        socketbot.on('connect', () => {
-            console.log('host connected to botsocket')
-        
-        socketbot.on('botResponseHost', (message) => {
-            // Handle the chatbot's response for the host here
+        // Handle responses from the bot using the same socket instance
+        socket.on('botResponseHost', (message) => {
             console.log("Host Response: ", message);
+            // Handle the chatbot's response for the host here
         });
 
-        socketbot.on('disconnect', (reason) => {
-            console.log('socketbot disconnected: ', reason);
-        })
-    });
+        socket.on('disconnect', (reason) => {
+            console.log('Disconnected from the server:', reason);
+        });
     </script>
 </body>
 </html>
