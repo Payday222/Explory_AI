@@ -9,6 +9,22 @@ const { Socket } = require("socket.io");
 const server = express();
 dotenv.config();
 
+const socketIo = require('socket.io')
+const app = express();
+const io = socketIo(server);
+
+app.use(express.static('public'));
+
+io.on('connection', (socket) => {
+  console.log('bot socket connected');
+
+  socket.on('SendData', (fullPrompt) => {
+    console.log('prompt from client: ', fullPrompt);
+  
+    getChatCompletion(fullPrompt);
+  });
+});
+
 const textData = fs.readFileSync('data.txt', 'utf-8').split('\n').filter(line => line.trim() !== '');
 const context = textData.join("\n");
 const chatHistory = [];
@@ -18,8 +34,8 @@ const openai = new OpenAI({
   apiKey: process.env.API_KEY,
 });
 
-async function getChatCompletion() {
-  let propmcik = " ";
+async function getChatCompletion(prompt) {
+  let propmcik = prompt;
   // * You can add onclick with a boolean or some shit if you want to have the while true for a reason
   //! I added the loop so that I can test the save history shit if you don't want it, the unsaved version is commented below [ctrl k u]
 // while(true){
@@ -28,19 +44,7 @@ async function getChatCompletion() {
   
       // propmcik += await readlineSync.question("Give a quesion\n");
 
-      document.getElementById('submitPrompt').addEventListener('click', () => {
-        let topicString = document.getElementById('topic').value;
-        let levelString = document.getElementById('level').value;
-        let structureString = document.getElementById('structure').value;
-
-        console.log(topicString, levelString, structureString)
-
-        let basePrompt = `Create a test on the topic of: ${topicString}, 
-        with the difficulty appropriate for the level of: ${levelString}, 
-        make it so that the test will be structured accordingly: ${structureString}.
-        Furthermore, ensure all information in the test are merithorically correct.
-        Provide the answers to the test. Splitting the answers and the test with "HUBERCIKLUBCHLOPCOW"`
-      })
+      
       
 
   const messages = chatHistory.map(([role, content]) => ({

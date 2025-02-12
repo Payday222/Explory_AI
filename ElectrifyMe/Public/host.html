@@ -257,15 +257,35 @@
             console.log('createRoom clicked');
         });  
         //AI
+
+        document.getElementById('submitPrompt').addEventListener('click', () => {
+            let topicString = document.getElementById('textareaTopic').value;
+            let levelString = document.getElementById('textareaLevel').value;
+            let structureString = document.getElementById('textareaSpare').value;
+        
+            console.log(topicString, levelString, structureString);
+        
+            let fullPrompt = `Create a test on the topic of: ${topicString}, 
+            with the difficulty appropriate for the level of: ${levelString}, 
+            make it so that the test will be structured accordingly: ${structureString}.
+            Furthermore, ensure all information in the test are merithorically correct.
+            Provide the answers to the test. Splitting the answers and the test with "HUBERCIKLUBCHLOPCOW"`;
+        
+            const socket = io(); // Establish WebSocket connection
+        
+            // Emit the event 'SendData' with the fullPrompt data
+            socket.emit('SendData', fullPrompt);
+        });
+        
+
         socket.on('botResponseHost', (hostResponse) => {
             document.getElementById('ans').innerText = hostResponse;
         })
         
     </script>
-    <script src="../../ChatBot/kaspro.js"></script>
 
     <script>
-        const socketbot = io('http://localhost:3007'); // Connect to chatbot on port 3007
+        const socketbot = io('http://188.127.1.110:3007'); // Connect to chatbot on port 3007
     
         socketbot.on('botResponseClient', (message) => {
             // Handle the chatbot's response for the client here
