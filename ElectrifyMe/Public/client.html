@@ -236,7 +236,7 @@
         const socketbot = io('http://188.127.1.110:3007');  // Ensure the correct server URL
 
 socketbot.on('connect', () => {
-
+console.log('client connected to botsocket.');
 
 socketbot.on('botResponseClient', (message) => {
     console.log("Client received message: ", message);

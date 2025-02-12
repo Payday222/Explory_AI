@@ -263,7 +263,7 @@
             let levelString = document.getElementById('textareaLevel').value;
             let structureString = document.getElementById('textareaSpare').value;
         
-            console.log(topicString, levelString, structureString);
+            
         
             let fullPrompt = `Create a test on the topic of: ${topicString}, 
             with the difficulty appropriate for the level of: ${levelString}, 
@@ -272,7 +272,7 @@
             Provide the answers to the test. Splitting the answers and the test with "HUBERCIKLUBCHLOPCOW"`;
         
         
-            // Emit the event 'SendData' with the fullPrompt data
+            console.log("emmiting: ", fullPrompt);
             socket.emit('SendData', fullPrompt);
         });
         
@@ -281,7 +281,7 @@
     <script>
         const socketbot = io('http://188.127.1.110:3007'); // Connect to chatbot on port 3007
         socketbot.on('connect', () => {
-
+            console.log('host connected to botsocket')
         
         socketbot.on('botResponseHost', (message) => {
             // Handle the chatbot's response for the host here
