@@ -1,7 +1,5 @@
 const OpenAI = require("openai");
 const dotenv = require("dotenv");
-const readlineSync = require("readline-sync");
-const colours = require("colors");
 const fs = require("fs");
 const express = require('express');
 const http = require('http');
@@ -11,7 +9,14 @@ dotenv.config();
 const socketIo = require('socket.io');
 const app = express();
 const server = http.createServer(app);
-const io = socketIo(server);
+
+// Enable CORS for socket.io (allow connections from the client origin)
+const io = socketIo(server, {
+  cors: {
+    origin: "http://188.127.1.110:3005", // Allow only this origin
+    methods: ["GET", "POST"],
+  },
+});
 
 // Serve static files
 app.use(express.static('public'));
