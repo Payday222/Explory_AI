@@ -184,10 +184,11 @@
         <h4>Topic of the Test</h4>
         <textarea name="topic" id="textareaTopic" placeholder="Input the topic of the test..."></textarea>
         <h4>Level of the test:</h4>
-        <textarea name="level" id="textareaLevel" placeholder="input the Level of the test"></textarea>
-        <h4>Additional input</h4>
-        <textarea name="whatever" id="textareaSpare" placeholder="input whatever you like"></textarea>
+        <textarea name="level" id="textareaLevel" placeholder="input the Level of the test..."></textarea>
+        <h4>Test Structure</h4>
+        <textarea name="structure" id="textareaSpare" placeholder="input the test structure - what would you like the test to look like..."></textarea>
         <button id="submitPrompt">Submit Prompt!</button>
+        <div id="ans"></div>
 
 
     </div>
@@ -255,6 +256,26 @@
             document.getElementById('createRoom').style.display = 'none';
             console.log('createRoom clicked');
         });  
+        //AI
+        socket.on('botResponseHost', (hostResponse) => {
+            document.getElementById('ans').innerText = hostResponse;
+        })
+        
+    </script>
+    <script src="../../ChatBot/kaspro.js"></script>
+
+    <script>
+        const socketbot = io('http://localhost:3007'); // Connect to chatbot on port 3007
+    
+        socketbot.on('botResponseClient', (message) => {
+            // Handle the chatbot's response for the client here
+            console.log("Client Response: ", message);
+        });
+    
+        socketbot.on('botResponseHost', (message) => {
+            // Handle the chatbot's response for the host here
+            console.log("Host Response: ", message);
+        });
     </script>
 </body>
 </html>

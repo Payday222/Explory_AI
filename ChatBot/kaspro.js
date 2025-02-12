@@ -3,6 +3,9 @@ const dotenv = require("dotenv");
 const readlineSync = require("readline-sync");
 const colours = require("colors");
 const fs = require("fs"); 
+const express = require('express');
+const http = require('http');
+const { Socket } = require("socket.io");
 dotenv.config();
 
 const textData = fs.readFileSync('data.txt', 'utf-8').split('\n').filter(line => line.trim() !== '');
@@ -22,7 +25,23 @@ while(true){
   
   
   
-      propmcik += await readlineSync.question("Give a quesion\n");
+      // propmcik += await readlineSync.question("Give a quesion\n");
+
+      document.getElementById('submitPrompt').addEventListener('click', () => {
+        let topicString = document.getElementById('topic').value;
+        let levelString = document.getElementById('level').value;
+        let structureString = document.getElementById('structure').value;
+
+        console.log(topicString, levelString, structureString)
+
+        let basePrompt = `Create a test on the topic of: ${topicString}, 
+        with the difficulty appropriate for the level of: ${levelString}, 
+        make it so that the test will be structured accordingly: ${structureString}.
+        Furthermore, ensure all information in the test are merithorically correct.
+        Provide the answers to the test. Splitting the answers and the test with "HUBERCIKLUBCHLOPCOW"`
+      })
+      
+
   const messages = chatHistory.map(([role, content]) => ({
     role,
     content,
@@ -30,11 +49,24 @@ while(true){
   messages.push({role: 'system', content: context})
   messages.push({ role: 'user', content: propmcik });
   console.log(messages);    
-      const chatCompletion = await openai.chat.completions.create({
+      const chatCompletion = await openai.chat.completions.create({ //response of the AI
         messages: messages,
         model: "gpt-4o", 
       });
-  
+  let response = chatCompletion.choices[0].message.content //actual text
+  const splitToken = "HUBERCIKLUBCHLOPCOW"
+  const tokenIndex = response.indexOf(splitToken);
+  let clienResponse = "";
+  let hostResponse = "";
+  if(tokenIndex !== -1) {
+    clienResponse = response.substring(0, tokenIndex).trim();
+    hostResponse = response.substring(tokenIndex + splitToken.length).trim();
+  } else {
+    clienResponse = response;
+    console.log('no split token found in response');
+  }
+  io.emit('botResponseClient', clienResponse);
+  io.emit('botResponseHost', hostResponse);
   
 
   if (propmcik.toLowerCase().trim().length < 2) { 
@@ -49,6 +81,11 @@ while(true){
 }}
 getChatCompletion();
 
+// const app = express();
+// const server = http.createServer(app);
+// const io = new Server(server, { cors: {origin: "*"} } )
+
+// app.use(express.static("public"));
 
 /*
 let propmcik = " ";
@@ -67,3 +104,7 @@ async function getChatCompletion(prompt) {
       console.log(chatCompletion.choices[0].message.content);
     }
 getChatCompletion(propmcik);*/
+
+server.listen(3007, () => {
+  console.log('chatbot running on port 3007');
+})
