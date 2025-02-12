@@ -18,6 +18,7 @@ const io = socketIo(server, {
   },
 });
 
+
 // Serve static files
 app.use(express.static('public'));
 
@@ -95,6 +96,6 @@ async function getChatCompletion(prompt) {
 }
 
 // Start the server
-server.listen(3007, () => {
+server.listen(3007, '0.0.0.0', () => {
   console.log('Chatbot running on port 3007');
 });
