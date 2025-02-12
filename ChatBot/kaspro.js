@@ -6,11 +6,12 @@ const fs = require("fs");
 const express = require('express');
 const http = require('http');
 const { Socket } = require("socket.io");
-const server = express();
+// const server = express();
 dotenv.config();
 
 const socketIo = require('socket.io')
 const app = express();
+const server = http.createServer(app);
 const io = socketIo(server);
 
 app.use(express.static('public'));
