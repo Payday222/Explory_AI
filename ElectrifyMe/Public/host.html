@@ -77,9 +77,12 @@
         .message-container div {
             background-color: #333;
             border-radius: 10px;
-            padding: 20px;
-            height: 200px;
+            padding: 10px;
+            min-height: 50px;
+            max-height: 300px; /* Max height, auto-expand within this limit */
             overflow-y: auto;
+            word-wrap: break-word;
+            height: auto; /* Ensures divs grow with content */
         }
 
         #messages0, #messages1, #messages2, #messages3, #messages4, #messages5 {
