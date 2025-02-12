@@ -211,20 +211,20 @@
     
         socket.on('messageReceived', (data) => {
             console.log('Message Received:', data);
-            //make suer clientid != null
+            
             if (!data.clientId) {
                 console.error('Received message without clientId');
                 return;
             }
-    
-            if (!userMessageMap[data.clientId]) {
+        
+            if (!(data.clientId in userMessageMap)) {
                 userMessageMap[data.clientId] = nextAvailableDiv;
                 console.log(`Assigning Client ${data.clientId} to div ${nextAvailableDiv}`);
                 nextAvailableDiv = (nextAvailableDiv + 1) % 6; // Cycle through divs
             } else {
                 console.log(`Client ${data.clientId} already assigned to div ${userMessageMap[data.clientId]}`);
             }
-            
+            console.log('Current userMessageMap:', userMessageMap);
             const divNo = userMessageMap[data.clientId];
             let messageDisplayDiv = document.getElementById(`messages${divNo}`);
             console.log(`Appending message to div ${divNo}`);
