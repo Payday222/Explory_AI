@@ -113,8 +113,8 @@
 
     <script>
         let currentRoomCode = '';
-        let messageCount = 0;
         let userMessageMap = {}; // Maps user ID to message div index
+        let nextAvailableDiv = 0; // Track the next available div for a new user
         
         const socket = io();
         document.getElementById('createRoom').onclick = () => {
@@ -130,8 +130,8 @@
         socket.on('messageReceived', (data) => {
             // If the user doesn't have a div yet, assign them one
             if (!userMessageMap[data.clientId]) {
-                userMessageMap[data.clientId] = messageCount;
-                messageCount = (messageCount + 1) % 6; // cycle through 0-5
+                userMessageMap[data.clientId] = nextAvailableDiv;
+                nextAvailableDiv = (nextAvailableDiv + 1) % 6;
             }
             
             const divNo = userMessageMap[data.clientId];
