@@ -5,17 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Host Room</title>
     <script src="/socket.io/socket.io.js"></script>
-</head>
-<body>
-    <h1>Host Room</h1>
-    <button id="createRoom">Create Room</button>
-    <br>
-    <input type ="text" id="clientName" placeholder="Enter client name"/>
-    <br>
-    <input type ="text" id="clientMessage" placeholder="Message"/>
-    <button id="sendMessageAdmin">Send to client</button>
-    <div id="roomCode"></div>
-    <div id="messages"></div>
 
     <style>
         body {
@@ -62,13 +51,36 @@
         input::placeholder {
             color: #bbb;
         }
-        
     </style>
+
+</head>
+
+<body>
+    <h1>Host Room</h1>
+    <button id="createRoom">Create Room</button>
+    <br>
+    <input type ="text" id="clientName" placeholder="Enter client name"/>
+    <br>
+    <input type ="text" id="clientMessage" placeholder="Message"/>
+    <button id="sendMessageAdmin">Send to client</button>
+    <div id="roomCode"></div>
+    <div id="messages"></div> 
+    <!-- original div -->
+    <div id="messages1"></div>
+    <div id="messages2"></div>
+    <div id="messages3"></div>
+    <div id="messages4"></div>
+    <div id="messages5"></div>
+    <div id="messages6"></div>
+
+    
 
    
     <script>
         let currentRoomCode = '';
 
+        let messageArr = new Array();
+        
         const socket = io();
         document.getElementById('createRoom').onclick = () => {
             const roomCode = Math.random().toString(36).substring(2, 8);
