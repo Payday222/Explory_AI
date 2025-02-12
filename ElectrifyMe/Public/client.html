@@ -119,25 +119,6 @@
         document.getElementById('sendMessage').onclick = () => {
             SaveMessage();
         };
-        
-        // Send `arr` to MongoDB when saving history
-        document.getElementById('saveHistory').onclick = async () => {
-            if (arr.length === 0) return alert("No messages to save!");
-        
-            const response = await fetch('http://localhost:3006/saveMessages', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ messages: arr })
-            });
-        
-            const data = await response.json();
-            console.log(data);
-            if (data.success) {
-                alert("Messages saved to MongoDB!");
-                arr = []; // Clear array after saving
-            }
-        };
-
     </script>
 </body>
 </html>
