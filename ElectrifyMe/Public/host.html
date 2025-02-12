@@ -9,28 +9,28 @@
     <style>
         body {
             display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: flex-start;
+            flex-direction: row; 
+            justify-content: flex-start; 
             height: 100vh;
             font-family: 'Ubuntu', sans-serif;
             text-align: center;
             background-color: #121212;
             color: white;
-            padding: 20px;
+            margin: 0;
+            overflow: hidden;
         }
-        
+    
         h1 {
             margin-bottom: 20px;
         }
-
+    
         #adminPanel {
             display: flex;
             flex-direction: column;
             align-items: center;
             margin-bottom: 20px;
         }
-
+    
         button {
             padding: 16px 128px;
             background-color: #1e8e3e;
@@ -41,13 +41,13 @@
             font-size: medium;
             cursor: pointer;
         }
-        
+    
         button:hover {
             transform: translateY(-20%);
             box-shadow: 15px 15px 0px black;
             transition: all 0.1s ease-in-out;
         }
-        
+    
         input {
             padding: 10px;
             margin-top: 10px;
@@ -59,12 +59,11 @@
             width: 250px;
             text-align: center;
         }
-        
+    
         input::placeholder {
             color: #bbb;
         }
-
-        /* Message display containers */
+    
         .message-container {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -73,48 +72,130 @@
             max-width: 1200px;
             margin-top: 20px;
         }
-
+    
         .message-container div {
             background-color: #333;
             border-radius: 10px;
             padding: 10px;
             min-height: 50px;
-            max-height: 300px; /* Max height, auto-expand within this limit */
+            max-height: 300px;
             overflow-y: auto;
             word-wrap: break-word;
-            height: auto; /* Ensures divs grow with content */
+            height: auto;
         }
-
+    
         #messages0, #messages1, #messages2, #messages3, #messages4, #messages5 {
             font-size: 14px;
         }
-
+    
+        #container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            height: 100vh;
+            width: 40%; 
+            padding: 20px;
+            background-color: #1a1a1a;
+            border-radius: 10px;
+        }
+        #rightSide {
+            display: flex;
+            flex: auto;
+            flex-direction: column;
+            align-items: center;
+        }
+        #textareaTopic {
+            width: 95%;
+            height: 40%;
+            background-color: #333;
+            border-radius: 10px;
+            border: none;
+            margin-inline: 5px;
+            padding: 10px;
+        }
+        #textareaLevel {
+            width: 95%;
+            height: 10%;
+            background-color: #333;
+            border-radius: 10px;
+            border: none;
+            margin-inline: 5px;
+            padding: 10px;
+        }
+        #textareaSpare {
+            width: 95%;
+            height: 20%;
+            background-color: #333;
+            border-radius: 10px;
+            border: none;
+            margin-inline: 5px;
+            padding: 10px;
+        }
+        #submitPrompt {
+            padding: 16px 128px;
+            background-color: #1e8e3e;
+            border: none;
+            border-radius: 8px;
+            margin-top: 10px;
+            color: white;
+            font-size: medium;
+            cursor: pointer;
+            width: 95%;
+        }
+        #logo {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 50px;  
+            height: 50px; 
+            border-radius: 5px; 
+        }
+        
     </style>
+    
+    
 </head>
 
 <body>
-    <h1>Host Room</h1>
-    <div id="adminPanel">
-        <button id="createRoom">Create Room</button>
-        <input type="text" id="clientName" placeholder="Enter client name" />
-        <input type="text" id="clientMessage" placeholder="Message" />
-        <button id="sendMessageAdmin">Send to client</button>
-        <div id="roomCode"></div>
+    <div id="container">
+        <h1>Host Room</h1>
+        <div id="adminPanel">
+            <button id="createRoom">Create Room</button>
+            <input type="text" id="clientName" placeholder="Enter client name" />
+            <input type="text" id="clientMessage" placeholder="Message" />
+            <button id="sendMessageAdmin">Send to client</button>
+            <div id="roomCode"></div>
+        </div>
+
+        <div class="message-container">
+            <div id="messages0"></div>
+            <div id="messages1"></div>
+            <div id="messages2"></div>
+            <div id="messages3"></div>
+            <div id="messages4"></div>
+            <div id="messages5"></div>
+        </div>
     </div>
 
-    <div class="message-container">
-        <div id="messages0"></div>
-        <div id="messages1"></div>
-        <div id="messages2"></div>
-        <div id="messages3"></div>
-        <div id="messages4"></div>
-        <div id="messages5"></div>
+    <div id="rightSide">
+        <h1>Message LearnLabs AI</h1>
+        <img id="logo" src="images/learnlabslogo.png">
+        <h4>Topic of the Test</h4>
+        <textarea name="topic" id="textareaTopic" placeholder="Input the topic of the test..."></textarea>
+        <h4>Level of the test:</h4>
+        <textarea name="level" id="textareaLevel" placeholder="input the Level of the test"></textarea>
+        <h4>Additional input</h4>
+        <textarea name="whatever" id="textareaSpare" placeholder="input whatever you like"></textarea>
+        <button id="submitPrompt">Submit Prompt!</button>
+
+
     </div>
 
     <script>
         let currentRoomCode = '';
-        let userMessageMap = {}; // Maps user ID to message div index
-        let nextAvailableDiv = 0; // Track the next available div for a new user
+        let userMessageMap = {};
+        let nextAvailableDiv = 0; 
         
         const socket = io();
         document.getElementById('createRoom').onclick = () => {
@@ -130,11 +211,10 @@
         socket.on('messageReceived', (data) => {
             console.log('Message Received:', data);
 
-            // If the user doesn't have a div yet, assign them one
             if (!userMessageMap[data.clientId]) {
                 userMessageMap[data.clientId] = nextAvailableDiv;
                 console.log(`Assigning Client ${data.clientId} to div ${nextAvailableDiv}`);
-                nextAvailableDiv = (nextAvailableDiv + 1) % 6; // cycle through 0-5, but ensure it doesn't go beyond 5
+                nextAvailableDiv = (nextAvailableDiv + 1) % 6;
             } else {
                 console.log(`Client ${data.clientId} already assigned to div ${userMessageMap[data.clientId]}`);
             }
@@ -163,6 +243,10 @@
                 alert('Please enter a valid socket ID and message.');
             }
         };
+        document.getElementById('createRoom').addEventListener('click', function() {
+            document.getElementById('createRoom').style.display = 'none';
+            console.log('createroom clickd');
+        });  
     </script>
 </body>
 </html>
