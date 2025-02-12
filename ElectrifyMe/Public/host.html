@@ -196,7 +196,7 @@
     <script>
         let currentRoomCode = '';
         let userMessageMap = {};
-        let nextAvailableDiv = 0; 
+        let nextAvailableDiv = -1; 
         
         const socket = io();
         document.getElementById('createRoom').onclick = () => {
