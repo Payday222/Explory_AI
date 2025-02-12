@@ -18,7 +18,6 @@
             margin: 0;
         }
 
-        /* Collapsible panel container */
         #panel {
             position: fixed;
             left: 0;
@@ -33,7 +32,6 @@
             z-index: 1000;
         }
 
-        /* Panel content inside */
         #panelContent {
             display: flex;
             flex-direction: column;
@@ -76,7 +74,6 @@
             margin-top: 20px;
         }
 
-        /* Toggle button for the panel */
         #togglePanelButton {
             position: fixed;
             left: 20px;
@@ -98,12 +95,10 @@
             transition: all 0.1s ease-in-out;
         }
 
-        /* For panel when it is open */
         #panel.open {
             transform: translateX(0);
         }
 
-        /* Layout for the right side (test and answers divs) */
         #rightSide {
             display: flex;
             flex: 1;
@@ -111,7 +106,6 @@
             margin-left: 320px; /* Make space for the left panel */
         }
 
-        /* Test div (60% of remaining space) */
         #test {
             flex: 6;
             background-color: #333;
@@ -125,7 +119,6 @@
             height: 100%;
         }
 
-        /* Answers div (40% of remaining space) */
         #answers {
             flex: 4;
             background-color: #333;
@@ -152,10 +145,8 @@
 </head>
 <body>
 
-    <!-- Button to toggle panel -->
     <button id="togglePanelButton">☰</button>
 
-    <!-- Collapsible Panel -->
     <div id="panel">
         <div id="panelContent">
             <h1>Join Room</h1>
@@ -169,15 +160,12 @@
         </div>
     </div>
 
-    <!-- Right side for test and answers -->
     <div id="rightSide">
         <div id="test">
-            <!-- This will display text from an external script -->
             Test content goes here. It will be unmodifiable and read-only.
         </div>
 
         <div id="answers">
-            <!-- This textarea is for the user to input their answers -->
             <textarea placeholder="Type your answers here..."></textarea>
         </div>
     </div>

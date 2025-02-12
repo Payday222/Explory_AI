@@ -14,27 +14,33 @@
             height: 100vh;
             font-family: 'Ubuntu', sans-serif;
             text-align: center;
+            background-color: #121212;
+            color: #e0e0e0;
         }
         button {
             padding: 16px 128px;
-            background-color: green;
+            background-color: #3a3a3a;
             border: none;
             border-radius: 8px;
             margin-top: 10px;
-            color: white;
+            color: #e0e0e0;
             font-size: medium;
+            cursor: pointer;
         }
         button:hover {
+            background-color: #5a5a5a;
             transform: translateY(-20%);
-            box-shadow: 15px 15px 0px black;
+            box-shadow: 15px 15px 0px #333;
             transition: all 0.1s ease-in-out;
+        }
+        h1 {
+            color: #e0e0e0;
         }
     </style>
 </head>
 <body>
-    <h1>Welcome to the Chat App</h1>
+    <h1>Welcome to LearnLabs.AI Class</h1>
     <button onclick="location.href='host.html'">Host a Room</button>
     <button onclick="location.href='client.html'">Join a Room</button>
-    
 </body>
 </html>
