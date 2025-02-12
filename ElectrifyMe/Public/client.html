@@ -106,19 +106,6 @@
             }
         };
 
-        //history
-        function SaveMessage() {
-            const message = document.getElementById('messageInput').value;
-            if (message.trim() !== '') {
-                arr.push(message);
-                console.log(arr);
-                document.getElementById('messageInput').value = "";
-            }
-        }
-        
-        document.getElementById('sendMessage').onclick = () => {
-            SaveMessage();
-        };
     </script>
 </body>
 </html>
