@@ -271,16 +271,10 @@
             Furthermore, ensure all information in the test are merithorically correct.
             Provide the answers to the test. Splitting the answers and the test with "HUBERCIKLUBCHLOPCOW"`;
         
-            const socket = io(); // Establish WebSocket connection
         
             // Emit the event 'SendData' with the fullPrompt data
             socket.emit('SendData', fullPrompt);
         });
-        
-
-        socket.on('botResponseHost', (hostResponse) => {
-            document.getElementById('ans').innerText = hostResponse;
-        })
         
     </script>
 
@@ -293,6 +287,10 @@
             // Handle the chatbot's response for the host here
             console.log("Host Response: ", message);
         });
+
+        socketbot.on('disconnect', (reason) => {
+            console.log('socketbot disconnected: ', reason);
+        })
     });
     </script>
 </body>
