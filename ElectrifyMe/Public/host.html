@@ -286,11 +286,14 @@
 
     <script>
         const socketbot = io('http://188.127.1.110:3007'); // Connect to chatbot on port 3007
-   
+        socketbot.on('connect', () => {
+
+        
         socketbot.on('botResponseHost', (message) => {
             // Handle the chatbot's response for the host here
             console.log("Host Response: ", message);
         });
+    });
     </script>
 </body>
 </html>

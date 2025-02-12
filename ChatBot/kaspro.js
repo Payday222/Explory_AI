@@ -10,7 +10,6 @@ const socketIo = require('socket.io');
 const app = express();
 const server = http.createServer(app);
 
-// Enable CORS for socket.io (allow connections from the client origin)
 const io = socketIo(server, {
   cors: {
     origin: "*", // Allow all origins during development
@@ -18,26 +17,21 @@ const io = socketIo(server, {
   },
 });
 
-// Serve static files
 app.use(express.static('public'));
 
-// Read context data from file
 const textData = fs.readFileSync('data.txt', 'utf-8').split('\n').filter(line => line.trim() !== '');
 const context = textData.join("\n");
 
-// Initialize OpenAI API
 const openai = new OpenAI({
   apiKey: process.env.API_KEY,
 });
 
-// Store chat history
 const chatHistory = [];
 
-// Handle socket connection
 io.on('connection', (socket) => {
   console.log('bot socket connected', socket.id);
-
-  // Receive prompt from client and generate response
+  socket.emit('testMessage', "servers good");
+  
   socket.on('SendData', async (fullPrompt) => {
     console.log('Prompt from client: ', fullPrompt);
     await getChatCompletion(fullPrompt, socket);

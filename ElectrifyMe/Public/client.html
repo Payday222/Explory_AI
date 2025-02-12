@@ -235,12 +235,15 @@
     <script>
         const socketbot = io('http://188.127.1.110:3007');  // Ensure the correct server URL
 
-// Listen for the response from the bot
+socketbot.on('connect', () => {
+
+
 socketbot.on('botResponseClient', (message) => {
     console.log("Client received message: ", message);
     const messageDiv = document.createElement('div');
     messageDiv.innerText = `Bot: ${message}`;
     document.getElementById('receive').appendChild(messageDiv);
+});
 });
     </script>
 </body>
