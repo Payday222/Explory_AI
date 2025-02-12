@@ -160,7 +160,6 @@
 
 <body>
     <div id="container">
-        <h1>Teacher Room</h1>
         <div id="adminPanel">
             <button id="createRoom">Create Room</button>
             <input type="text" id="clientName" placeholder="Enter client name" />
@@ -211,7 +210,7 @@
 
         socket.on('messageReceived', (data) => {
             console.log('Message Received:', data);
-
+        
             if (!userMessageMap[data.clientId]) {
                 userMessageMap[data.clientId] = nextAvailableDiv;
                 console.log(`Assigning Client ${data.clientId} to div ${nextAvailableDiv}`);
@@ -224,7 +223,7 @@
             let messageDisplayDiv = document.getElementById(`messages${divNo}`);
             console.log(`Appending message to div ${divNo}`);
             const messageDiv = document.createElement('div');
-            messageDiv.innerText = `Client ${divNo}: ${data.message}`;
+            messageDiv.innerText = `Client ${data.clientId}: ${data.message}`;
             messageDisplayDiv.appendChild(messageDiv);
         });
 
