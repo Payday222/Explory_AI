@@ -13,11 +13,10 @@ const server = http.createServer(app);
 // Enable CORS for socket.io (allow connections from the client origin)
 const io = socketIo(server, {
   cors: {
-    origin: "http://188.127.1.110:3005", // Allow only this origin
+    origin: "*", // Allow all origins during development
     methods: ["GET", "POST"],
   },
 });
-
 
 // Serve static files
 app.use(express.static('public'));
@@ -36,17 +35,17 @@ const chatHistory = [];
 
 // Handle socket connection
 io.on('connection', (socket) => {
-  console.log('bot socket connected');
+  console.log('bot socket connected', socket.id);
 
   // Receive prompt from client and generate response
   socket.on('SendData', async (fullPrompt) => {
     console.log('Prompt from client: ', fullPrompt);
-    await getChatCompletion(fullPrompt);
+    await getChatCompletion(fullPrompt, socket);
   });
 });
 
 // Function to get AI response using OpenAI API
-async function getChatCompletion(prompt) {
+async function getChatCompletion(prompt, socket) {
   let propmcik = prompt;
 
   // Build messages for OpenAI API
@@ -76,26 +75,23 @@ async function getChatCompletion(prompt) {
       hostResponse = response.substring(tokenIndex + splitToken.length).trim();
     } else {
       clientResponse = response;
-      console.log('No split token found in response');
     }
 
-    // Emit the response to the client and host
-    io.emit('botResponseClient', clientResponse);
-    io.emit('botResponseHost', hostResponse);
-
-    // Display response in the server logs
-    console.log(colours.bold(colours.yellow(response)));
-
-    // Add to chat history for context in future requests
+    // Send both responses to the client
+    socket.emit('botResponseClient', clientResponse);
+    socket.emit('botResponseHost', hostResponse);
+    
+    // Save history if needed
     chatHistory.push(['user', propmcik]);
     chatHistory.push(['assistant', response]);
 
   } catch (error) {
-    console.error("Error with OpenAI API:", error);
+    console.error('Error generating AI response:', error);
+    socket.emit('botResponseClient', "Error: Unable to get response from AI.");
   }
 }
 
 // Start the server
-server.listen(3007, '0.0.0.0', () => {
-  console.log('Chatbot running on port 3007');
+server.listen(3007, () => {
+  console.log("Bot server running on port 3007");
 });
