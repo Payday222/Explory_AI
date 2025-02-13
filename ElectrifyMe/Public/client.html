@@ -201,11 +201,11 @@
             }
             document.getElementById('sendAnswers').onclick = () => {
                 console.log("sendans clicked");
-                const answers = document.getElementById('answersTextarea').value;
+                const answers = document.getElementById('sendAnswers').value;
                 if (currentRoomCode) {
                     console.log("[Client] Sending answers to host:", answers);
                     socket.emit('sendAnswers', { roomCode: currentRoomCode, answers });
-                    document.getElementById('answersTextarea').value = ''; 
+                    document.getElementById('sendAnswers').value = ''; 
                 } else {
                     console.log("[Client] No room joined. Cannot send answers.");
                 }
