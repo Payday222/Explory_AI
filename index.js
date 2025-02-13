@@ -14,7 +14,7 @@ app.whenReady().then(() => {
         height: 600,
         fullscreen: true,
         webPreferences: {
-            preload: preloadPath, // ✅ Debugging preload path
+            preload: preloadPath,
             nodeIntegration: false,
             contextIsolation: true,
             webSecurity: true,
