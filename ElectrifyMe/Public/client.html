@@ -236,14 +236,16 @@
         const socketbot = io('http://188.127.1.110:3007'); 
 
         socketbot.on('connect', () => {
-            console.log('Client connected to bot socket.');
-
+            console.log('Client connected to bot socket.');   
+            
+            
             socketbot.on('botResponseClient', (message) => {
                 console.log("Client received message: ", message);
-                // Update the #test div with the client response
-                document.getElementById('test').innerText = message; 
+                const testDiv = document.getElementById('test');
+                testDiv.innerText += message + "\n"; // Append the message
             });
         });
+        
     </script>
 </body>
 </html>
