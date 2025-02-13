@@ -6,7 +6,8 @@
     "productName": "LearnLarbs AI",
     "win": {
       "target": [
-        "nsis"
+        "nsis",
+        "portable"
       ]
     }
   },
