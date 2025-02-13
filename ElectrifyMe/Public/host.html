@@ -263,7 +263,8 @@
     
         document.getElementById('sendMessageAdmin').onclick = () => {
             const message = document.getElementById('clientMessage').value;
-            const socketId = document.getElementById('clientName').value; 
+            const naming = document.getElementById('clientName').value; 
+            const socketId = nameSocketId.get(naming);
             
             if (currentRoomCode && socketId) {
                 console.log('emitting: ', currentRoomCode, " socketID: ", socketId, "message: ", message);
