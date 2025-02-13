@@ -205,7 +205,7 @@
         roomSocket.on('roomCreated', (roomCode) => {
             document.getElementById('roomCode').innerText = `Room Code: ${roomCode}`;
         });
-        roomSocket.on('submitAnswer', (data) => {
+        roomSocket.on('sendAnswers', (data) => {
             console.log('Answer received from client:', data);
             const { clientId, answer } = data;
         
