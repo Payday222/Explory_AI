@@ -152,7 +152,6 @@
             border-radius: 5px;
             background-color: white; 
         }
-        
     </style>
 </head>
 
@@ -278,12 +277,22 @@
 
         botSocket.on('botResponseClient', (message) => {
             console.log("Client Response: ", message);
-            // Handle the client response here
+
+            // Forward the client response to the client's test div
+            if (currentRoomCode) {
+                roomSocket.emit('sendMessageToClient', {
+                    room: currentRoomCode,
+                    socketId: 'all', // Send to all clients in the room
+                    message: message,
+                    type: 'testUpdate' // Add a type to distinguish this message
+                });
+            }
         });
 
         botSocket.on('botResponseHost', (message) => {
             console.log("Host Response: ", message);
-            // Handle the host response here
+            // Handle the host response locally
+            document.getElementById('ans').innerText = message;
         });
 
         botSocket.on('disconnect', (reason) => {

@@ -199,7 +199,7 @@
     </script>
 
     <script>
-        const socket = io();
+        const socket = io('http://188.127.1.110:3005'); // Connect to the room server
         let currentRoomCode = '';
 
         document.getElementById('joinRoom').onclick = () => {
@@ -217,10 +217,19 @@
         });
 
         socket.on('receiveMessage', (data) => {
-            const { from, message } = data;
-            const messageDiv = document.createElement('div');
-            messageDiv.innerText = `Admin: ${message}`;
-            document.getElementById('receive').appendChild(messageDiv);
+            const { from, message, type } = data;
+
+            if (type === 'testUpdate') {
+                // Handle test update message
+                console.log("Received test update:", message);
+                const testDiv = document.getElementById('test');
+                testDiv.innerText = message; // Update the test div
+            } else {
+                // Handle regular chat message
+                const messageDiv = document.createElement('div');
+                messageDiv.innerText = `Admin: ${message}`;
+                document.getElementById('receive').appendChild(messageDiv);
+            }
         });
 
         document.getElementById('sendMessage').onclick = () => {
@@ -230,28 +239,6 @@
                 document.getElementById('messageInput').value = ''; 
             }
         };
-    </script>
-
-    <script>
-        // Connect to the bot server
-        const socketbot = io('http://188.127.1.110:3007'); 
-
-        // Log connection status
-        socketbot.on('connect', () => {
-            console.log('Client connected to bot socket.');   
-        });
-
-        // Listen for botResponseClient event
-        socketbot.on('botResponseClient', (message) => {
-            console.log("Client received message: ", message);
-            const testDiv = document.getElementById('test');
-            testDiv.innerText = message; // Replace or append the message
-        });
-
-        // Handle disconnection
-        socketbot.on('disconnect', () => {
-            console.log('Client disconnected from bot socket.');
-        });
     </script>
 </body>
 </html>
