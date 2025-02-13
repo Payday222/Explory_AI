@@ -196,6 +196,7 @@
         // Create separate socket connections
         const roomSocket = io('http://188.127.1.110:3005'); // Connect to the room handling server
         const botSocket = io('http://188.127.1.110:3007'); // Connect to the bot server
+        const relaysocket = io('http://188.127.1.110:3008');
     
         // Room handling logic
         roomSocket.on('connect', () => {
@@ -205,7 +206,7 @@
         roomSocket.on('roomCreated', (roomCode) => {
             document.getElementById('roomCode').innerText = `Room Code: ${roomCode}`;
         });
-        roomSocket.on('sendAnswers', (data) => {
+        relaysocket.on('sendAnswers', (data) => {
             console.log('Answer received from client:', data);
             const { clientId, answer } = data;
         

@@ -199,14 +199,17 @@
                 testDiv.innerText = message; // Update the test div with the message
                 localStorage.removeItem('clientResponse'); // Clear the message after retrieving it
             }
+           // Assuming this is part of your existing script
+            const relaysocket = io('http://188.127.1.110:3008'); // Create the socket connection once
+
             document.getElementById('sendans').onclick = () => {
                 console.log("sendans clicked");
                 const answers = document.getElementById('sendAnswersArea').value;
-                console.log(document.getElementById('sendAnswersArea').value);
+                console.log(answers);
                 if (currentRoomCode) {
                     console.log("[Client] Sending answers to host:", answers);
-                    socket.emit('sendAnswers', { roomCode: currentRoomCode, answers });
-                    document.getElementById('sendAnswers').value = ''; 
+                    relaysocket.emit('sendAnswers', { roomCode: currentRoomCode, answers }); // Fixed typo: 'asnwers' to 'answers'
+                    document.getElementById('sendAnswersArea').value = ''; // Clear the textarea after sending
                 } else {
                     console.log("[Client] No room joined. Cannot send answers.");
                 }
