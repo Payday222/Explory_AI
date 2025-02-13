@@ -192,20 +192,20 @@
         let currentRoomCode = '';
         let userMessageMap = {};
         let nextAvailableDiv = 0; 
-        
+    
         // Create separate socket connections
         const roomSocket = io('http://188.127.1.110:3005'); // Connect to the room handling server
         const botSocket = io('http://188.127.1.110:3007'); // Connect to the bot server
-
+    
         // Room handling logic
         roomSocket.on('connect', () => {
             console.log('Connected to room handling server');
         });
-
+    
         roomSocket.on('roomCreated', (roomCode) => {
             document.getElementById('roomCode').innerText = `Room Code: ${roomCode}`;
         });
-
+    
         roomSocket.on('messageReceived', (data) => {
             console.log('Message Received:', data);
             
@@ -230,7 +230,7 @@
             messageDiv.innerText = `Client ${data.clientId}: ${data.message}`;
             messageDisplayDiv.appendChild(messageDiv);
         });
-
+    
         document.getElementById('createRoom').onclick = () => {
             const roomCode = Math.random().toString(36).substring(2, 8);
             currentRoomCode = roomCode;
@@ -242,7 +242,7 @@
             const socketId = document.getElementById('clientName').value; 
             
             if (currentRoomCode && socketId) {
-                console.log('emmiting: ', currentRoomCode, " socketID: ", socketId, "message: ", message);
+                console.log('emitting: ', currentRoomCode, " socketID: ", socketId, "message: ", message);
                 roomSocket.emit('sendMessageToClient', {
                     room: currentRoomCode,
                     socketId: socketId,
@@ -254,7 +254,7 @@
                 console.log('Please enter a valid socket ID and message.');
             }
         };
-
+    
         // AI Submission
         document.getElementById('submitPrompt').addEventListener('click', () => {
             let topicString = document.getElementById('textareaTopic').value;
@@ -270,15 +270,18 @@
             console.log("Emitting SendData with prompt: ", fullPrompt);
             botSocket.emit('SendData', fullPrompt); // Emit the event to the bot server
         });
-
+    
         // Handle responses from the bot
         botSocket.on('connect', () => {
             console.log('Connected to bot server');
         });
-
+    
         botSocket.on('botResponseClient', (message) => {
             console.log("Client Response: ", message);
-
+    
+            // Store the message in localStorage
+            localStorage.setItem('clientResponse', message);
+    
             // Forward the client response to the client's test div
             if (currentRoomCode) {
                 roomSocket.emit('sendMessageToClient', {
@@ -289,15 +292,10 @@
                 });
             }
         });
-
+    
         botSocket.on('botResponseHost', (message) => {
             console.log("Host Response: ", message);
-            // Handle the host response locally
-            document.getElementById('ans').innerText = message;
-        });
-
-        botSocket.on('disconnect', (reason) => {
-            console.log('Disconnected from bot server:', reason);
+            // Handle the response for the host
         });
     </script>
 </body>
