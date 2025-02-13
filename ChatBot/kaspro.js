@@ -44,6 +44,12 @@ io.on('connection', (socket) => {
     console.log('Prompt from client:', fullPrompt);
     await getChatCompletion(fullPrompt, socket);
   });
+  //! cleaar chat history on disconnect
+  socket.on('disconnect', () => {
+    console.log(`User ${socket.id} disconnected, clearing history`);
+    chatHistory.length = 0; // Clears history
+  });
+  //! clear chat history on disconnect
   
 
   // Listen for 'evaluateAnswer' events from clients
