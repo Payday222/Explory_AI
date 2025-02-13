@@ -42,6 +42,8 @@ loginButton.addEventListener('click', () => {
         .then(data => {
             if (data.success) {
                 console.log("Login successful!");
+                window.electron.openWindow('http://188.127.1.110:3005');
+                    window.electron.openWindow('http://188.127.1.110:3005');
                 if(window.electron) {
                     window.electron.openWindow('http://188.127.1.110:3005');
                     window.electron.openWindow('http://188.127.1.110:3005');
