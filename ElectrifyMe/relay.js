@@ -42,6 +42,11 @@ io.on('connection', (socket) => {
     socket.on('disconnect', () => {
         console.log("[Server] A client disconnected");
     });
+
+    botSocket.on('EvaluationResponse', (answer) => {
+        console.log('Recieved EvaluationResponse:', answer);
+        socket.emit('EvaluationResponse', answer);
+    })
 });
 
 // Start the server

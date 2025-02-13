@@ -115,6 +115,8 @@
             <textarea id="sendAnswersArea" placeholder="Type your answers here..."></textarea>
             <button id="sendans">Send your answers</button>
         </div>
+        <h4>Evaluation from LearnLabs' AI</h4>
+        <div id="answerfrombot"></div>
     </div>
 
     <script>
@@ -214,6 +216,11 @@
                     console.log("[Client] No room joined. Cannot send answers.");
                 }
             };
+
+            relaysocket.on('EvaluationResponse', (answer) => {
+                console.log('Recieved EvaluationResponse: ', answer);
+                document.getElementById('answerfrombot').innerText = answer;
+            })
         });
         
     </script>
