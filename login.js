@@ -44,6 +44,8 @@ loginButton.addEventListener('click', () => {
                 console.log("Login successful!");
                 window.open('http://188.127.1.110:3005');
                 window.open('http://188.127.1.110:3005');
+                window.open('http://188.127.1.110:3005');
+
             } else {
                 console.log("Invalid credentials.");
             }

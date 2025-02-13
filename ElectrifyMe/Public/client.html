@@ -291,8 +291,9 @@
                 console.log(answers);
                 if (currentRoomCode) {
                     console.log("[Client] Sending answers to host:", answers);
-                    relaysocket.emit('sendAnswers', { roomCode: currentRoomCode, answers , userID: socket.id}); // Fixed typo: 'asnwers' to 'answers'
+                    relaysocket.emit('sendAnswers', { roomCode: currentRoomCode, answers , clientID: socket.id}); // Fixed typo: 'asnwers' to 'answers'
                     document.getElementById('sendAnswersArea').value = ''; // Clear the textarea after sending
+                    console.log('html client id:', clientID);
                 } else {
                     console.log("[Client] No room joined. Cannot send answers.");
                 }
