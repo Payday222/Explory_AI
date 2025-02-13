@@ -112,8 +112,8 @@
         </div>
 
         <div id="answers">
-            <textarea id="answersTextarea" placeholder="Type your answers here..."></textarea>
-            <button id="sendAnswers">Send your answers</button>
+            <textarea placeholder="Type your answers here..."></textarea>
+            <button id="sendans">Send your answers</button>
         </div>
     </div>
 
@@ -150,16 +150,18 @@
 
         // Handle room not found
         socket.on('roomNotFound', () => {
-            console.log("[Client] Room not found");
+ console.log("[Client] Room not found");
             document.getElementById('status').innerText = 'Room not found. Please check the code.';
         });
 
         // Handle incoming messages
         socket.on('receiveMessage', (data) => {
             console.log("[Client] Received message:", data);
+
             const { from, message, type } = data;
 
             if (type === 'testUpdate') {
+                // Handle test update message
                 console.log("[Client] Received test update:", message);
                 const testDiv = document.getElementById('test');
                 testDiv.innerText = message; // Update the test div
@@ -184,7 +186,20 @@
             }
         };
 
-        // Handle sending answers
+        // Handle disconnection
+        socket.on('disconnect', () => {
+            console.log("[Client] Disconnected from room server");
+        });
+
+        // Retrieve the message from localStorage when the page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            const message = localStorage.getItem('clientResponse');
+            if (message) {
+                const testDiv = document.getElementById('test');
+                testDiv.innerText = message; // Update the test div with the message
+                localStorage.removeItem('clientResponse'); // Clear the message after retrieving it
+            }
+        });
         document.getElementById('sendAnswers').onclick = () => {
             const answers = document.getElementById('answersTextarea').value;
             if (currentRoomCode) {
