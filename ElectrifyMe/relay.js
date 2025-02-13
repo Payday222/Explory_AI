@@ -31,7 +31,7 @@ io.on('connection', (socket) => {
 
     // Handle sending answers
     socket.on('sendAnswers', (data) => {
-        const { roomCode, answers } = data;
+        const { roomCode, answers, userID } = data;
         console.log(`[Server] Received answers for room ${roomCode}: ${answers}`);
         // Broadcast the answers to all clients in the room
         socket.to(roomCode).emit('sendAnswers', JSON.stringify(data));
