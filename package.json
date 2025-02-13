@@ -1,6 +1,15 @@
 {
   "name": "explory_ai",
   "version": "1.0.0",
+  "build": {
+    "appId": "LearnLabsAI",
+    "productName": "LearnLarbs AI",
+    "win": {
+      "target": [
+        "nsis"
+      ]
+    }
+  },
   "main": "index.js",
   "scripts": {
     "start": "electron ."
