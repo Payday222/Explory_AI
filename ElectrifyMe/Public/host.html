@@ -311,9 +311,12 @@
         })
 
         //ipc renderer attempt
-        window.electron.onDataReceived((data) => {
-            console.log(data);
-        })
+        document.addEventListener("DOMContentLoaded", () => {
+            // Listen for the data from main process
+            window.electron.receiveDataFromMain((data) => {
+                document.getElementById("receivedData").innerText = "Received: " + data.message;
+            });
+        });
     </script>
 </body>
 </html>
