@@ -44,10 +44,12 @@ io.on('connection', (socket) => {
     });
 
     botSocket.on('EvaluationResponse', (data) => {
-        const {response, clientID} = data;
-        console.log('Recieved EvaluationResponse:', answer);
-        socket.to(clientID).emit('EvaluationResponse', answer);
-    })
+        const { response, clientID } = data;
+        console.log('Received EvaluationResponse from bot:', response);
+    
+        // Send the evaluation result only to the original sender
+        io.to(clientID).emit('EvaluationResponse', { response });
+    });
 });
 
 // Start the server

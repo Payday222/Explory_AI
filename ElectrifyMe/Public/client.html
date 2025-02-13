@@ -298,11 +298,12 @@
                 }
             };
 
-            relaysocket.on('EvaluationResponse', (answer) => {
-                console.log('Recieved EvaluationResponse: ', answer);
-                document.getElementById('answerfrombot').innerText = answer;
-            })
-        });
+          relaysocket.on('EvaluationResponse', (data) => {
+    console.log('Received EvaluationResponse:', data);
+    document.getElementById('answerfrombot').innerText = data.response;
+          })
+});
+
         
     </script>
 </body>
