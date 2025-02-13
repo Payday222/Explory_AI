@@ -242,6 +242,7 @@
             const socketId = document.getElementById('clientName').value; 
             
             if (currentRoomCode && socketId) {
+                console.log('emmiting: ', currentRoomCode, " socketID: ", socketId, "message: ", message);
                 roomSocket.emit('sendMessageToClient', {
                     room: currentRoomCode,
                     socketId: socketId,
@@ -250,7 +251,7 @@
                 document.getElementById('clientName').value = ''; 
                 document.getElementById('clientMessage').value = '';
             } else {
-                alert('Please enter a valid socket ID and message.');
+                console.log('Please enter a valid socket ID and message.');
             }
         };
 
