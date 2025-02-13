@@ -233,19 +233,25 @@
     </script>
 
     <script>
+        // Connect to the bot server
         const socketbot = io('http://188.127.1.110:3007'); 
 
+        // Log connection status
         socketbot.on('connect', () => {
             console.log('Client connected to bot socket.');   
-            
-            
-            socketbot.on('botResponseClient', (message) => {
-                console.log("Client received message: ", message);
-                const testDiv = document.getElementById('test');
-                testDiv.innerText += message + "\n"; // Append the message
-            });
         });
-        
+
+        // Listen for botResponseClient event
+        socketbot.on('botResponseClient', (message) => {
+            console.log("Client received message: ", message);
+            const testDiv = document.getElementById('test');
+            testDiv.innerText = message; // Replace or append the message
+        });
+
+        // Handle disconnection
+        socketbot.on('disconnect', () => {
+            console.log('Client disconnected from bot socket.');
+        });
     </script>
 </body>
 </html>

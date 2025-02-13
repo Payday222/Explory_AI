@@ -98,4 +98,4 @@ async function getChatCompletion(prompt, socket) {
 // Start the server
 server.listen(3007, () => {
   console.log("Bot server running on port 3007");
-});response
+});
