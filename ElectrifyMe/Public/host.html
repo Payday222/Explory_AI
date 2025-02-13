@@ -192,6 +192,8 @@
         let currentRoomCode = '';
         let userMessageMap = {};
         let nextAvailableDiv = 0; 
+
+        let nameSocketId = new Map();
     
         // Create separate socket connections
         const roomSocket = io('http://188.127.1.110:3005'); // Connect to the room handling server
@@ -225,8 +227,23 @@
                 userMessageMap[data.clientId] = nextAvailableDiv;
                 console.log(`Assigning Client ${data.clientId} to div ${nextAvailableDiv}`);
                 nextAvailableDiv = (nextAvailableDiv + 1) % 6; // Cycle through divs
+                nameSocketId.set(data.name, data.clientId);
             } else {
                 console.log(`Client ${data.clientId} already assigned to div ${userMessageMap[data.clientId]}`);
+                if(nameSocketId.get(data.name) == null){
+                    for (const [key, socky] of nameSocketId) {
+                    if (socky === data.clientId) {
+                        const idk = socky;
+                        
+
+                        nameSocketId.delete(key);
+                        
+                        nameSocketId.set(data.name,idk);
+                        
+                        break;
+                    }
+                }
+            }
             }
             console.log('Current userMessageMap:', userMessageMap);
             const divNo = userMessageMap[data.clientId];
@@ -234,7 +251,7 @@
             console.log(`Appending message to div ${divNo}`);
             
             const messageDiv = document.createElement('div');
-            messageDiv.innerText = `Client ${data.clientId}: ${data.message}`;
+            messageDiv.innerText = `Client ${data.name}: ${data.message}`;
             messageDisplayDiv.appendChild(messageDiv);
         });
     

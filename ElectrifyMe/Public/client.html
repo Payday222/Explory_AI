@@ -99,6 +99,7 @@
             <input type="text" id="roomCodeInput" placeholder="Enter Room Code" />
             <button id="joinRoom">Join Room</button>
             <div id="status"></div>
+            <input type="text" id="nameInput" placeholder="Enter your name" required/>
             <input type="text" id="messageInput" placeholder="Type your message" />
             <button id="sendMessage">Send Message</button>
             <div id="receive"></div>
@@ -177,14 +178,19 @@
         // Handle sending messages
         document.getElementById('sendMessage').onclick = () => {
             const message = document.getElementById('messageInput').value;
+            const name = document.getElementById('nameInput').value;
             if (currentRoomCode) {
                 console.log("[Client] Sending message to room:", currentRoomCode);
-                socket.emit('sendMessage', { roomCode: currentRoomCode, message });
+                socket.emit('sendMessage', { roomCode: currentRoomCode, message, name });
                 document.getElementById('messageInput').value = ''; 
             } else {
                 console.log("[Client] No room joined. Cannot send message.");
             }
         };
+        
+            
+            
+        
 
         // Handle disconnection
         socket.on('disconnect', () => {

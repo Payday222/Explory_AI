@@ -46,8 +46,8 @@ io.on('connection', (socket) => {
     });
 
     socket.on('sendMessage', (data) => {
-        const { roomCode, message } = data;
-        io.to(rooms[roomCode].host).emit('messageReceived', { clientId: socket.id, message });
+        const { roomCode, message, name } = data;
+        io.to(rooms[roomCode].host).emit('messageReceived', { clientId: socket.id, message, name });
     });
 
     socket.on('disconnect', () => {
