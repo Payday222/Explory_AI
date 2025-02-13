@@ -31,7 +31,7 @@ io.on('connection', (socket) => {
 
     // Handle sending answers
     socket.on('sendAnswers', (data) => {
-        const { roomCode, answers, userID } = data;
+        const { roomCode, answers, clientID } = data;
         console.log(`[Server] Received answers for room ${roomCode}: ${answers}`);
         // Broadcast the answers to all clients in the room
         socket.to(roomCode).emit('sendAnswers', JSON.stringify(data));
@@ -43,9 +43,10 @@ io.on('connection', (socket) => {
         console.log("[Server] A client disconnected");
     });
 
-    botSocket.on('EvaluationResponse', (answer) => {
+    botSocket.on('EvaluationResponse', (data) => {
+        const {response, clientID} = data;
         console.log('Recieved EvaluationResponse:', answer);
-        socket.emit('EvaluationResponse', answer);
+        socket.to(clientID).emit('EvaluationResponse', answer);
     })
 });
 

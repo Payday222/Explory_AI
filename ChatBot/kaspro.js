@@ -102,8 +102,8 @@ async function getChatCompletion(prompt, socket, clientID) {
 
     // Check if the response contains "TEACHER:"
     if (response.includes("TEACHER:")) {
-      socket.emit('EvaluationResponse', response,); // Emit the response if it contains "TEACHER:"
-      socket.to(clientID).emit('EvaluationResponse', response);
+      socket.emit('EvaluationResponse', response, clientID); // Emit the response if it contains "TEACHER:"
+      // socket.to(clientID).emit('EvaluationResponse', response);
     }
 
     if (tokenIndex !== -1) {
