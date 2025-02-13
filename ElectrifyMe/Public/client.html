@@ -217,6 +217,10 @@
             };
         });
         
+        //ipc renderer attempt
+        const answers = document.getElementById('sendAnswersArea').value;
+        window.electron.sendData(answers);
+        
     </script>
 </body>
 </html>

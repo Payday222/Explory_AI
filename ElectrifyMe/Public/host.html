@@ -205,13 +205,6 @@
         roomSocket.on('roomCreated', (roomCode) => {
             document.getElementById('roomCode').innerText = `Room Code: ${roomCode}`;
         });
-        let userId = 0;
-        while(true) {
-            if(userId+1 != null) {
-                sendAnswers(userId);
-                userId++;
-            }
-        }
         
 
         function sendAnswers() {
@@ -315,6 +308,11 @@
         botSocket.on('botResponseHost', (message) => {
             console.log("Host Response: ", message);
             // Handle the response for the host
+        })
+
+        //ipc renderer attempt
+        window.electron.onDataRecieved((data) => {
+            console.log(data);
         })
     </script>
 </body>
