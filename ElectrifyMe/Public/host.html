@@ -282,9 +282,9 @@
             if (currentRoomCode) {
                 roomSocket.emit('sendMessageToClient', {
                     room: currentRoomCode,
-                    socketId: 'all', // Send to all clients in the room
+                    socketId: 'all',
                     message: message,
-                    type: 'testUpdate' // Add a type to distinguish this message
+                    type: 'testUpdate'
                 });
             }
         });

@@ -199,46 +199,71 @@
     </script>
 
     <script>
-        const socket = io('http://188.127.1.110:3005'); // Connect to the room server
-        let currentRoomCode = '';
+        // Connect to the room server
+const socket = io('http://188.127.1.110:3005');
+let currentRoomCode = '';
 
-        document.getElementById('joinRoom').onclick = () => {
-            const roomCode = document.getElementById('roomCodeInput').value;
-            socket.emit('joinRoom', roomCode);
-        };
+// Log connection status
+socket.on('connect', () => {
+    console.log("[Client] Connected to room server");
+});
 
-        socket.on('joinedRoom', (roomCode) => {
-            currentRoomCode = roomCode;
-            document.getElementById('status').innerText = `Joined Room: ${roomCode}`;
-        });
+// Handle room joining
+document.getElementById('joinRoom').onclick = () => {
+    const roomCode = document.getElementById('roomCodeInput').value;
+    console.log("[Client] Attempting to join room:", roomCode);
+    socket.emit('joinRoom', roomCode);
+};
 
-        socket.on('roomNotFound', () => {
-            document.getElementById('status').innerText = 'Room not found. Please check the code.';
-        });
+// Handle successful room join
+socket.on('joinedRoom', (roomCode) => {
+    console.log("[Client] Successfully joined room:", roomCode);
+    currentRoomCode = roomCode;
+    document.getElementById('status').innerText = `Joined Room: ${roomCode}`;
+});
 
-        socket.on('receiveMessage', (data) => {
-            const { from, message, type } = data;
+// Handle room not found
+socket.on('roomNotFound', () => {
+    console.log("[Client] Room not found");
+    document.getElementById('status').innerText = 'Room not found. Please check the code.';
+});
 
-            if (type === 'testUpdate') {
-                // Handle test update message
-                console.log("Received test update:", message);
-                const testDiv = document.getElementById('test');
-                testDiv.innerText = message; // Update the test div
-            } else {
-                // Handle regular chat message
-                const messageDiv = document.createElement('div');
-                messageDiv.innerText = `Admin: ${message}`;
-                document.getElementById('receive').appendChild(messageDiv);
-            }
-        });
+// Handle incoming messages
+socket.on('receiveMessage', (data) => {
+    console.log("[Client] Received message:", data);
 
-        document.getElementById('sendMessage').onclick = () => {
-            const message = document.getElementById('messageInput').value;
-            if (currentRoomCode) {
-                socket.emit('sendMessage', { roomCode: currentRoomCode, message });
-                document.getElementById('messageInput').value = ''; 
-            }
-        };
+    const { from, message, type } = data;
+
+    if (type === 'testUpdate') {
+        // Handle test update message
+        console.log("[Client] Received test update:", message);
+        const testDiv = document.getElementById('test');
+        testDiv.innerText = message; // Update the test div
+    } else {
+        // Handle regular chat message
+        console.log("[Client] Received regular message:", message);
+        const messageDiv = document.createElement('div');
+        messageDiv.innerText = `Admin: ${message}`;
+        document.getElementById('receive').appendChild(messageDiv);
+    }
+});
+
+// Handle sending messages
+document.getElementById('sendMessage').onclick = () => {
+    const message = document.getElementById('messageInput').value;
+    if (currentRoomCode) {
+        console.log("[Client] Sending message to room:", currentRoomCode);
+        socket.emit('sendMessage', { roomCode: currentRoomCode, message });
+        document.getElementById('messageInput').value = ''; 
+    } else {
+        console.log("[Client] No room joined. Cannot send message.");
+    }
+};
+
+// Handle disconnection
+socket.on('disconnect', () => {
+    console.log("[Client] Disconnected from room server");
+});
     </script>
 </body>
-</html>
+</html> 
