@@ -251,7 +251,7 @@
             console.log(`Appending message to div ${divNo}`);
             
             const messageDiv = document.createElement('div');
-            messageDiv.innerText = `Client ${data.name}: ${data.message}`;
+            messageDiv.innerText = `${data.name}: ${data.message}`;
             messageDisplayDiv.appendChild(messageDiv);
         });
     
