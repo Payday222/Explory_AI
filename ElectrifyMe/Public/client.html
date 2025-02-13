@@ -112,7 +112,7 @@
         </div>
 
         <div id="answers">
-            <textarea id="sendAnswers" placeholder="Type your answers here..."></textarea>
+            <textarea id="sendAnswersArea" placeholder="Type your answers here..."></textarea>
             <button id="sendans">Send your answers</button>
         </div>
     </div>
@@ -201,8 +201,8 @@
             }
             document.getElementById('sendAnswers').onclick = () => {
                 console.log("sendans clicked");
-                const answers = document.getElementById('sendAnswers').value;
-                console.log(document.getElementById('sendAnswers').value);
+                const answers = document.getElementById('sendAnswersArea').value;
+                console.log(document.getElementById('sendAnswersArea').value);
                 if (currentRoomCode) {
                     console.log("[Client] Sending answers to host:", answers);
                     socket.emit('sendAnswers', { roomCode: currentRoomCode, answers });
