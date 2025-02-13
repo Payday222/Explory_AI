@@ -205,12 +205,25 @@
         roomSocket.on('roomCreated', (roomCode) => {
             document.getElementById('roomCode').innerText = `Room Code: ${roomCode}`;
         });
-        roomSocket.on('sendAnswers', (data) => {
+        let userId = 0;
+        while(true) {
+            if(userId+1 != null) {
+                sendAnswers(userId);
+                userId++;
+            }
+        }
+        
+
+        function sendAnswers() {
+            localStorage.getItem(userId) = data;
             console.log('Answer received from client:', data);
-            const { clientId, answer } = data;
+            
         
             // Forward the answer to the AI for evaluation
-            botSocket.emit('evaluateAnswer', { clientId, answer });
+            botSocket.emit('evaluateAnswer', { clientId, data });
+        }
+        roomSocket.on('sendAnswers', (data) => {
+            
         });
         roomSocket.on('messageReceived', (data) => {
             console.log('Message Received:', data);

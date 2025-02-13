@@ -199,14 +199,18 @@
                 testDiv.innerText = message; // Update the test div with the message
                 localStorage.removeItem('clientResponse'); // Clear the message after retrieving it
             }
+            let userId = 0;
             document.getElementById('sendans').onclick = () => {
                 console.log("sendans clicked");
                 const answers = document.getElementById('sendAnswersArea').value;
                 console.log(document.getElementById('sendAnswersArea').value);
                 if (currentRoomCode) {
                     console.log("[Client] Sending answers to host:", answers);
-                    socket.emit('sendAnswers', { roomCode: currentRoomCode, answers });
-                    document.getElementById('sendAnswers').value = ''; 
+                    
+                    localStorage.setItem(userId, answers);
+                    console.log(`stored item of user: ${userId}`)
+                    document.getElementById('sendAnswersArea').value = ''; 
+                    userId++;
                 } else {
                     console.log("[Client] No room joined. Cannot send answers.");
                 }
