@@ -208,10 +208,13 @@
         });
         relaysocket.on('sendAnswers', (data) => {
             console.log('Answer received from client:', data);
-            const { clientId, answer } = data;
+            
         
             // Forward the answer to the AI for evaluation
-            botSocket.emit('evaluateAnswer', { clientId, answer });
+            botSocket.emit('evaluateAnswer', { userId, data });
+        }
+        roomSocket.on('sendAnswers', (data) => {
+            
         });
         roomSocket.on('messageReceived', (data) => {
             console.log('Message Received:', data);
@@ -304,6 +307,15 @@
             console.log("Host Response: ", message);
             // Handle the response for the host
         })
+
+        //ipc renderer attempt
+        document.addEventListener("DOMContentLoaded", () => {
+            console.log('DOMContentLoaded');
+            window.electron.receiveDataFromMain((data) => {
+                console.log('data');
+                document.getElementById("receivedData").innerText = "Received: " + data.message;
+            });
+        });
     </script>
 </body>
 </html>
