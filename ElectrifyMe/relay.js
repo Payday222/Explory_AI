@@ -6,7 +6,14 @@ const { io: Client } = require('socket.io-client'); // Import the client from so
 
 const app = express();
 const server = http.createServer(app);
-const io = new Server(server); // Create a new instance of the Server class
+const io = new Server(server, {
+    cors: {
+        origin: "http://188.127.1.110:3005", // Allow requests from this origin
+        methods: ["GET", "POST"],
+        allowedHeaders: ["my-custom-header"],
+        credentials: true
+    }
+}); // Create a new instance of the Server class with CORS options
 const botSocket = Client('http://188.127.1.110:3007'); // Connect to the bot server
 
 app.use(express.static('public')); // Serve static files from the 'public' directory
