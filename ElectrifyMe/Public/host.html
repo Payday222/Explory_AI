@@ -201,11 +201,17 @@
         roomSocket.on('connect', () => {
             console.log('Connected to room handling server');
         });
-    
+        
         roomSocket.on('roomCreated', (roomCode) => {
             document.getElementById('roomCode').innerText = `Room Code: ${roomCode}`;
         });
-    
+        roomSocket.on('submitAnswer', (data) => {
+            console.log('Answer received from client:', data);
+            const { clientId, answer } = data;
+        
+            // Forward the answer to the AI for evaluation
+            botSocket.emit('evaluateAnswer', { clientId, answer });
+        });
         roomSocket.on('messageReceived', (data) => {
             console.log('Message Received:', data);
             
@@ -296,7 +302,7 @@
         botSocket.on('botResponseHost', (message) => {
             console.log("Host Response: ", message);
             // Handle the response for the host
-        });
+        })
     </script>
 </body>
 </html>

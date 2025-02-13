@@ -6,87 +6,7 @@
     <title>Client Room</title>
     <script src="/socket.io/socket.io.js"></script>
     <style>
-        body {
-            display: flex;
-            flex-direction: row;
-            justify-content: flex-start;
-            height: 100vh;
-            font-family: 'Ubuntu', sans-serif;
-            text-align: center;
-            background-color: #121212;
-            color: white;
-            margin: 0;
-            overflow: hidden;
-        }
-
-        #panel {
-            width: 300px;
-            background-color: #1a1a1a;
-            padding: 20px;
-            border-radius: 10px;
-            margin: 20px;
-        }
-
-        #rightSide {
-            flex: 1;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        #test {
-            background-color: #333;
-            border-radius: 10px;
-            padding: 20px;
-            width: 100%;
-            height: 300px;
-            overflow-y: auto;
-            margin-bottom: 20px;
-        }
-
-        #answers {
-            width: 100%;
-        }
-
-        textarea {
-            width: 100%;
-            height: 100px;
-            background-color: #222;
-            border: none;
-            border-radius: 5px;
-            color: white;
-            padding: 10px;
-            resize: none;
-        }
-
-        button {
-            padding: 10px 20px;
-            background-color: #1e8e3e;
-            border: none;
-            border-radius: 5px;
-            color: white;
-            cursor: pointer;
-            margin-top: 10px;
-        }
-
-        button:hover {
-            background-color: #1a7e2e;
-        }
-
-        #togglePanelButton {
-            margin: 20px;
-            background-color: #1e8e3e;
-            border: none;
-            border-radius: 5px;
-            color: white;
-            cursor: pointer;
-            padding: 10px;
-        }
-
-        #togglePanelButton:hover {
-            background-color: #1a7e2e;
-        }
+        /* Your existing styles */
     </style>
 </head>
 <body>
@@ -112,8 +32,8 @@
         </div>
 
         <div id="answers">
-            <textarea placeholder="Type your answers here..."></textarea>
-            <button id="sendans">Send your answers</button>
+            <textarea id="answersTextarea" placeholder="Type your answers here..."></textarea>
+            <button id="sendAnswers">Send your answers</button>
         </div>
     </div>
 
@@ -150,18 +70,16 @@
 
         // Handle room not found
         socket.on('roomNotFound', () => {
- console.log("[Client] Room not found");
+            console.log("[Client] Room not found");
             document.getElementById('status').innerText = 'Room not found. Please check the code.';
         });
 
         // Handle incoming messages
         socket.on('receiveMessage', (data) => {
             console.log("[Client] Received message:", data);
-
             const { from, message, type } = data;
 
             if (type === 'testUpdate') {
-                // Handle test update message
                 console.log("[Client] Received test update:", message);
                 const testDiv = document.getElementById('test');
                 testDiv.innerText = message; // Update the test div
@@ -186,21 +104,17 @@
             }
         };
 
-        // Handle disconnection
-        socket.on('disconnect', () => {
-            console.log("[Client] Disconnected from room server");
-        });
-
-        // Retrieve the message from localStorage when the page loads
-        document.addEventListener('DOMContentLoaded', () => {
-            const message = localStorage.getItem('clientResponse');
-            if (message) {
-                const testDiv = document.getElementById('test');
-                testDiv.innerText = message; // Update the test div with the message
-                localStorage.removeItem('clientResponse'); // Clear the message after retrieving it
+        // Handle sending answers
+        document.getElementById('sendAnswers').onclick = () => {
+            const answers = document.getElementById('answersTextarea').value;
+            if (currentRoomCode) {
+                console.log("[Client] Sending answers to host:", answers);
+                socket.emit('sendAnswers', { roomCode: currentRoomCode, answers });
+                document.getElementById('answersTextarea').value = ''; 
+            } else {
+                console.log("[Client] No room joined. Cannot send answers.");
             }
-        });
-        
+        };
     </script>
 </body>
 </html>
