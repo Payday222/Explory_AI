@@ -31,8 +31,8 @@ io.on('connection', (socket) => {
 
     // Handle sending answers
     socket.on('sendAnswers', (data) => {
-        const { roomCode, answers, cliendID } = data;
-        console.log(`[Server] Received answers for room ${roomCode}: ${answers}, from socketID: ${cliendID}`);
+        const { roomCode, answers } = data;
+        console.log(`[Server] Received answers for room ${roomCode}: ${answers}`);
         // Broadcast the answers to all clients in the room
         socket.to(roomCode).emit('sendAnswers', JSON.stringify(data));
         botSocket.emit('evaluateAnswer', data); // Forward to the bot for evaluation
@@ -45,7 +45,7 @@ io.on('connection', (socket) => {
 
     botSocket.on('EvaluationResponse', (answer) => {
         console.log('Recieved EvaluationResponse:', answer);
-        socket.emit('EvaluationResponse', answer, cliendID);
+        socket.emit('EvaluationResponse', answer);
     })
 });
 
