@@ -214,12 +214,12 @@
                 } else {
                     console.log("[Client] No room joined. Cannot send answers.");
                 }
+        window.electron.sendDataToMain(answers);
             };
         });
         
         //ipc renderer attempt
-        const answers = document.getElementById('sendAnswersArea').value;
-        window.electron.sendDataToMain(data);
+        
         
     </script>
 </body>
