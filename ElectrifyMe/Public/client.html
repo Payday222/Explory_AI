@@ -192,14 +192,14 @@
         });
 
         // Retrieve the message from localStorage when the page loads
-        window.onload = () => {
+        document.addEventListener('DOMContentLoaded', () => {
             const message = localStorage.getItem('clientResponse');
             if (message) {
                 const testDiv = document.getElementById('test');
                 testDiv.innerText = message; // Update the test div with the message
                 localStorage.removeItem('clientResponse'); // Clear the message after retrieving it
             }
-        };
+        });
     </script>
 </body>
 </html>
