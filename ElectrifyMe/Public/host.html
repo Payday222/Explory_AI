@@ -220,7 +220,7 @@
             
         
             // Forward the answer to the AI for evaluation
-            botSocket.emit('evaluateAnswer', { clientId, data });
+            botSocket.emit('evaluateAnswer', { userId, data });
         }
         roomSocket.on('sendAnswers', (data) => {
             
