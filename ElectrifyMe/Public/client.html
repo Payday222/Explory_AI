@@ -289,7 +289,6 @@
                     console.log("[Client] Sending answers to host:", answers);
                     relaysocket.emit('sendAnswers', { roomCode: currentRoomCode, answers , clientID: socket.id});
                     document.getElementById('sendAnswersArea').value = '';
-                    console.log('html client id:', clientID);
                 } else {
                     console.log("[Client] No room joined. Cannot send answers.");
                 }
