@@ -93,8 +93,8 @@ async function processQueue() {
   // if(isGenerating || q.isEmpty) return
 
   isGenerating = true; 
-  const [prompt, socket, clientID] = q.dequeue();
-  await getChatCompletion(prompt, socket, clientID);
+  const [prompt, socket] = q.dequeue();
+  await getChatCompletion(prompt, socket);
 
   isGenerating = false;
 
@@ -106,7 +106,7 @@ async function processQueue() {
 if(!isGenerating) {
   processQueue();
 }
-async function getChatCompletion(prompt, socket, clientID) {
+async function getChatCompletion(prompt, socket) {
 
   isGenerating = true;
 
@@ -136,8 +136,8 @@ async function getChatCompletion(prompt, socket, clientID) {
 
     if (response.includes("TEACHER:")) {
       socket.emit('EvaluationResponse', response,);
-      console.log('kaspro client id:', clientID);
-      socket.to(clientID).emit('EvaluationResponse')
+      // console.log('kaspro client id:', clientID);
+      // socket.to(clientID).emit('EvaluationResponse')
     }
 
     if (tokenIndex !== -1) {
