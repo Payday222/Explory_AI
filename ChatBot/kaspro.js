@@ -64,7 +64,7 @@ io.on('connection', (socket) => {
 });
 class Queue {
   constructor() {
-    this.items = {};
+    this.items = [];
     this.front = 0;
     this.back = 0;
   }
