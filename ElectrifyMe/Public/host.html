@@ -201,10 +201,10 @@
         });
         relaysocket.on('sendAnswers', (data) => {
             console.log('Answer received from client:', data);
-            const { clientId, answer } = data;
+            const { answer } = data;
         
             // Forward the answer to the AI for evaluation
-            botSocket.emit('evaluateAnswer', { clientId, answer });
+            botSocket.emit('evaluateAnswer', { answer });
         });
         roomSocket.on('messageReceived', (data) => {
             console.log('Message Received:', data);
