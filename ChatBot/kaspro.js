@@ -53,6 +53,7 @@ io.on('connection', (socket) => {
     }
     // await getChatCompletion(prompt, socket, clientID);
     q.enqueue([prompt, clientID, socket]);
+    processQueue();
   });
 });
 class Queue {
