@@ -58,7 +58,7 @@ io.on('connection', (socket) => {
     console.log("Generated prompt, before queue:", prompt);
     let string = `${prompt} `;
     q.enqueue(string); 
-    processQueue(); 
+    processQueue(socket); 
   });
   
 });
@@ -96,7 +96,7 @@ const q = new Queue;
 
 let isGenerating = false;
 
-async function processQueue() {
+async function processQueue(socket) {
   // if(isGenerating || q.isEmpty) return
 
   isGenerating = true; 
@@ -107,7 +107,7 @@ async function processQueue() {
   isGenerating = false;
 
   if(!isGenerating) {
-    processQueue();
+    processQueue(socket);
   }
 }
 
