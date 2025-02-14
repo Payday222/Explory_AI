@@ -70,8 +70,8 @@ class Queue {
   }
 
   enqueue(element) {
-    console.log(element);
     this.items[this.back] = element;
+    console.log(element);
     this.back++;
   }
   dequeue() {
