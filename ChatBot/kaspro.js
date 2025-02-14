@@ -52,7 +52,7 @@ io.on('connection', (socket) => {
       console.log('client ID is undefined');
     }
     // await getChatCompletion(prompt, socket, clientID);
-    q.enqueue([prompt, clientID, socket]);
+    q.enqueue([prompt, clientID]);
     processQueue();
   });
 });
@@ -93,8 +93,8 @@ async function processQueue() {
   // if(isGenerating || q.isEmpty) return
 
   isGenerating = true; 
-  const [prompt, socket] = q.dequeue();
-  await getChatCompletion(prompt, socket);
+  const [prompt] = q.dequeue();
+  await getChatCompletion(prompt);
 
   isGenerating = false;
 
