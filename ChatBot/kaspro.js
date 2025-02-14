@@ -102,7 +102,7 @@ async function processQueue() {
   isGenerating = true; 
   const prompt = q.dequeue();
   console.log(prompt);
-  await getChatCompletion(prompt);
+  await getChatCompletion(prompt, socket);
 
   isGenerating = false;
 
