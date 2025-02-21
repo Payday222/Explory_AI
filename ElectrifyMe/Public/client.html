@@ -310,7 +310,10 @@
 
           relaysocket.on('EvaluationResponse', (data) => {
     console.log('Received EvaluationResponse:', data);
+    if(data.clientID == socket.id) {
+        console.log('id from response matches id of this socket');
     document.getElementById('answerfrombot').innerText = data.response;
+    }
           })
 });
 const botSocket = io('http://188.127.1.110:3007');
