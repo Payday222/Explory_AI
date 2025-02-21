@@ -282,12 +282,12 @@
             //     testDiv.innerText = message; 
             //     localStorage.removeItem('clientResponse'); 
             // }
-            // const botSocket = io('http://188.127.1.110:3007');
+             const botSocket = io('http://188.127.1.110:3007');
 
-            // socket.on('botresponseClient', (message) => {
-            //     const testDiv = document.getElementById('test');
-            //     testDiv.innerText = message
-            // })
+             botSocket.on('botresponseClient', (message) => {
+                 const testDiv = document.getElementById('test');
+                 testDiv.innerText = message
+             })
            
             const relaysocket = io('http://188.127.1.110:3008');
 
