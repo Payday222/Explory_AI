@@ -46,7 +46,7 @@ io.on('connection', (socket) => {
     botSocket.on('EvaluationResponse', (data) => {
         const { response, clientID } = data;
         console.log('Received EvaluationResponse from bot:', response, 'for clientID:', clientID);
-        io.to(clientID).emit('EvaluationResponse', { response });
+        socket.to(clientID).emit('EvaluationResponse', { response });
     });
     
 });
