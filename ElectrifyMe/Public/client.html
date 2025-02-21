@@ -276,12 +276,18 @@
 
     
         document.addEventListener('DOMContentLoaded', () => {
-            const message = localStorage.getItem('clientResponse');
-            if (message) {
+            // const message = localStorage.getItem('clientResponse');
+            // if (message) {
+            //     const testDiv = document.getElementById('test');
+            //     testDiv.innerText = message; 
+            //     localStorage.removeItem('clientResponse'); 
+            // }
+            const botSocket = io('http://188.127.1.110:3007');
+
+            socket.on('botresponseClient', (message) => {
                 const testDiv = document.getElementById('test');
-                testDiv.innerText = message; 
-                localStorage.removeItem('clientResponse'); 
-            }
+                testDiv.innerText = message
+            })
            
             const relaysocket = io('http://188.127.1.110:3008');
 
@@ -311,7 +317,10 @@
     document.getElementById('answerfrombot').innerText = data.response;
           })
 });
-
+socket.on('botresponseClient', (message) => {
+                const testDiv = document.getElementById('test');
+                testDiv.innerText = message
+            })
         
     </script>
 </body>
