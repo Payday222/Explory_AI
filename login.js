@@ -7,6 +7,7 @@ const password = document.getElementById('password');
 const emailResult = document.getElementById('email-result');
 
 function validateEmail() {
+    console.log('example log');
     const inputValue = inputElement.value;
     if (inputValue.includes('@')) {
         emailResult.textContent = "Email Valid";
@@ -27,7 +28,7 @@ loginButton.addEventListener('click', () => {
     const password = document.getElementById('password').value;
 
     if (validateEmail()) {
-        fetch('http://localhost:3004/login', {
+        fetch('http://188.127.1.110:3004/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -41,7 +42,10 @@ loginButton.addEventListener('click', () => {
         .then(data => {
             if (data.success) {
                 console.log("Login successful!");
-                window.open('user_panel.html');
+                window.open('http://188.127.1.110:3005');
+                window.open('http://188.127.1.110:3005');
+                window.open('http://188.127.1.110:3005');
+
             } else {
                 console.log("Invalid credentials.");
             }

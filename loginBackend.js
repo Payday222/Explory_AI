@@ -62,5 +62,5 @@ async function checkVerified(email, conn) {
 }
 
 app.listen(port, () => {
-    console.log(`Server is running on http://localhost:${port}`);
+    console.log(`Server is running on http://188.127.1.110:${port}`);
 });

@@ -43,7 +43,7 @@ app.post('/login', (req, res) => {
 
 const port = 3000;
 app.listen(port, () => {
-    console.log(`Server running at http://localhost:${port}/`);
+    console.log(`Server running at http://188.127.1.110:${port}/`);
 });
 
 module.exports = { config };

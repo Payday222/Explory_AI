@@ -1,29 +1,24 @@
-# Node.js dependencies
 node_modules/
-
-# Logs
+db.env
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# OS-specific files
 .DS_Store
 Thumbs.db
 
-# Build output
 dist/
 build/
 out/
 
-# Optional: Ignore IDE/editor files
 .idea/
 .vscode/
 
-# Optional: Ignore dependency cache
 .pnp/
 .pnp.js
 
-# Ignore .env files (for sensitive data like API keys)
 .env
 db.env
 *.env
+
+savedData.json
