@@ -318,6 +318,7 @@
     document.getElementById('answerfrombot').innerText = data.response;
           })
 });
+const botSocket = io('http://188.127.1.110:3007');
 botSocket.on('botResponseClient', (message) => {
                 console.log('botResponseClient outside DOM event Listener')
                  const testDiv = document.getElementById('test');
