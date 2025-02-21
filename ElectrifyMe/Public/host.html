@@ -297,16 +297,6 @@
     
             // Store the message in localStorage
             localStorage.setItem('clientResponse', message);
-    
-            // Forward the client response to the client's test div
-            if (currentRoomCode) {
-                roomSocket.emit('sendMessageToClient', {
-                    room: currentRoomCode,
-                    socketId: 'all',
-                    message: message,
-                    type: 'testUpdate'
-                });
-            }
         });
     
         botSocket.on('botResponseHost', (message) => {

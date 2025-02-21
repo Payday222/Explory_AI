@@ -282,9 +282,9 @@
             //     testDiv.innerText = message; 
             //     localStorage.removeItem('clientResponse'); 
             // }
-             const botSocket = io('http://188.127.1.110:3007');
+            const botSocket = io('http://188.127.1.110:3007');
 
-             botSocket.on('botresponseClient', (message) => {
+             botSocket.on('botResponseClient', (message) => {
                  const testDiv = document.getElementById('test');
                  testDiv.innerText = message
              })
