@@ -31,13 +31,16 @@
     "dotenv": "^16.4.7",
     "electron-reloader": "^1.2.3",
     "express": "^4.21.2",
+    "fs": "^0.0.1-security",
+    "http": "^0.0.1-security",
     "http-server": "^14.1.1",
     "mysql": "^2.18.1",
     "mysql2": "^3.11.5",
     "nodemailer": "^6.9.16",
-    "openai": "^4.84.0",
+    "openai": "^4.85.3",
     "pm2": "^5.4.3",
     "readline-sync": "^1.4.10",
-    "socket.io": "^4.8.1"
+    "socket.io": "^4.8.1",
+    "socket.io-client": "^4.8.1"
   }
 }

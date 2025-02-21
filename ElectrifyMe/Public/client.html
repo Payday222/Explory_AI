@@ -289,13 +289,18 @@
                 console.log("sendans clicked");
                 const answers = document.getElementById('sendAnswersArea').value;
                 console.log(answers);
+                const clientID = socket.id;
+                console.log('socketID: ', clientID);
+
+
                 if (currentRoomCode) {
+                    console.log('socketID: ', clientID);
+
                     console.log("[Client] Sending answers to host:", answers);
 
-                    const clientID = socket.id;
+                    
                     relaysocket.emit('sendAnswers', { roomCode: currentRoomCode, answers}, clientID);
                     document.getElementById('sendAnswersArea').value = ''; 
-                    console.log('socketID: ', clientID);
                 } else {
                     console.log("[Client] No room joined. Cannot send answers.");
                 }
