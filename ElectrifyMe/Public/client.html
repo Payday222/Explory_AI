@@ -241,8 +241,8 @@
             if (type === 'testUpdate') {
                 
                 console.log("[Client] Received test update:", message);
-                const testDiv = document.getElementById('test');
-                testDiv.innerText = message; 
+                // const testDiv = document.getElementById('test');
+                // testDiv.innerText = message; 
             } else {
                 
                 console.log("[Client] Received regular message:", message);
@@ -276,19 +276,14 @@
 
     
         document.addEventListener('DOMContentLoaded', () => {
-            // const message = localStorage.getItem('clientResponse');
-            // if (message) {
-            //     const testDiv = document.getElementById('test');
-            //     testDiv.innerText = message; 
-            //     localStorage.removeItem('clientResponse'); 
-            // }
-            const botSocket = io('http://188.127.1.110:3007');
+            
+            // const botSocket = io('http://188.127.1.110:3007');
 
-             botSocket.on('botResponseClient', (message) => {
-                console.log('botResponseClient inside DOM event Listener')
-                 const testDiv = document.getElementById('test');
-                 testDiv.innerText = message
-             })
+            //  botSocket.on('botResponseClient', (message) => {
+            //     console.log('botResponseClient inside DOM event Listener')
+            //      const testDiv = document.getElementById('test');
+            //      testDiv.innerText = message
+            //  })
            
             const relaysocket = io('http://188.127.1.110:3008');
 
