@@ -32,10 +32,10 @@ io.on('connection', (socket) => {
     // Handle sending answers
     socket.on('sendAnswers', (data) => {
         const { roomCode, answers, clientID } = data;
-        console.log(`[Server] Received answers for room ${roomCode}: ${answers}`);
+        console.log(`[Server] Received answers: ${answers}`);
         console.log("clientID recieved: ", clientID);
         // Broadcast the answers to all clients in the room
-        socket.to(roomCode).emit('sendAnswers', JSON.stringify(data));
+        // socket.to(roomCode).emit('sendAnswers', JSON.stringify(data));
         botSocket.emit('evaluateAnswer', data); // Forward to the bot for evaluation
     });
 
