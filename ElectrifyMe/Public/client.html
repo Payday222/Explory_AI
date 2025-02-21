@@ -207,44 +207,44 @@
         const socket = io('http://188.127.1.110:3005');
         let currentRoomCode = '';
 
-        // Log connection status
+        
         socket.on('connect', () => {
             console.log("[Client] Connected to room server");
         });
 
-        // Handle room joining
+        
         document.getElementById('joinRoom').onclick = () => {
             const roomCode = document.getElementById('roomCodeInput').value;
             console.log("[Client] Attempting to join room:", roomCode);
             socket.emit('joinRoom', roomCode);
         };
 
-        // Handle successful room join
+        
         socket.on('joinedRoom', (roomCode) => {
             console.log("[Client] Successfully joined room:", roomCode);
             currentRoomCode = roomCode;
             document.getElementById('status').innerText = `Joined Room: ${roomCode}`;
         });
 
-        // Handle room not found
+        
         socket.on('roomNotFound', () => {
  console.log("[Client] Room not found");
             document.getElementById('status').innerText = 'Room not found. Please check the code.';
         });
 
-        // Handle incoming messages
+        
         socket.on('receiveMessage', (data) => {
             console.log("[Client] Received message:", data);
 
             const { from, message, type } = data;
 
             if (type === 'testUpdate') {
-                // Handle test update message
+                
                 console.log("[Client] Received test update:", message);
                 const testDiv = document.getElementById('test');
-                testDiv.innerText = message; // Update the test div
+                testDiv.innerText = message; 
             } else {
-                // Handle regular chat message
+                
                 console.log("[Client] Received regular message:", message);
                 const messageDiv = document.createElement('div');
                 messageDiv.innerText = `Admin: ${message}`;
@@ -252,7 +252,7 @@
             }
         });
 
-        // Handle sending messages
+        
         document.getElementById('sendMessage').onclick = () => {
             const message = document.getElementById('messageInput').value;
             const name = document.getElementById('nameInput').value;
@@ -269,21 +269,21 @@
             
         
 
-        // Handle disconnection
+   
         socket.on('disconnect', () => {
             console.log("[Client] Disconnected from room server");
         });
 
-        // Retrieve the message from localStorage when the page loads
+    
         document.addEventListener('DOMContentLoaded', () => {
             const message = localStorage.getItem('clientResponse');
             if (message) {
                 const testDiv = document.getElementById('test');
-                testDiv.innerText = message; // Update the test div with the message
-                localStorage.removeItem('clientResponse'); // Clear the message after retrieving it
+                testDiv.innerText = message; 
+                localStorage.removeItem('clientResponse'); 
             }
-           // Assuming this is part of your existing script
-            const relaysocket = io('http://188.127.1.110:3008'); // Create the socket connection once
+           
+            const relaysocket = io('http://188.127.1.110:3008');
 
             document.getElementById('sendans').onclick = () => {
                 console.log("sendans clicked");
@@ -291,9 +291,11 @@
                 console.log(answers);
                 if (currentRoomCode) {
                     console.log("[Client] Sending answers to host:", answers);
-                    relaysocket.emit('sendAnswers', { roomCode: currentRoomCode, answers , clientID: socket.id}); // Fixed typo: 'asnwers' to 'answers'
-                    document.getElementById('sendAnswersArea').value = ''; // Clear the textarea after sending
-                    console.log('html client id:', clientID);
+
+                    const clientID = socket.id;
+                    relaysocket.emit('sendAnswers', { roomCode: currentRoomCode, answers}, clientID);
+                    document.getElementById('sendAnswersArea').value = ''; 
+                    console.log('socketID: ', clientID);
                 } else {
                     console.log("[Client] No room joined. Cannot send answers.");
                 }
