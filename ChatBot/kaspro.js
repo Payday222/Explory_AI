@@ -103,7 +103,7 @@ async function getChatCompletion(prompt, socket, clientID) {
       clientResponse = response;
     }
 
-    socket.emit('botResponseClient', clientResponse);
+    io.emit('botResponseClient', clientResponse);
     socket.emit('botResponseHost', hostResponse);
     
     
