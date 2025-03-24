@@ -301,7 +301,7 @@
                     console.log("[Client] Sending answers to host:", answers);
 
                     
-                    io.emit('sendAnswers', { roomCode: currentRoomCode, answers, clientID});
+                socket.emit('sendAnswers', { roomCode: currentRoomCode, answers, clientID});
                     document.getElementById('sendAnswersArea').value = ''; 
                 } else {
                     console.log("[Client] No room joined. Cannot send answers.");
