@@ -8,7 +8,7 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
     cors: {
-        origin: "http://188.127.1.110:3005", // Allow requests from this origin
+        origin: "http://188.127.1.110:3007", // Allow requests from this origin
         methods: ["GET", "POST"],
         allowedHeaders: ["my-custom-header"],
         credentials: true

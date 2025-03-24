@@ -118,6 +118,6 @@ async function getChatCompletion(prompt, socket, clientID) {
 
 
 // Start the server
-server.listen(3005, () => {
+server.listen(3007, () => {
   console.log("Bot server running on port 3007");
 });

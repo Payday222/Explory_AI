@@ -190,7 +190,7 @@
         let nameSocketId = new Map();
     
         // Create separate socket connections
-        const socket = io('http://188.127.1.110:3005'); // Connect to the room handling server
+        const socket = io('http://188.127.1.110:3007'); // Connect to the room handling server
     
         // Room handling logic
         socket.on('connect', () => {
@@ -273,7 +273,7 @@
                 console.log('Please enter a valid socket ID and message.');
             }
         };
-    
+        const commsocket = io('http://188.127.1.110:3006')
         // AI Submission
         document.getElementById('submitPrompt').addEventListener('click', () => {
             let topicString = document.getElementById('textareaTopic').value;
