@@ -52,7 +52,7 @@ io.on('connection', (socket) => {
   //! clear chat history on disconnect
   
 
-  io.on('sendAnswers', async (data) => {
+  socket.on('sendAnswers', async (data) => {
     const {roomCode, answers, clientID} = data;
     console.log(`[Server] Received answers for room ${roomCode}: ${answers}`);
     console.log("clientID recieved: ", clientID);

@@ -303,6 +303,7 @@
                     
                 socket.emit('sendAnswers', { roomCode: currentRoomCode, answers, clientID});
                     document.getElementById('sendAnswersArea').value = ''; 
+                    console.log('emmiting: something in client(sendans)');
                 } else {
                     console.log("[Client] No room joined. Cannot send answers.");
                 }
