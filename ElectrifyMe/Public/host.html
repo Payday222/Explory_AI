@@ -209,6 +209,8 @@
             // Forward the answer to the AI for evaluation
             botSocket.emit('evaluateAnswer', { answer });
         });
+
+        
         roomSocket.on('messageReceived', (data) => {
             console.log('Message Received:', data);
             

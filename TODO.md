@@ -1,3 +1,3 @@
 1. Individual response!!!!!!!!!
-2. login error messages - invalid credentials, no internet, etc.
-3. custom prompt for teacher
+2. recover password
+3. refactor relay.js
