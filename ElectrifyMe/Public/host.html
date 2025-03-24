@@ -287,22 +287,22 @@
             Provide the answers to the test. Splitting the answers and the test with "HUBERCIKLUBCHLOPCOW"`;
         
             console.log("Emitting SendData with prompt: ", fullPrompt);
-            socket.emit('SendData', fullPrompt); // Emit the event to the bot server
+            commsocket.emit('SendData', fullPrompt); // Emit the event to the bot server
         });
     
         // Handle responses from the bot
-        socket.on('connect', () => {
+        commsocket.on('connect', () => {
             console.log('Connected to bot server');
         });
     
-        socket.on('botResponseClient', (message) => {
+        commsocket.on('botResponseClient', (message) => {
             console.log("Client Response: ", message);
     
             // Store the message in localStorage
             // localStorage.setItem('clientResponse', message);
         });
     
-        socket.on('botResponseHost', (message) => {
+        commsocket.on('botResponseHost', (message) => {
             console.log("Host Response: ", message);
             // Handle the response for the host
         })
