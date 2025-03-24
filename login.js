@@ -102,4 +102,40 @@ loginButton.addEventListener('click', () => {
     }
 });
 
+passReset = document.getElementById('forgot-password');
 
+passReset.addEventListener('click', () => {
+
+    const email = "";
+    if(!validateEmail) {
+        popup.textContent = "Please insert your email first";
+        popup.style.height = "100px";
+        popup.style.width = "400px";
+        popup.style.border = "none";
+        popup.style.borderRadius = "10px";
+        popup.style.lineHeight = "100px";
+        popup.style.backgroundColor = "rgb(255, 101, 101)";
+        popup.style.position = "absolute";
+        popup.style.textAlign = "center";
+        setTimeout(function() {
+            popup.style.height = "";
+            popup.style.width = "";
+            popup.style.border = "";
+            popup.style.borderRadius = "";
+            popup.style.lineHeight = "";
+            popup.style.backgroundColor = "";
+            popup.style.position = "";
+            popup.style.textAlign = "";
+        }, 2000);
+    } else {
+        const email = document.getElementById('email').value;
+    }
+    
+    fetch('http://188.127.1.110:3001/send-pass-reset', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email: email })
+    });
+});

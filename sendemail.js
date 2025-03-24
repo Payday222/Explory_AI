@@ -87,6 +87,15 @@ app.get('/get-cookies', (req, res) => {
     }
 });
 
+app.post('/send-pass-reset', (req, res) => {
+    const {email} = req.body;
+const mailOptions = {
+    from: 'learnlaboffice.ai@gmail.com',
+            to: email,
+            subject: 'Register your LearnLabsAI account',
+            html: `<p>Hello, glad to have you on board! If you have forgotten your password click: <a href="http://188.127.1.110:3008">here</a> to reset your password.</p>`
+}
+});
 // Start the server
 app.listen(3001, () => {
     console.log('Server is running on port 3001');
