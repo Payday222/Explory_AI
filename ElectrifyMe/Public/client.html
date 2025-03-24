@@ -285,7 +285,7 @@
             //      testDiv.innerText = message
             //  })
            
-            const socket = io('http://188.127.1.110:3007');
+            const commsocket = io('http://188.127.1.110:3007');
 
             document.getElementById('sendans').onclick = () => {
                 console.log("sendans clicked");
@@ -301,7 +301,7 @@
                     console.log("[Client] Sending answers to host:", answers);
 
                     
-                socket.emit('sendAnswers', { roomCode: currentRoomCode, answers, clientID});
+                commsocket.emit('sendAnswers', { roomCode: currentRoomCode, answers, clientID});
                     document.getElementById('sendAnswersArea').value = ''; 
                     console.log('emmiting: something in client(sendans)');
                 } else {
