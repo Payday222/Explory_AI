@@ -103,9 +103,9 @@ async function getChatCompletion(prompt, socket, clientID) {
       clientResponse = response;
     }
 
-    io.emit('botResponseClient', clientResponse);
+    socket.emit('botResponseClient', clientResponse);
     socket.emit('botResponseHost', hostResponse);
-    
+    console.log('emmiting host and client botresponse', clientResponse, hostResponse);
     
     chatHistory.push(['user', prompt]);
     chatHistory.push(['assistant', response]);

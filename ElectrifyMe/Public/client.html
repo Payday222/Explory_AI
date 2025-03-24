@@ -276,15 +276,6 @@
 
     
         document.addEventListener('DOMContentLoaded', () => {
-            
-            // const botSocket = io('http://188.127.1.110:3007');
-
-            //  botSocket.on('botResponseClient', (message) => {
-            //     console.log('botResponseClient inside DOM event Listener')
-            //      const testDiv = document.getElementById('test');
-            //      testDiv.innerText = message
-            //  })
-           
             const commsocket = io('http://188.127.1.110:3007');
 
             document.getElementById('sendans').onclick = () => {
@@ -294,42 +285,39 @@
                 const clientID = socket.id;
                 console.log('socketID: ', clientID);
 
-                commsocket.on('connect', () =>{ 
-                    if(currentRoomCode) {
-                        console.log('socketID: ', clientID);
 
-                        console.log("[Client] Sending answers to host:", answers);
+                if (currentRoomCode) {
+                    console.log('socketID: ', clientID);
 
-                        commsocket.emit('sendAnswers', { roomCode: currentRoomCode, answers, clientID});
+                    console.log("[Client] Sending answers to host:", answers);
+
+                    
+                commsocket.emit('sendAnswers', { roomCode: currentRoomCode, answers, clientID});
                     document.getElementById('sendAnswersArea').value = ''; 
                     console.log('emmiting: something in client(sendans)');
-                    }  else {
+                } else {
                     console.log("[Client] No room joined. Cannot send answers.");
                 }
-                commsocket.on('EvaluationResponse', (data) => {
+            };
+
+          commsocket.on('EvaluationResponse', (data) => {
     console.log('Received EvaluationResponse:', data);
     if(data.clientID == socket.id) {
         console.log('id from response matches id of this socket');
     document.getElementById('answerfrombot').innerText = data.response;
     }
-          });
+          })
+});
 
-          commsocket.on('botResponseClient', (message) => {
+commsocket.on('connect', () => {
+    console.log('[Client]: Connected to botsocket');
+});
+
+commsocket.on('botResponseClient', (message) => {
                 console.log('botResponseClient outside DOM event Listener')
                  const testDiv = document.getElementById('test');
                  testDiv.innerText = message
              });
-                });
-            };
-
-   
-});
-
-commsocket.on('connect', () => {
-    console.log('[Client]: Connected to commsocket');
-});
-
-
         
     </script>
 </body>
