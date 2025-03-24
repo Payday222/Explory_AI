@@ -307,17 +307,18 @@
     document.getElementById('answerfrombot').innerText = data.response;
     }
           })
+          commsocket.on('botResponseClient', (message) => {
+                console.log('botResponseClient outside DOM event Listener')
+                 const testDiv = document.getElementById('test');
+                 testDiv.innerText = message
+             });
 });
 
 commsocket.on('connect', () => {
     console.log('[Client]: Connected to botsocket');
 });
 
-commsocket.on('botResponseClient', (message) => {
-                console.log('botResponseClient outside DOM event Listener')
-                 const testDiv = document.getElementById('test');
-                 testDiv.innerText = message
-             });
+
         
     </script>
 </body>
