@@ -40,7 +40,7 @@ io.on('connection', (socket) => {
   socket.emit('testMessage', "Server is good");
 
   // Listen for 'SendData' events from clients
-  io.on('SendData', async (fullPrompt) => {
+  socket.on('SendData', async (fullPrompt) => {
     console.log('Prompt from client:', fullPrompt);
     await getChatCompletion(fullPrompt, socket);
   });
