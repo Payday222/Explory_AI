@@ -40,7 +40,7 @@ io.on('connection', (socket) => {
   socket.emit('testMessage', "Server is good");
 
   // Listen for 'SendData' events from clients
-  socket.on('SendData', async (fullPrompt) => {
+  io.on('SendData', async (fullPrompt) => {
     console.log('Prompt from client:', fullPrompt);
     await getChatCompletion(fullPrompt, socket);
   });
@@ -118,6 +118,6 @@ async function getChatCompletion(prompt, socket, clientID) {
 
 
 // Start the server
-server.listen(3007, () => {
+server.listen(3005, () => {
   console.log("Bot server running on port 3007");
 });

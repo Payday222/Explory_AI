@@ -285,7 +285,7 @@
             //      testDiv.innerText = message
             //  })
            
-            const relaysocket = io('http://188.127.1.110:3008');
+            const socket = io('http://188.127.1.110:3005');
 
             document.getElementById('sendans').onclick = () => {
                 console.log("sendans clicked");
@@ -309,7 +309,7 @@
                 }
             };
 
-          relaysocket.on('EvaluationResponse', (data) => {
+          socket.on('EvaluationResponse', (data) => {
     console.log('Received EvaluationResponse:', data);
     if(data.clientID == socket.id) {
         console.log('id from response matches id of this socket');
@@ -317,12 +317,12 @@
     }
           })
 });
-const botSocket = io('http://188.127.1.110:3007');
-botSocket.on('connect', () => {
+
+socket.on('connect', () => {
     console.log('[Client]: Connected to botsocket');
 });
 
-botSocket.on('botResponseClient', (message) => {
+socket.on('botResponseClient', (message) => {
                 console.log('botResponseClient outside DOM event Listener')
                  const testDiv = document.getElementById('test');
                  testDiv.innerText = message

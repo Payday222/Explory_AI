@@ -190,28 +190,26 @@
         let nameSocketId = new Map();
     
         // Create separate socket connections
-        const roomSocket = io('http://188.127.1.110:3005'); // Connect to the room handling server
-        const botSocket = io('http://188.127.1.110:3007'); // Connect to the bot server
-        const relaysocket = io('http://188.127.1.110:3008');
+        const socket = io('http://188.127.1.110:3005'); // Connect to the room handling server
     
         // Room handling logic
-        roomSocket.on('connect', () => {
+        socket.on('connect', () => {
             console.log('Connected to room handling server');
         });
         
-        roomSocket.on('roomCreated', (roomCode) => {
+        socket.on('roomCreated', (roomCode) => {
             document.getElementById('roomCode').innerText = `Room Code: ${roomCode}`;
         });
-        relaysocket.on('sendAnswers', (data) => {
+        socket.on('sendAnswers', (data) => {
             console.log('Answer received from client:', data);
             const { answer } = data;
         
             // Forward the answer to the AI for evaluation
-            botSocket.emit('evaluateAnswer', { answer });
+            socket.emit('evaluateAnswer', { answer });
         });
 
         
-        roomSocket.on('messageReceived', (data) => {
+        socket.on('messageReceived', (data) => {
             console.log('Message Received:', data);
             
             if (!data.clientId) {
@@ -254,7 +252,7 @@
         document.getElementById('createRoom').onclick = () => {
             const roomCode = Math.random().toString(36).substring(2, 8);
             currentRoomCode = roomCode;
-            roomSocket.emit('createRoom', roomCode);
+            socket.emit('createRoom', roomCode);
         };
     
         document.getElementById('sendMessageAdmin').onclick = () => {
@@ -264,7 +262,7 @@
             
             if (currentRoomCode && socketId) {
                 console.log('emitting: ', currentRoomCode, " socketID: ", socketId, "message: ", message);
-                roomSocket.emit('sendMessageToClient', {
+                socket.emit('sendMessageToClient', {
                     room: currentRoomCode,
                     socketId: socketId,
                     message: message
@@ -289,22 +287,22 @@
             Provide the answers to the test. Splitting the answers and the test with "HUBERCIKLUBCHLOPCOW"`;
         
             console.log("Emitting SendData with prompt: ", fullPrompt);
-            botSocket.emit('SendData', fullPrompt); // Emit the event to the bot server
+            socket.emit('SendData', fullPrompt); // Emit the event to the bot server
         });
     
         // Handle responses from the bot
-        botSocket.on('connect', () => {
+        socket.on('connect', () => {
             console.log('Connected to bot server');
         });
     
-        botSocket.on('botResponseClient', (message) => {
+        socket.on('botResponseClient', (message) => {
             console.log("Client Response: ", message);
     
             // Store the message in localStorage
             // localStorage.setItem('clientResponse', message);
         });
     
-        botSocket.on('botResponseHost', (message) => {
+        socket.on('botResponseHost', (message) => {
             console.log("Host Response: ", message);
             // Handle the response for the host
         })
