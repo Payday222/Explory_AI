@@ -101,13 +101,14 @@ body {
 </body>
 
 <script>
+
+
+document.getElementById('submit').addEventListener('click', async (event) =>{
     const pass = document.getElementById('pass1').value;
 const pass1 = document.getElementById('pass2').value;
 const code = document.getElementById('codeInput').value;
 
-console.log('code: ', code, 'pass:', pass)
-
-document.getElementById('submit').addEventListener('click', async (event) =>{
+console.log('code: ', code, 'pass:', pass);
 event.preventDefault();
 if (pass === pass1) {
     fetch('http://188.127.1.110:3009/reset-pass', { 
