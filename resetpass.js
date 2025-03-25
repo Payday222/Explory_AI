@@ -16,18 +16,44 @@ const PORT = 3008;
 
 app.use(express.json());
 
-function sqlInsert(email, password, res) {
-     const conn = mysql.createConnection(config);
+// Function to update the user's password
+function sqlUpdatePassword(email, password, res) {
+    const conn = mysql.createConnection(config);
     
-        const sql = 'INSERT INTO users (pass) VALUES ( ?)';
-        const values = [password];
+    // Use the UPDATE statement to change the password for the user with the specified email
+    const sql = 'UPDATE users SET pass = ? WHERE email = ?';
+    const values = [password, email];
 
-        conn.query(sql, values, (err, result) => {
-            if(err) {
-                console.error("Error executing query:", err);
+    conn.query(sql, values, (err, result) => {
+        if (err) {
+            console.error("Error executing query:", err);
             res.status(500).json({ error: 'Error executing query', details: err.message });
             return;
-            }
-            console.log("Query successful", result);
-        })
+        }
+        
+        if (result.affectedRows === 0) {
+            // No rows were updated, meaning the email was not found
+            res.status(404).json({ error: 'User  not found' });
+            return;
+        }
+
+        console.log("Password updated successfully", result);
+        res.status(200).json({ message: 'Password updated successfully' });
+    });
+
+    // Close the connection
+    conn.end();
 }
+
+// Endpoint to handle password reset
+app.post('/resetpass', (req, res) => {
+    const { email, password } = req.body;
+
+    // Call the function to update the password
+    sqlUpdatePassword(email, password, res);
+});
+
+// Start the server
+app.listen(PORT, () => {
+    console.log(`Server is running on http://localhost:${PORT}`);
+});

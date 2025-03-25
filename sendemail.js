@@ -93,7 +93,7 @@ const mailOptions = {
     from: 'learnlaboffice.ai@gmail.com',
             to: email,
             subject: 'Register your LearnLabsAI account',
-            html: `<p>Hello, glad to have you on board! If you have forgotten your password click: <a href="http://188.127.1.110:3008">here</a> to reset your password.</p>`
+            html: `<p>Hello, glad to have you on board! If you have forgotten your password click: <a href="http://188.127.1.110:3008/resetpass.js">here</a> to reset your password.</p>`
 }
 });
 // Start the server
