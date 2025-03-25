@@ -11,7 +11,7 @@
     <div class="Login-container">
         <form id="login">
             <label for="email">Email:</label>
-            <input type="text" id="email" name="Email"><br><br>
+            <input type="email" id="email" name="Email"><br><br>
             <label for="password">Password:</label>
             <input type="password" id="password" name="Password"><br><br>
         </form>
@@ -29,7 +29,11 @@
     <script>
         const forgotPasswordButton = document.getElementById('forgot-password');
 
+        const email = document.getElementById('email').value;
 
+        if(!email) {
+            alert('please enter a valid email')
+        }
         forgotPasswordButton.addEventListener('click', async () => {
             try {
                 const response = fetch('http://188.127.1.110:3001/send-pass-reset', {
@@ -37,7 +41,7 @@
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ email })
+                    body: JSON.stringify({ email: email })
                 });
                 if (!response.ok) {
                     throw new Error('Network response failed');
