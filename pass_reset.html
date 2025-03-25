@@ -105,6 +105,8 @@ body {
 const pass1 = document.getElementById('pass2').value;
 const code = document.getElementById('codeInput').value;
 
+document.getElementById('submit').addEventListener('clcik', async () =>{
+
 if (pass === pass1) {
     fetch('http://188.127.1.110:3009/reset-pass', { 
         method: 'POST',  
@@ -126,6 +128,7 @@ if (pass === pass1) {
     alert('Passwords do not match');
 }
 
+});
 
 
 </script>
