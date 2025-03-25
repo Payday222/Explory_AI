@@ -31,22 +31,14 @@
 
 
         forgotPasswordButton.addEventListener('click', async () => {
-            const email = document.getElementById('email').value; // Make sure this is the correct field for the user's email
-        
-            if (!email) {
-                alert('Please enter your email address.');
-                return;
-            }
-        
             try {
                 const response = await fetch('http://188.127.1.110:3001/send-pass-reset', {
                     method: "POST",
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ email })  // Send email in request body
+                    body: JSON.stringify({ email })
                 });
-        
                 if (!response.ok) {
                     throw new Error('Network response failed');
                 }
@@ -59,6 +51,7 @@
                 alert('There was an error sending the reset password email. Please try again.');
             }
         });
+        
         
     </script>
 </body>
