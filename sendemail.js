@@ -142,7 +142,6 @@ app.post('/reset-pass', async (req, res) => {
         return res.status(200).json({ message: 'User verified successfully', result: updateResult })
     } else {
         console.log('ERROR: No users found with that email');
-        alert('Your email was not found in our database, please create an account');
         return res.status(404).json({ message: 'User not found.' });
     }
     });

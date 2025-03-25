@@ -105,6 +105,8 @@ body {
 const pass1 = document.getElementById('pass2').value;
 const code = document.getElementById('codeInput').value;
 
+console.log('code: ', code, 'pass:', pass)
+
 document.getElementById('submit').addEventListener('click', async () =>{
 
 if (pass === pass1) {
@@ -113,7 +115,7 @@ if (pass === pass1) {
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ code, pass })
+        body: JSON.stringify({ code: code, pass: pass }),
     })
     .then(response => response.json())
     .then(data => {
