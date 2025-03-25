@@ -25,38 +25,28 @@
     <div id="popup"></div>
     
     <script src="login.js"></script>
-
-    <script>
-        const forgotPasswordButton = document.getElementById('forgot-password');
-
-        const email = document.getElementById('email').value;
-
-        if(!email) {
-            alert('please enter a valid email')
-        }
-        forgotPasswordButton.addEventListener('click', async () => {
-            try {
-                const response = fetch('http://188.127.1.110:3001/send-pass-reset', {
-                    method: "POST",
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ email: email })
-                });
-                if (!response.ok) {
-                    throw new Error('Network response failed');
-                }
-        
-                const data = response.json();
-                console.log('Success: ', data);
-                alert('Email sent successfully, check your inbox!');
-            } catch (error) {
-                console.error('Error: ', error);
-                alert('There was an error sending the reset password email. Please try again.');
-            }
-        });
-        
-        
-    </script>
 </body>
 </html>
+
+<script>
+    document.getElementById('forgot-password').addEventListener('click', () => {
+        window.open('pass_reset.html');
+
+        fetch('http://188.127.1.110:3001/reset-pass', { 
+        method: 'POST',  
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ email, pass })
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Success:', data);
+        alert('Password reset successful');
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Error resetting password');
+    });
+    });
+</script>

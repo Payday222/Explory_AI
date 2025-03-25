@@ -131,11 +131,4 @@ passReset.addEventListener('click', () => {
         const email = document.getElementById('email').value;
     }
     
-    fetch('http://188.127.1.110:3001/send-pass-reset', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email: email })
-    });
-});
+   });
