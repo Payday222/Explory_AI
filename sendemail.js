@@ -24,7 +24,7 @@ const config = {
     port: process.env.DB_PORT
 };
 const conn = mysql.createConnection(config);
-const authCode = null;
+let authCode = null;
 function getUserIdByEmail(email) {
 
     return new Promise((resolve, reject) => {

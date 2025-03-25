@@ -107,8 +107,8 @@ const code = document.getElementById('codeInput').value;
 
 console.log('code: ', code, 'pass:', pass)
 
-document.getElementById('submit').addEventListener('click', async () =>{
-
+document.getElementById('submit').addEventListener('click', async (event) =>{
+event.preventDefault();
 if (pass === pass1) {
     fetch('http://188.127.1.110:3009/reset-pass', { 
         method: 'POST',  
