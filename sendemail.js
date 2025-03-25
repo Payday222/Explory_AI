@@ -98,8 +98,6 @@ app.post('/send-pass-reset', (req, res) => {
     }
     
     // Send password reset email with token
-    app.post('/send-pass-reset', (req, res) => {
-        const { email } = req.body;
     
         // Generate a reset token
         const resetToken = generateToken();
@@ -151,7 +149,6 @@ app.post('/send-pass-reset', (req, res) => {
     
         conn.end();
     });
-});
 
 // Start the server
 app.listen(3001, () => {
