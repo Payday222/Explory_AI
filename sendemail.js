@@ -23,9 +23,9 @@ const config = {
     database: process.env.DB_NAME,
     port: process.env.DB_PORT
 };
+const conn = mysql.createConnection(config);
 
 function getUserIdByEmail(email) {
-    const conn = mysql.createConnection(config);
 
     return new Promise((resolve, reject) => {
         const sql = 'SELECT id FROM users WHERE email = ? LIMIT 1';
@@ -106,11 +106,11 @@ app.post('/reset-pass', async (req, res) => {
 
     });
 
-    const authCode = crypto.randomBytes(6).toString('hex').slice(0, length);
+    const authCode = crypto.randomBytes(6).toString('hex').slice(0, 6);
     const mailOptions = {
         from: 'learnlaboffice.ai@gmail.com',
         to: email,
-        subject: 'Register your LearnLabsAI account',
+        subject: 'LearnLabs password reset',
         html: `<p>Hello! Here is the code for resetting your password</p><br><h3>${authCode}</h3><br><p>Please paste this code into the designated app input field. Happy Learning :)</p>`
     };
     const info = await transporter.sendMail(mailOptions);
