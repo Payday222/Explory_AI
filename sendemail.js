@@ -24,7 +24,7 @@ const config = {
     port: process.env.DB_PORT
 };
 const conn = mysql.createConnection(config);
-
+const authCode = null;
 function getUserIdByEmail(email) {
 
     return new Promise((resolve, reject) => {
@@ -106,7 +106,7 @@ app.post('/reset-pass', async (req, res) => {
 
     });
 
-    const authCode = crypto.randomBytes(6).toString('hex').slice(0, 6);
+    authCode = crypto.randomBytes(6).toString('hex').slice(0, 6);
     const mailOptions = {
         from: 'learnlaboffice.ai@gmail.com',
         to: email,
