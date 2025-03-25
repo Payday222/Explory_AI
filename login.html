@@ -29,11 +29,37 @@
     <script>
         const forgotPasswordButton = document.getElementById('forgot-password');
 
-    forgotPasswordButton.addEventListener('click', () => {
-    window.open('pass_reset.html', '_blank');
 
-    });
-
+        forgotPasswordButton.addEventListener('click', async () => {
+            const email = document.getElementById('email').value; // Make sure this is the correct field for the user's email
+        
+            if (!email) {
+                alert('Please enter your email address.');
+                return;
+            }
+        
+            try {
+                const response = await fetch('http://188.127.1.110:3001/send-pass-reset', {
+                    method: "POST",
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ email })  // Send email in request body
+                });
+        
+                if (!response.ok) {
+                    throw new Error('Network response failed');
+                }
+        
+                const data = await response.json();
+                console.log('Success: ', data);
+                alert('Email sent successfully, check your inbox!');
+            } catch (error) {
+                console.error('Error: ', error);
+                alert('There was an error sending the reset password email. Please try again.');
+            }
+        });
+        
     </script>
 </body>
 </html>
