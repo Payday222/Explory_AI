@@ -16,10 +16,12 @@ app.whenReady().then(() => {
             contextIsolation: true,
             webSecurity: true, // Keep enabled unless you have CORS issues
             partition: 'persist:no-cache',
+            
         },
     });
 
-
+   
+    
     const indexPath = path.join(__dirname, 'index.html');
 
     console.log(`Loading local HTML file: ${indexPath}`);

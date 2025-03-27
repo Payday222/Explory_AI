@@ -176,6 +176,8 @@
         <textarea name="topic" id="textareaTopic" placeholder="Input the topic of the test..."></textarea>
         <h4>Level of the test:</h4>
         <textarea name="level" id="textareaLevel" placeholder="input the Level of the test..."></textarea>
+        <h4>Upload File (optional):</h4>
+        <input type="file" id="fileInput" accept=".txt"/>
         <h4>Test Structure</h4>
         <textarea name="structure" id="textareaSpare" placeholder="input the test structure - what would you like the test to look like..."></textarea>
         <button id="submitPrompt">Submit Prompt!</button>
@@ -279,15 +281,26 @@
             let topicString = document.getElementById('textareaTopic').value;
             let levelString = document.getElementById('textareaLevel').value;
             let structureString = document.getElementById('textareaSpare').value;
-        
-            let fullPrompt = `Create a test on the topic of: ${topicString}, 
+            if (fileInput.files.length > 0) {
+            const selectedFile = fileInput.files[0];
+            const fileContent = event.target.result;
+
+            const textData = fileContent.split('\n').filter(line => line.trim() !== '');
+            const context = textData.join("\n");
+            }else{
+                const context = "";
+            }
+                let fullPrompt = `Create a test on the topic of: ${topicString}, 
             with the difficulty appropriate for the level of: ${levelString}, 
             make it so that the test will be structured accordingly: ${structureString}.
             Furthermore, ensure all information in the test are merithorically correct.
             Provide the answers to the test. Splitting the answers and the test with "HUBERCIKLUBCHLOPCOW"`;
+            
+        
+            
         
             console.log("Emitting SendData with prompt: ", fullPrompt);
-            commsocket.emit('SendData', fullPrompt); // Emit the event to the bot server
+            commsocket.emit('SendData', fullPrompt,context); // Emit the event to the bot server
         });
     
         // Handle responses from the bot
