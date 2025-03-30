@@ -27,7 +27,7 @@ app.whenReady().then(() => {
                 { role: 'reload' ,accelerator: 'F5'},           
                 { role: 'toggledevtools',accelerator: 'F12'},
                 { role: 'zoomIn'},
-                { role: 'zoomOut'},
+                { role: 'zoomOut', accelerator: 'CmdOrCtrl++'},
                 { role: 'resetZoom'}   
             ],
         },
