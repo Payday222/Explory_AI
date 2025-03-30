@@ -282,24 +282,11 @@
             let levelString = document.getElementById('textareaLevel').value;
             let structureString = document.getElementById('textareaSpare').value;
             let fileInputM = document.getElementById('fileInput');
-            let context = "";
+            let context = "no context is provided";
 
 
-            // let fullPrompt = `Create a test on the topic of: ${topicString}, 
-            // with the difficulty appropriate for the level of: ${levelString}, 
-            // make it so that the test will be structured accordingly: ${structureString}.
-            // Furthermore, ensure all information in the test are merithorically correct.
-            // Provide the answers to the test. Splitting the answers and the test with "HUBERCIKLUBCHLOPCOW"`;
-            let fullPrompt = `Here is some important information:
-
-            ${context}
-
-            Now create a test on the topic of: ${topicString}, 
-            with the difficulty appropriate for the level of: ${levelString}, 
-            and make it structured accordingly: ${structureString}.
-
-            Ensure all the information in the test is correct based on the context provided.
-            Provide the answers to the test. Split the answers and the test with "HUBERCIKLUBCHLOPCOW".`;
+            
+            
 
             if (fileInputM.files.length > 0) {
             const selectedFile = fileInputM.files[0];
@@ -313,6 +300,17 @@
             context = textData.join("\n");
             
             console.log(context);
+            
+            let fullPrompt = `Here is some important information:
+
+            ${context}
+
+            Now create a test on the topic of: ${topicString}, 
+            with the difficulty appropriate for the level of: ${levelString}, 
+            and make it structured accordingly: ${structureString}.
+
+            Ensure all the information in the test is correct based on the context.
+            Provide the answers to the test. Split the answers and the test with "HUBERCIKLUBCHLOPCOW".`;
 
             console.log("Emitting SendData with prompt: ", fullPrompt);
             commsocket.emit('SendData', fullPrompt,context); 
@@ -323,7 +321,17 @@
              reader.readAsText(selectedFile);
             }else{
                 console.log("The content is empty");
+                let fullPrompt = `
+
+                Create a test on the topic of: ${topicString}, 
+                with the difficulty appropriate for the level of: ${levelString}, 
+                and make it structured accordingly: ${structureString}.
+                Provide the answers to the test. Split the answers and the test with "HUBERCIKLUBCHLOPCOW".`;
+
                 console.log("Emitting SendData with prompt: ", fullPrompt);
+
+
+
                 commsocket.emit('SendData', fullPrompt,context); // Emit the event to the bot server
             }
         });
