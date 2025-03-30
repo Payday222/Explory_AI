@@ -285,11 +285,21 @@
             let context = "";
 
 
-            let fullPrompt = `Create a test on the topic of: ${topicString}, 
+            // let fullPrompt = `Create a test on the topic of: ${topicString}, 
+            // with the difficulty appropriate for the level of: ${levelString}, 
+            // make it so that the test will be structured accordingly: ${structureString}.
+            // Furthermore, ensure all information in the test are merithorically correct.
+            // Provide the answers to the test. Splitting the answers and the test with "HUBERCIKLUBCHLOPCOW"`;
+            let fullPrompt = `Here is some important information:
+
+            ${context}
+
+            Now create a test on the topic of: ${topicString}, 
             with the difficulty appropriate for the level of: ${levelString}, 
-            make it so that the test will be structured accordingly: ${structureString}.
-            Furthermore, ensure all information in the test are merithorically correct.
-            Provide the answers to the test. Splitting the answers and the test with "HUBERCIKLUBCHLOPCOW"`;
+            and make it structured accordingly: ${structureString}.
+
+            Ensure all the information in the test is correct based on the context provided.
+            Provide the answers to the test. Split the answers and the test with "HUBERCIKLUBCHLOPCOW".`;
 
             if (fileInputM.files.length > 0) {
             const selectedFile = fileInputM.files[0];
