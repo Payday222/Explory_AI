@@ -22,6 +22,10 @@ app.whenReady().then(() => {
 
     const menu = Menu.buildFromTemplate([
         {
+            label: 'Quit',
+            click: () => app.quit(), // Clicking this quits the app
+        },
+        {
             label: 'View',
             submenu: [
                 { role: 'reload' ,accelerator: 'F5'},           
@@ -31,10 +35,7 @@ app.whenReady().then(() => {
                 { role: 'resetZoom'}   
             ],
         },
-        {
-            label: 'Quit',
-            click: () => app.quit(), // Clicking this quits the app
-        },
+        
     ]);
 
     Menu.setApplicationMenu(menu);
