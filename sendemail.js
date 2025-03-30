@@ -5,6 +5,8 @@ const dotenv = require('dotenv');
 const mysql = require('mysql2');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
+const crypto = require('crypto');
+const { Console } = require('console');
 
 dotenv.config({ path: './db.env' });
 
@@ -21,9 +23,9 @@ const config = {
     database: process.env.DB_NAME,
     port: process.env.DB_PORT
 };
-
+const conn = mysql.createConnection(config);
+let authCode = null;
 function getUserIdByEmail(email) {
-    const conn = mysql.createConnection(config);
 
     return new Promise((resolve, reject) => {
         const sql = 'SELECT id FROM users WHERE email = ? LIMIT 1';
@@ -87,7 +89,63 @@ app.get('/get-cookies', (req, res) => {
     }
 });
 
-// Start the server
+app.post('/reset-pass', async (req, res) => {
+    const { email } = req.body;
+    
+    if(!email) {
+        alert('email not passed to reset-pass endpoint');
+        return;
+    }
+    try {
+    const transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+            user: process.env.EMAIL_USER || 'learnlaboffice.ai@gmail.com',
+            pass: process.env.EMAIL_PASSWORD
+        }
+
+    });
+
+    authCode = crypto.randomBytes(6).toString('hex').slice(0, 6);
+    const mailOptions = {
+        from: 'learnlaboffice.ai@gmail.com',
+        to: email,
+        subject: 'LearnLabs password reset',
+        html: `<p>Hello! Here is the code for resetting your password</p><br><h3>${authCode}</h3><br><p>Please paste this code into the designated app input field. Happy Learning :)</p>`
+    };
+    const info = await transporter.sendMail(mailOptions);
+    console.log('Email sent:', info.response);
+    res.json({ message: 'Email sent successfully', response: info.response });
+
+    } catch (error) {
+        console.error('Error sending pass reset email:', error);
+        res.status(500).json({ error: error.message });
+    }
+    conn.connect((err) => {
+        if (err) {
+            console.error('Error connecting to the database:', err);
+            return;
+        }
+        console.log('Connected to the MySQL database!');
+    });
+
+    const query = "UPDATE users SET reset_token = ? WHERE email = ?";
+    const values = [authCode, email];
+    
+    conn.query(query, values, (err, results) => {
+        if(results.length > 0 ) {
+        if(err) {
+            console.log("Error updating database");
+            return res.status(500).json({ message: 'Error updating user.', error: err });
+        } 
+        console.log('User verified:', updateResult);
+        return res.status(200).json({ message: 'User verified successfully', result: updateResult })
+    } else {
+        console.log('ERROR: No users found with that email');
+        return res.status(404).json({ message: 'User not found.' });
+    }
+    });
+})
 app.listen(3001, () => {
     console.log('Server is running on port 3001');
 });

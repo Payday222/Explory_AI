@@ -4,12 +4,14 @@
     <meta charset="UTF-8">
     <title>LearnLabs - Login</title>
     <link id="styleSheet" rel="stylesheet" href="darkmode.css">
+
+    
 </head>
 <body>
     <div class="Login-container">
         <form id="login">
             <label for="email">Email:</label>
-            <input type="text" id="email" name="Email"><br><br>
+            <input type="email" id="email" name="Email"><br><br>
             <label for="password">Password:</label>
             <input type="password" id="password" name="Password"><br><br>
         </form>
@@ -17,8 +19,62 @@
         <button id="create-acc">Sign up</button>
         <button id="login-button">Log in</button>
         <p id="email-result"></p>
+        <h5>Forgot password?</h5>
+        <button id="forgot-password">Reset Password</button>
     </div>
+    <div id="popup"></div>
     
     <script src="login.js"></script>
 </body>
 </html>
+
+<script>
+    document.getElementById('forgot-password').addEventListener('click', async () => {
+    const email = document.getElementById('email').value;
+
+    if(email.length > 0) {
+        window.open('pass_reset.html');
+
+        await fetch('http://188.127.1.110:3001/reset-pass', { 
+            method: 'POST',  
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ email })
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Success:', data);
+            alert('Password reset successful');
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Error resetting password');
+        });
+    } else {
+       popup = document.getElementById('popup');
+
+       popup.textContent = "Please insert your email first";
+        popup.style.height = "100px";
+        popup.style.width = "400px";
+        popup.style.border = "none";
+        popup.style.borderRadius = "10px";
+        popup.style.lineHeight = "100px";
+        popup.style.backgroundColor = "rgb(255, 101, 101)";
+        popup.style.position = "absolute";
+        popup.style.textAlign = "center";
+        setTimeout(function() {
+            popup.textContent = "";
+            popup.style.height = "";
+            popup.style.width = "";
+            popup.style.border = "";
+            popup.style.borderRadius = "";
+            popup.style.lineHeight = "";
+            popup.style.backgroundColor = "";
+            popup.style.position = "";
+            popup.style.textAlign = "";
+        }, 2000);
+    }
+});
+
+</script>
