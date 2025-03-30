@@ -314,6 +314,7 @@
     if(data.clientID == socket.id) {
         console.log('id from response matches id of this socket');
     document.getElementById('answerfrombot').innerText = data.response;
+    document.getElementById('test').innerText = ""; //clear out the test div
     }
           })
           
