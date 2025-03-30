@@ -26,8 +26,8 @@ app.whenReady().then(() => {
             submenu: [
                 { role: 'reload' ,accelerator: 'F5'},           
                 { role: 'toggledevtools',accelerator: 'F12'},
-                { role: 'zoomIn'},
-                { role: 'zoomOut', accelerator: 'CmdOrCtrl++'},
+                { role: 'zoomIn',accelerator: 'CmdOrCtrl++'},
+                { role: 'zoomOut' },
                 { role: 'resetZoom'}   
             ],
         },
