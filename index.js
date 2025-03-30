@@ -20,7 +20,21 @@ app.whenReady().then(() => {
         },
     });
 
-   
+    const menu = Menu.buildFromTemplate([
+        {
+            label: 'View',
+            submenu: [
+                { role: 'reload' },           // Reload the app (Ctrl+R)
+                { role: 'toggledevtools' },   // Open DevTools (F12)
+            ],
+        },
+        {
+            label: 'Quit',
+            click: () => app.quit(), // Clicking this quits the app
+        },
+    ]);
+
+    Menu.setApplicationMenu(menu);
     
     const indexPath = path.join(__dirname, 'index.html');
 
@@ -29,7 +43,9 @@ app.whenReady().then(() => {
         console.error("Failed to load file:", err);
     });
 
-    mainWindow.webContents.openDevTools();
+
+
+    //mainWindow.webContents.openDevTools();
 
  
     ipcMain.handle('set-cookie', async (event, name, value) => {
