@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain, session } = require('electron');
+const { app, BrowserWindow, ipcMain, session, Menu } = require('electron');
 const path = require('path');
 
 let mainWindow;
@@ -24,8 +24,11 @@ app.whenReady().then(() => {
         {
             label: 'View',
             submenu: [
-                { role: 'reload' },           // Reload the app (Ctrl+R)
-                { role: 'toggledevtools' },   // Open DevTools (F12)
+                { role: 'reload' ,accelerator: 'F5'},           
+                { role: 'toggledevtools',accelerator: 'F12'},
+                { role: 'zoomIn'},
+                { role: 'zoomOut'},
+                { role: 'resetZoom'}   
             ],
         },
         {
@@ -45,7 +48,7 @@ app.whenReady().then(() => {
 
 
 
-    //mainWindow.webContents.openDevTools();
+    mainWindow.webContents.openDevTools();
 
  
     ipcMain.handle('set-cookie', async (event, name, value) => {
