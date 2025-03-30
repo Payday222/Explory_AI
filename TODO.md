@@ -1,3 +1,3 @@
-1. setup the server
-2. code AI
-3. sockets
+1. Individual response!!!!!!!!!
+2. recover password
+3. refactor relay.js
