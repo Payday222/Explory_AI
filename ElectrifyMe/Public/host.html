@@ -302,14 +302,17 @@
             const textData = fileContent.split('\n').filter(line => line.trim() !== '');
             context = textData.join("\n");
             
+            console.log(context);
+
             console.log("Emitting SendData with prompt: ", fullPrompt);
-            commsocket.emit('SendData', fullPrompt,context); // Emit the event to the bot server
+            commsocket.emit('SendData', fullPrompt,context); 
 
             }
 
             
              reader.readAsText(selectedFile);
             }else{
+                console.log("The content is empty");
                 console.log("Emitting SendData with prompt: ", fullPrompt);
                 commsocket.emit('SendData', fullPrompt,context); // Emit the event to the bot server
             }
