@@ -113,7 +113,6 @@
             border: none;
             margin-inline: 5px;
             padding: 10px;
-            color: white;
         }
         #textareaLevel {
             width: 95%;
@@ -123,7 +122,6 @@
             border: none;
             margin-inline: 5px;
             padding: 10px;
-            color: white;
         }
         #textareaSpare {
             width: 95%;
@@ -133,7 +131,6 @@
             border: none;
             margin-inline: 5px;
             padding: 10px;
-            color: white;
         }
         #submitPrompt {
             padding: 16px 128px;
@@ -176,8 +173,6 @@
         <textarea name="topic" id="textareaTopic" placeholder="Input the topic of the test..."></textarea>
         <h4>Level of the test:</h4>
         <textarea name="level" id="textareaLevel" placeholder="input the Level of the test..."></textarea>
-        <h4>Upload File (optional):</h4>
-        <input type="file" id="fileInput" accept=".txt"/>
         <h4>Test Structure</h4>
         <textarea name="structure" id="textareaSpare" placeholder="input the test structure - what would you like the test to look like..."></textarea>
         <button id="submitPrompt">Submit Prompt!</button>
@@ -192,26 +187,26 @@
         let nameSocketId = new Map();
     
         // Create separate socket connections
-        const socket = io('http://188.127.1.110:3005'); // Connect to the room handling server
+        const roomSocket = io('http://188.127.1.110:3005'); // Connect to the room handling server
+        const botSocket = io('http://188.127.1.110:3007'); // Connect to the bot server
+        const relaysocket = io('http://188.127.1.110:3008');
     
         // Room handling logic
-        socket.on('connect', () => {
-            console.log('Connected to socket handling server');
+        roomSocket.on('connect', () => {
+            console.log('Connected to room handling server');
         });
         
-        socket.on('roomCreated', (roomCode) => {
+        roomSocket.on('roomCreated', (roomCode) => {
             document.getElementById('roomCode').innerText = `Room Code: ${roomCode}`;
         });
-        socket.on('sendAnswers', (data) => {
+        relaysocket.on('sendAnswers', (data) => {
             console.log('Answer received from client:', data);
             const { answer } = data;
         
             // Forward the answer to the AI for evaluation
-            socket.emit('evaluateAnswer', { answer });
+            botSocket.emit('evaluateAnswer', { answer });
         });
-
-        
-        socket.on('messageReceived', (data) => {
+        roomSocket.on('messageReceived', (data) => {
             console.log('Message Received:', data);
             
             if (!data.clientId) {
@@ -254,7 +249,7 @@
         document.getElementById('createRoom').onclick = () => {
             const roomCode = Math.random().toString(36).substring(2, 8);
             currentRoomCode = roomCode;
-            socket.emit('createRoom', roomCode);
+            roomSocket.emit('createRoom', roomCode);
         };
     
         document.getElementById('sendMessageAdmin').onclick = () => {
@@ -264,7 +259,7 @@
             
             if (currentRoomCode && socketId) {
                 console.log('emitting: ', currentRoomCode, " socketID: ", socketId, "message: ", message);
-                socket.emit('sendMessageToClient', {
+                roomSocket.emit('sendMessageToClient', {
                     room: currentRoomCode,
                     socketId: socketId,
                     message: message
@@ -275,80 +270,46 @@
                 console.log('Please enter a valid socket ID and message.');
             }
         };
-        const commsocket = io('http://188.127.1.110:3007')
+    
         // AI Submission
         document.getElementById('submitPrompt').addEventListener('click', () => {
             let topicString = document.getElementById('textareaTopic').value;
             let levelString = document.getElementById('textareaLevel').value;
             let structureString = document.getElementById('textareaSpare').value;
-            let fileInputM = document.getElementById('fileInput');
-            let context = "no context is provided";
-
-
-            
-            
-
-            if (fileInputM.files.length > 0) {
-            const selectedFile = fileInputM.files[0];
-
-            const reader = new FileReader();
-
-        //! Test
-            reader.onload = function(event) {
-            const fileContent = event.target.result;
-            const textData = fileContent.split('\n').filter(line => line.trim() !== '');
-            context = textData.join("\n");
-            
-            console.log(context);
-            
-            let fullPrompt = `Here is some important information:
-
-            ${context}
-
-            Now create a test on the topic of: ${topicString}, 
+        
+            let fullPrompt = `Create a test on the topic of: ${topicString}, 
             with the difficulty appropriate for the level of: ${levelString}, 
-            and make it structured accordingly: ${structureString}.
-
-            Ensure all the information in the test is correct based on the context.
-            Provide the answers to the test. Split the answers and the test with "HUBERCIKLUBCHLOPCOW".`;
-
+            make it so that the test will be structured accordingly: ${structureString}.
+            Furthermore, ensure all information in the test are merithorically correct.
+            Provide the answers to the test. Splitting the answers and the test with "HUBERCIKLUBCHLOPCOW"`;
+        
             console.log("Emitting SendData with prompt: ", fullPrompt);
-            commsocket.emit('SendData', fullPrompt,context); 
-
-            }
-
-            
-             reader.readAsText(selectedFile);
-            }else{
-                console.log("The content is empty");
-                let fullPrompt = `
-
-                Create a test on the topic of: ${topicString}, 
-                with the difficulty appropriate for the level of: ${levelString}, 
-                and make it structured accordingly: ${structureString}.
-                Provide the answers to the test. Split the answers and the test with "HUBERCIKLUBCHLOPCOW".`;
-
-                console.log("Emitting SendData with prompt: ", fullPrompt);
-
-
-
-                commsocket.emit('SendData', fullPrompt,context); // Emit the event to the bot server
-            }
+            botSocket.emit('SendData', fullPrompt); // Emit the event to the bot server
         });
     
         // Handle responses from the bot
-        commsocket.on('connect', () => {
+        botSocket.on('connect', () => {
             console.log('Connected to bot server');
         });
     
-        commsocket.on('botResponseClient', (message) => {
+        botSocket.on('botResponseClient', (message) => {
             console.log("Client Response: ", message);
     
             // Store the message in localStorage
-            // localStorage.setItem('clientResponse', message);
+            localStorage.setItem('clientResponse', message);
+    
+            // Forward the client response to the client's test div
+            if (currentRoomCode) {
+                roomSocket.emit('sendMessageToClient', {
+                    room: currentRoomCode,
+                    socketId: 'all',
+                    message: message,
+                    type: 'testUpdate'
+                });
+            }
         });
     
-        commsocket.on('botResponseHost', (message) => {
+        botSocket.on('botResponseHost', (message) => {
             console.log("Host Response: ", message);
             // Handle the response for the host
         })

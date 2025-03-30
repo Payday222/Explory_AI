@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain, session, Menu } = require('electron');
+const { app, BrowserWindow, ipcMain, session } = require('electron');
 const path = require('path');
 
 let mainWindow;
@@ -16,30 +16,10 @@ app.whenReady().then(() => {
             contextIsolation: true,
             webSecurity: true, // Keep enabled unless you have CORS issues
             partition: 'persist:no-cache',
-            
         },
     });
 
-    const menu = Menu.buildFromTemplate([
-        {
-            label: 'Quit',
-            click: () => app.quit(), // Clicking this quits the app
-        },
-        {
-            label: 'View',
-            submenu: [
-                { role: 'reload' ,accelerator: 'F5'},           
-                { role: 'toggledevtools',accelerator: 'F12'},
-                { role: 'zoomIn',accelerator: 'CmdOrCtrl+='},
-                { role: 'zoomOut' },
-                { role: 'resetZoom'}   
-            ],
-        },
-        
-    ]);
 
-    Menu.setApplicationMenu(menu);
-    
     const indexPath = path.join(__dirname, 'index.html');
 
     console.log(`Loading local HTML file: ${indexPath}`);
