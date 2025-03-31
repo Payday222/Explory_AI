@@ -259,9 +259,9 @@
 
         
         document.getElementById('sendMessage').onclick = () => {
-            const message = document.getElementById('messageInput').value;
-            const name = document.getElementById('nameInput').value;
-            if (currentRoomCode) {
+            const message = document.getElementById('messageInput').value.trim();
+            const name = document.getElementById('nameInput').value.trim();
+            if (currentRoomCode && name !== "" && message != "") {
                 console.log("[Client] Sending message to room:", currentRoomCode);
                 socket.emit('sendMessage', { roomCode: currentRoomCode, message, name });
                 document.getElementById('messageInput').value = ''; 
