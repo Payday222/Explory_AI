@@ -22,7 +22,7 @@ const io = new Server(server, {
 // Serve static files from the 'public' directory
 app.use(express.static('public'));
 
-
+const roomsocket = io("http://188.127.1.110:3005");
 
 
 // Initialize OpenAI API client
@@ -46,6 +46,8 @@ io.on('connection', (socket) => {
     context = contexting;
     await getChatCompletion(fullPrompt, socket);
   });
+
+
   //! clear chat history on disconnect
   socket.on('disconnect', () => {
     console.log(`User ${socket.id} disconnected, clearing history`);
@@ -107,7 +109,7 @@ async function getChatCompletion(prompt, socket, clientID) {
     } else {
       clientResponse = response;
     } 
-    io.emit('botResponseClient', clientResponse);
+    roomsocket.emit('botResponseClient', clientResponse);
     socket.emit('botResponseHost', hostResponse);
     console.log('emmiting host and client botresponse', clientResponse, hostResponse);
     
