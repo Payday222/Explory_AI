@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+
+<head>
+    <title>Study Mode</title>
+
+    <style>
+
+    </style>
+</head>
+
+<body>
+    <div id="middle_panel">
+        <h3>Choose your preferred learning method</h3>
+        <button id="flashcards">Flashcards</button>
+        <button id="Article">Article</button>
+        <button id="bulletList">Bullet Points</button>
+        <button id="MindMap">Mind Map</button>
+        <button id="video">Video</button>
+        </button>
+    </div>
+</body>
+<script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script> <!--script for socket.io-->
+<script>
+
+    const socket = io("http://188.127.1.110:3009");
+
+    const flashcards = document.getElementById('flashcards');
+    const article = document.getElementById('article');
+    const bulletlist = document.getElementById('bulletList');
+    const mindMap = document.getElementById('MindMap');
+    const video = document.getElementById('video');
+    let type = "";
+    flashcards.addEventListener('click', () => {
+        type = "flashcards"
+        socket.emit('makeExercise', type);
+
+    });
+
+    article.addEventListener('click ', () => {
+        type = "article"
+        socket.emit('makeExercise', type);
+
+    });
+
+    bulletlist.addEventListener('click', () => {
+        type = "bulletPoints";
+        socket.emit('makeExercise', type);
+
+    });
+
+    mindMap.addEventListener('click ', () => {
+        type = "mindMap";
+        socket.emit('makeExercise', type);
+
+    }); 
+
+    video.addEventListener('click', () => {
+        type = "video";
+        socket.emit('makeExercise', type);
+    });
+</script>
