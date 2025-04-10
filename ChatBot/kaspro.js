@@ -4,8 +4,7 @@ const fs = require("fs");
 const express = require('express');
 const http = require('http');
 const { Server } = require("socket.io");
-const io = require("socket.io-client");
-
+const {io : clientIo } = require("socket.io-client");
 
 dotenv.config();
 
@@ -24,7 +23,7 @@ const io = new Server(server, {
 // Serve static files from the 'public' directory
 app.use(express.static('public'));
 
-const roomsocket = io("http://188.127.1.110:3005");
+const roomsocket = ClientIo("http://188.127.1.110:3005");
 
 
 // Initialize OpenAI API client
