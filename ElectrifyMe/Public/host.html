@@ -275,7 +275,8 @@
                 console.log('Please enter a valid socket ID and message.');
             }
         };
-        const commsocket = io('http://188.127.1.110:3007')
+        const commsocket = io('http://188.127.1.110:3007');
+
         // AI Submission
         document.getElementById('submitPrompt').addEventListener('click', () => {
             let topicString = document.getElementById('textareaTopic').value;
