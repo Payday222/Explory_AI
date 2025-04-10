@@ -108,6 +108,8 @@ async function getChatCompletion(prompt, socket, clientID) {
       clientResponse = response;
     } 
     io.emit('botResponseClient', clientResponse);
+    //use socket.to(roomcode) instead of io.emit
+    //send the roomcode with the test data and pass it along to getchatcompletion
     socket.emit('botResponseHost', hostResponse);
     console.log('emmiting host and client botresponse', clientResponse, hostResponse);
     
