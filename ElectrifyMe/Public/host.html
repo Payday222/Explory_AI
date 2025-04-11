@@ -190,7 +190,7 @@
         let nextAvailableDiv = 0; 
 
         let nameSocketId = new Map();
-    
+        let roomCode = "0000";
         // Create separate socket connections
         const socket = io('http://188.127.1.110:3005'); // Connect to the room handling server
     
@@ -252,7 +252,7 @@
         });
     
         document.getElementById('createRoom').onclick = () => {
-            const roomCode = Math.random().toString(36).substring(2, 8);
+            roomCode = Math.random().toString(36).substring(2, 8);
             currentRoomCode = roomCode;
             socket.emit('createRoom', roomCode);
         };
@@ -275,7 +275,8 @@
                 console.log('Please enter a valid socket ID and message.');
             }
         };
-        const commsocket = io('http://188.127.1.110:3007')
+        const commsocket = io('http://188.127.1.110:3007');
+
         // AI Submission
         document.getElementById('submitPrompt').addEventListener('click', () => {
             let topicString = document.getElementById('textareaTopic').value;
@@ -313,7 +314,7 @@
             Provide the answers to the test. Split the answers and the test with "HUBERCIKLUBCHLOPCOW".`;
 
             console.log("Emitting SendData with prompt: ", fullPrompt);
-            commsocket.emit('SendData', fullPrompt,context); 
+            commsocket.emit('SendData', fullPrompt,context, roomCode); 
 
             }
 

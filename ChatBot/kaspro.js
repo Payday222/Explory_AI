@@ -33,7 +33,7 @@ const openai = new OpenAI({
 // Store chat history
 const chatHistory = [];
 let context = "";
-
+let roomcode = "codecode";
 
 // Handle socket connections
 io.on('connection', (socket) => {
@@ -41,10 +41,11 @@ io.on('connection', (socket) => {
   socket.emit('testMessage', "Server is good");
 
   // Listen for 'SendData' events from clients
-  socket.on('SendData', async (fullPrompt,contexting) => {
+  socket.on('SendData', async (fullPrompt,contexting, roomCode) => {
     console.log('Prompt from client:', fullPrompt);
     context = contexting;
-    await getChatCompletion(fullPrompt, socket);
+    roomcode = roomCode;
+    await getChatCompletion(fullPrompt, socket, roomCode);
   });
   //! clear chat history on disconnect
   socket.on('disconnect', () => {
@@ -70,12 +71,12 @@ io.on('connection', (socket) => {
 
 
 
-async function getChatCompletion(prompt, socket, clientID) {
+async function getChatCompletion(prompt, socket, roomCode) {
   const messages = chatHistory.map(([role, content]) => ({
     role,
     content,
   }));
-
+  const roomCode = roomCode;
    
   messages.push({ role: 'user', content: prompt });
 
@@ -107,9 +108,9 @@ async function getChatCompletion(prompt, socket, clientID) {
     } else {
       clientResponse = response;
     } 
-    io.emit('botResponseClient', clientResponse);
+    io.to(roomCode).emit('botResponseClient', clientResponse);
     //use socket.to(roomcode) instead of io.emit
-    //send the roomcode with the test data and pass it along to getchatcompletion
+    //send the roomcode with the test data and pass it along to getchatcompletion 
     socket.emit('botResponseHost', hostResponse);
     console.log('emmiting host and client botresponse', clientResponse, hostResponse);
     
