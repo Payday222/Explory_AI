@@ -4,6 +4,7 @@ const fs = require("fs");
 const express = require('express');
 const http = require('http');
 const { Server } = require("socket.io");
+const { Console } = require("console");
 
 dotenv.config();
 
@@ -76,7 +77,7 @@ async function getChatCompletion(prompt, socket, roomCode) {
     role,
     content,
   }));
-  const roomCode = roomCode;
+  roomCode = roomCode;
    
   messages.push({ role: 'user', content: prompt });
 
@@ -108,7 +109,11 @@ async function getChatCompletion(prompt, socket, roomCode) {
     } else {
       clientResponse = response;
     } 
+    if(io.sockets.adapter.rooms.has(roomCode)) {
     io.to(roomCode).emit('botResponseClient', clientResponse);
+    } else {
+      Console.log("Room doesnt exist");
+    }
     //use socket.to(roomcode) instead of io.emit
     //send the roomcode with the test data and pass it along to getchatcompletion 
     socket.emit('botResponseHost', hostResponse);
