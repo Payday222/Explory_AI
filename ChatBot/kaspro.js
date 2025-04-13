@@ -85,14 +85,15 @@ async function getChatCompletion(prompt, socket, roomCode) {
     console.log('--- Room Overview ---');
 
     for (let [roomName, socketSet] of rooms) {
-      // Skip if it's a room that matches a socket id
-      if (!sids.has(roomName)) {
-        console.log(Room: ${roomName});
-        console.log('Sockets:', [...socketSet]);
-        console.log('--------------------');
-      }
+        // Skip rooms that are just individual socket IDs
+        if (!sids.has(roomName)) {
+            console.log(`Room: ${roomName}`);
+            console.log('Sockets:', [...socketSet]);
+            console.log('--------------------');
+        }
     }
-  }, 500);
+}, 500);
+
   console.log("roomcode getChatCompletion:", roomCode);
   const SingularHistory = chatHistory.get(roomCode) || [];
 
