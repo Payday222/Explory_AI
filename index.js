@@ -49,7 +49,7 @@ app.whenReady().then(() => {
 
 
 
-    mainWindow.webContents.openDevTools();
+   // mainWindow.webContents.openDevTools();
 
  
     ipcMain.handle('set-cookie', async (event, name, value) => {
