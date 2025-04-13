@@ -51,7 +51,7 @@ io.on('connection', (socket) => {
     //! Lets see...
     console.log("roomcode: ", roomCode);
 
-    await getChatCompletion(fullPrompt, socket, roomCode);
+    await getChatCompletion(fullPrompt, socket, roomCode, socket.id);
   });
   
   socket.on('disconnect', () => {
@@ -79,7 +79,7 @@ io.on('connection', (socket) => {
 
 
 
-async function getChatCompletion(prompt, socket, roomCode) {
+async function getChatCompletion(prompt, socket, roomCode, socketID) {
 
   setTimeout(() => {
     const rooms = io.sockets.adapter.rooms;
@@ -144,7 +144,7 @@ async function getChatCompletion(prompt, socket, roomCode) {
       if(io.sockets.adapter.rooms.has(roomCode)) {
         console.log("roomcode before emit: ", roomCode);
         socket.join(roomCode);
-        socket.broadcast.to(roomCode).emit('botResponseClient', clientResponse);
+        socket.broadcast.to(socketID).emit('botResponseClient', clientResponse);
       } else {
         console.log("roomcode: ", roomCode);
         console.log("Room doesnt exist");
