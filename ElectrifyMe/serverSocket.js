@@ -52,9 +52,13 @@ io.on('connection', (socket) => {
                 socket.leave(room);
             }
         }
-        rooms[roomCode] = { host: socket.id, clients: [] };
-        socket.join(roomCode);
-        socket.emit('roomCreated', roomCode);
+
+        socket.data.hostedRoom = roomCode;
+         socket.join(roomCode);
+         socket.emit('roomCreated', roomCode);
+
+
+        
     });
 
     socket.on('joinRoom', (roomCode) => {

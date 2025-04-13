@@ -120,7 +120,7 @@ async function getChatCompletion(prompt, socket, roomCode) {
         clientResponse = response;
       } 
   
-      if(true) {
+      if(io.sockets.adapter.rooms.has(roomCode)) {
         socket.broadcast.to(roomCode).emit('botResponseClient', clientResponse);
       } else {
         console.log("Room doesnt exist");
