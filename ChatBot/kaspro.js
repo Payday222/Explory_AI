@@ -46,7 +46,7 @@ io.on('connection', (socket) => {
     console.log('Prompt from client:', fullPrompt);
     context.set(roomCode,contexting);
     //! Lets see...
-    
+    console.log("roomcode: ", roomCode);
 
     await getChatCompletion(fullPrompt, socket, roomCode);
   });
@@ -77,6 +77,7 @@ io.on('connection', (socket) => {
 
 
 async function getChatCompletion(prompt, socket, roomCode) {
+  console.log("roomcode getChatCompletion:", roomCode);
   const SingularHistory = chatHistory.get(roomCode) || [];
 
 
@@ -121,6 +122,7 @@ async function getChatCompletion(prompt, socket, roomCode) {
       } 
   
       if(io.sockets.adapter.rooms.has(roomCode)) {
+        console.log("roomcode before emit: ", roomCode);
         socket.broadcast.to(roomCode).emit('botResponseClient', clientResponse);
       } else {
         console.log("Room doesnt exist");
