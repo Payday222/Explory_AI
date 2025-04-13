@@ -181,7 +181,7 @@
             <input type="text" id="messageInput" placeholder="Type your message" />
             <button id="sendMessage">Send Message</button>
             <div id="receive"></div>
-            <button id="saveHistory">Save history</button>
+            <!-- <button id="saveHistory">Save history</button> -->
         </div>
     </div>
 
@@ -222,6 +222,7 @@
             const roomCode = document.getElementById('roomCodeInput').value;
             console.log("[Client] Attempting to join room:", roomCode);
             socket.emit('joinRoom', roomCode);
+            
         };
 
         
@@ -229,6 +230,7 @@
             console.log("[Client] Successfully joined room:", roomCode);
             currentRoomCode = roomCode;
             document.getElementById('status').innerText = `Joined Room: ${roomCode}`;
+
         });
 
         
@@ -280,6 +282,7 @@
    
         socket.on('disconnect', () => {
             console.log("[Client] Disconnected from room server");
+            currentRoomCode = '';
         });
 
         const commsocket = io('http://188.127.1.110:3007');
@@ -309,7 +312,7 @@
                     console.log("[Client] Sending answers to host:", answers);
 
                     
-                commsocket.emit('sendAnswers', { roomCode: currentRoomCode, answers, clientID});
+                commsocket.emit('sendAnswers', { roomCode: currentRoomCode, answers});
                     document.getElementById('sendAnswersArea').value = ''; 
                     console.log('emmiting: something in client(sendans)');
                 } else {
@@ -317,14 +320,12 @@
                 }
             };
 
-          commsocket.on('EvaluationResponse', (data) => {
-    console.log('Received EvaluationResponse:', data);
-    if(data.clientID == socket.id) {
-        console.log('id from response matches id of this socket');
-    document.getElementById('answerfrombot').innerText = data.response;
-    document.getElementById('test').innerText = ""; //clear out the test div
-    }
-          })
+        commsocket.on('EvaluationResponse', (data) => {
+            console.log('Received EvaluationResponse:', data);
+            document.getElementById('answerfrombot').innerText = data.response;
+            document.getElementById('test').innerText = ""; //clear out the test div
+        
+        })
           
 });
 
