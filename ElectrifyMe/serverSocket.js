@@ -18,7 +18,7 @@ const io = new Server(expressServer,{
     }
 })
 
-io.adapter(redisAdapter({host: 'localhost', port: 6379}));
+io.adapter(redisAdapter({host: 'localhost', port: 3010}));
 
 
 let rooms = {};
