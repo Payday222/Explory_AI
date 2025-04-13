@@ -200,7 +200,9 @@
         });
         
         socket.on('roomCreated', (roomCode) => {
-            document.getElementById('roomCode').innerText = `Room Code: ${roomCode}`;
+            document.getElementById('roomCode').innerText = `Room: ${roomCode}`;
+            socket.join(roomCode);
+            
         });
         socket.on('sendAnswers', (data) => {
             console.log('Answer received from client:', data);
