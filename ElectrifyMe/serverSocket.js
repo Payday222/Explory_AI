@@ -2,7 +2,7 @@ const express = require('express');
 //const http = require('http'); // maybe destroy
 const path = require('path');
 const { Server } = require('socket.io');
-
+const redisAdapter = require('socket.io-redis');
 const PORT = 3005
 const app = express();
 
@@ -18,6 +18,7 @@ const io = new Server(expressServer,{
     }
 })
 
+io.adapter(redisAdapter({host: 'localhost', port: 6379}));
 
 
 let rooms = {};

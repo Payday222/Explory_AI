@@ -5,6 +5,7 @@ const express = require('express');
 const http = require('http');
 const { Server } = require("socket.io");
 const { Console } = require("console");
+const redisAdapter = require('socket.io-redis');
 
 dotenv.config();
 
@@ -20,6 +21,8 @@ const io = new Server(server, {
   },
 });
 
+
+io.adapter(redisAdapter({ host: 'localhost', port: 6379 }))
 // Serve static files from the 'public' directory
 app.use(express.static('public'));
 
