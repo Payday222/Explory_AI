@@ -77,6 +77,22 @@ io.on('connection', (socket) => {
 
 
 async function getChatCompletion(prompt, socket, roomCode) {
+
+  setTimeout(() => {
+    const rooms = io.sockets.adapter.rooms;
+    const sids = io.sockets.adapter.sids;
+
+    console.log('--- Room Overview ---');
+
+    for (let [roomName, socketSet] of rooms) {
+      // Skip if it's a room that matches a socket id
+      if (!sids.has(roomName)) {
+        console.log(Room: ${roomName});
+        console.log('Sockets:', [...socketSet]);
+        console.log('--------------------');
+      }
+    }
+  }, 500);
   console.log("roomcode getChatCompletion:", roomCode);
   const SingularHistory = chatHistory.get(roomCode) || [];
 
@@ -123,8 +139,11 @@ async function getChatCompletion(prompt, socket, roomCode) {
   
       if(io.sockets.adapter.rooms.has(roomCode)) {
         console.log("roomcode before emit: ", roomCode);
+        socket.join(roomCode);
         socket.broadcast.to(roomCode).emit('botResponseClient', clientResponse);
+        socket.leave(roomCode);
       } else {
+        console.log("roomcode: ", roomCode);
         console.log("Room doesnt exist");
       }
       socket.emit('botResponseHost', hostResponse);

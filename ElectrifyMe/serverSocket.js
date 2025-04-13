@@ -53,7 +53,6 @@ io.on('connection', (socket) => {
             }
         }
          rooms[roomCode] = { host: socket.id, clients: [] };
-         socket.data.hostedRoom = roomCode;
          socket.join(roomCode);
          socket.emit('roomCreated', roomCode);
 
