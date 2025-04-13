@@ -25,18 +25,49 @@ let rooms = {};
 io.on('connection', (socket) => {
     console.log(`User ${socket.id} connected`);
 
-    socket.on('createRoom', (roomCode) => {
+    socket.on('createRoom', (roomCode,oldRoomCode ) => {
+    
+
+        if (oldRoomCode && rooms[oldRoomCode] && socket.id === rooms[oldRoomCode].host) {
+            
+            socket.emit('cleanUpRoomData', oldRoomCode);
+
+            for (let socketId of rooms[oldRoomCode].clients) {
+                if (socketId !== socket.id) {
+                    const clientSocket = io.sockets.sockets.get(socketId);
+                    if (clientSocket) {
+                        clientSocket.emit('kicked', 'Host has ended the room.');
+                        clientSocket.disconnect(); // or clientSocket.leave(oldRoomCode)
+                    }
+                }
+            }
+
+            delete rooms[oldRoomCode];
+            
+        }
+        
+        //! This might not be needed but for future add
+        for (const room of socket.rooms) {
+            if (room !== socket.id) {
+                socket.leave(room);
+            }
+        }
         rooms[roomCode] = { host: socket.id, clients: [] };
         socket.join(roomCode);
-
-        
-
         socket.emit('roomCreated', roomCode);
     });
 
     socket.on('joinRoom', (roomCode) => {
         if (rooms[roomCode]) {
-            rooms[roomCode].clients.push(socket.id);
+            
+            for (const room of socket.rooms) {
+                if (room !== socket.id) {
+                    socket.leave(room);
+                }
+            }
+            if (!rooms[roomCode].clients.includes(socket.id)) {
+                rooms[roomCode].clients.push(socket.id);
+            }
             socket.join(roomCode);
             socket.emit('joinedRoom', roomCode);
             io.to(rooms[roomCode].host).emit('newClient', socket.id);
