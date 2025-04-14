@@ -201,6 +201,7 @@
         
         socket.on('roomCreated', (roomCode) => {
             document.getElementById('roomCode').innerText = `Room Code: ${roomCode}`;
+            
         });
         socket.on('sendAnswers', (data) => {
             console.log('Answer received from client:', data);
@@ -253,8 +254,9 @@
     
         document.getElementById('createRoom').onclick = () => {
             roomCode = Math.random().toString(36).substring(2, 8);
+            socket.emit('createRoom', roomCode,currentRoomCode);
             currentRoomCode = roomCode;
-            socket.emit('createRoom', roomCode);
+            
         };
     
         document.getElementById('sendMessageAdmin').onclick = () => {
@@ -314,7 +316,7 @@
             Provide the answers to the test. Split the answers and the test with "HUBERCIKLUBCHLOPCOW".`;
 
             console.log("Emitting SendData with prompt: ", fullPrompt);
-            commsocket.emit('SendData', fullPrompt,context, roomCode); 
+            commsocket.emit('SendData', fullPrompt, context, currentRoomCode);
 
             }
 
@@ -333,7 +335,7 @@
 
 
 
-                commsocket.emit('SendData', fullPrompt,context); // Emit the event to the bot server
+                commsocket.emit('SendData', fullPrompt, context, roomCode); // Emit the event to the bot server
             }
         });
     
