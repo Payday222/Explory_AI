@@ -228,7 +228,7 @@
             console.log("[Client] Successfully joined room:", roomCode);
 
             if (currentRoomCode) {
-               // socket.emit('leave-room', currentRoom); DO THIS
+                socket.emit('leave-room', currentRoom); 
                 
             }
             
