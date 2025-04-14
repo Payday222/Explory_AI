@@ -89,11 +89,7 @@ io.on('connection', (socket) => {
         //     }
         // }
 
-        let oldRoomCode = rooms[roomCode]?.host === socket.id ? roomCode : null;
-
-        if (oldRoomCode) {
-            socket.leave(oldRoomCode);  // Host leaves the old room
-        }
+        
 
          rooms[roomCode] = { host: socket.id, clients: [] };
          socket.join(roomCode);
@@ -118,11 +114,22 @@ io.on('connection', (socket) => {
             //     room.clients.push(socket.id);
             // }
             socket.join(roomCode);
+            room.clients.push(socket.id);
             socket.emit('joinedRoom', roomCode);
-            io.to(room.host).emit('newClient', socket.id);
+            //io.to(room.host).emit('newClient', socket.id);
         } else {
             socket.emit('roomNotFound');
         }
+    });
+//! added could be bullshit
+    socket.on('leave-room', (roomCode) => {
+        const room = rooms[roomCode];
+        if(room){
+            socket.leave(roomCode);
+            room.clients = room.clients.filter(id => id !== socket.id);
+        }
+        
+       
     });
 
     socket.on('sendMessage', (data) => {
@@ -132,14 +139,14 @@ io.on('connection', (socket) => {
 
     socket.on('disconnect', () => {
         console.log('A user disconnected');
-        // for (const roomCode in rooms) {
-        //     const room = rooms[roomCode];
-        //     if (room.host === socket.id) {
-        //         //delete rooms[roomCode];
-        //     } else {
-        //         room.clients = room.clients.filter(clientId => clientId !== socket.id);
-        //     }
-        // }
+        for (const roomCode in rooms) {
+            const room = rooms[roomCode];
+            if (room.host === socket.id) {
+                delete rooms[roomCode];
+            } else {
+               // room.clients = room.clients.filter(clientId => clientId !== socket.id);
+            }
+        }
     });
     // MARCEL
     socket.on('sendMessageToClient', ({ room, socketId, message }) => {

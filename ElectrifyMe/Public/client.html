@@ -214,15 +214,24 @@
 
         
         document.getElementById('joinRoom').onclick = () => {
-            const roomCode = document.getElementById('roomCodeInput').value;
-            console.log("[Client] Attempting to join room:", roomCode);
-            socket.emit('joinRoom', roomCode);
+            const newRoomCode = document.getElementById('roomCodeInput').value.trim();
+
+            if(!newRoomCode || newRoomCode === currentRoomCode) return;
+
+            console.log("[Client] Attempting to join room:", newRoomCode);
+            socket.emit('joinRoom', newRoomCode);
             
         };
 
         
         socket.on('joinedRoom', (roomCode) => {
             console.log("[Client] Successfully joined room:", roomCode);
+
+            if (currentRoomCode) {
+               // socket.emit('leave-room', currentRoom); DO THIS
+                
+            }
+            
             currentRoomCode = roomCode;
             document.getElementById('status').innerText = `Joined Room: ${roomCode}`;
 
@@ -275,7 +284,7 @@
         socket.on('disconnect', () => {
             console.log("[Client] Disconnected from room server");
             currentRoomCode = '';
-            
+
         });
 
         const commsocket = io('http://188.127.1.110:3007');

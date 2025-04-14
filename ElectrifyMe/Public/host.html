@@ -254,8 +254,12 @@
     
         document.getElementById('createRoom').onclick = () => {
             roomCode = Math.random().toString(36).substring(2, 8);
-            socket.emit('createRoom', roomCode,currentRoomCode);
-            currentRoomCode = roomCode;
+
+            if(roomCode !== currentRoomCode){
+                socket.emit('createRoom', roomCode,currentRoomCode);
+                currentRoomCode = roomCode;
+            }
+            
             
         };
     
