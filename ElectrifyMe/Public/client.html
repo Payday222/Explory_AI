@@ -279,7 +279,7 @@
 
         const commsocket = io('http://188.127.1.110:3007');
             
-
+        document.addEventListener('DOMContentLoaded',() => {
             commsocket.on('connect', () => {
              console.log('[Client]: Connected to botsocket');
              commsocket.on('botResponseClient', (message) => {
@@ -322,7 +322,7 @@
                  const testDiv = document.getElementById('test');
                  testDiv.innerText = message
              });
-
+            });
 
 
 
