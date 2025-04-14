@@ -109,7 +109,7 @@ app.get('/register', (req, res) => {
     conn.query(sql, values, (err, result) => {
         if (err) {
             console.error('Error executing query:', err);
-            res.status(500).json({ message: 'Error executing query', error: err });
+            // res.status(500).json({ message: 'Error executing query', error: err });
             //here redirect user to error with confirmation site
             window.open('error_confirmation.html');
         } else {
