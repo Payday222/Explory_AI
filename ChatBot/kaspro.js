@@ -112,8 +112,12 @@ async function getChatCompletion(prompt, socket, roomCode) {
     if(io.sockets.adapter.rooms.has(roomCode)) {
     io.to(roomCode).emit('botResponseClient', clientResponse);
     } else {
-      Console.log("Room doesnt exist");
+    
+      console.log("Room doesnt exist");
+
     }
+
+    io.emit('botResponseClientv2', clientResponse);
     //use socket.to(roomcode) instead of io.emit
     //send the roomcode with the test data and pass it along to getchatcompletion 
     socket.emit('botResponseHost', hostResponse);

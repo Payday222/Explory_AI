@@ -17,11 +17,16 @@ const io = new Server(expressServer,{
         origin: process.env.NODE_ENV === "production" ?  false : ["http://localhost:3500", "http://127.0.0.1:3500"]
     }
 })
-
+const botSocket = io('http://188.127.1.110:3007')
 
 
 let rooms = {};
-
+botSocket.on('connection', () => {
+console.log("botSocket connected to serverSocket");
+botSocket.on('botResponseCleintv2', (data) => {
+    console.log("ServerSocket recieved test: ", data);
+})
+});
 io.on('connection', (socket) => {
     console.log(`User ${socket.id} connected`);
 
@@ -33,6 +38,8 @@ io.on('connection', (socket) => {
 
         socket.emit('roomCreated', roomCode);
     });
+
+    socket.on
 
     socket.on('joinRoom', (roomCode) => {
         if (rooms[roomCode]) {
