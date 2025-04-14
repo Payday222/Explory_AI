@@ -88,6 +88,13 @@ io.on('connection', (socket) => {
         //         socket.leave(room);
         //     }
         // }
+
+        let oldRoomCode = rooms[roomCode]?.host === socket.id ? roomCode : null;
+
+        if (oldRoomCode) {
+            socket.leave(oldRoomCode);  // Host leaves the old room
+        }
+
          rooms[roomCode] = { host: socket.id, clients: [] };
          socket.join(roomCode);
          socket.emit('roomCreated', roomCode);
@@ -102,14 +109,14 @@ io.on('connection', (socket) => {
         const room = rooms[roomCode]
         if (room) {
             
-            for (const room of socket.rooms) {
-                if (room !== socket.id) {
-                    socket.leave(room);
-                }
-            }
-            if (!room.clients.includes(socket.id)) {
-                room.clients.push(socket.id);
-            }
+            // for (const room of socket.rooms) {
+            //     if (room !== socket.id) {
+            //         socket.leave(room);
+            //     }
+            // }
+            // if (!room.clients.includes(socket.id)) {
+            //     room.clients.push(socket.id);
+            // }
             socket.join(roomCode);
             socket.emit('joinedRoom', roomCode);
             io.to(room.host).emit('newClient', socket.id);
