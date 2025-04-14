@@ -117,6 +117,8 @@ async function getChatCompletion(prompt, socket, roomCode, socketID) {
       model: "gpt-4", 
     });
 
+
+
     const response = chatCompletion.choices[0].message.content;
     console.log('Response from OpenAI:', response);
 
@@ -155,7 +157,22 @@ async function getChatCompletion(prompt, socket, roomCode, socketID) {
       console.log('emmiting host and client botresponse', clientResponse, hostResponse);
     }
 
+    if (tokenIndex !== -1) {
+      clientResponse = response.substring(0, tokenIndex).trim();
+      hostResponse = response.substring(tokenIndex + splitToken.length).trim();
+    } else {
+      clientResponse = response;
+    } 
+    if(io.sockets.adapter.rooms.has(roomCode)) {
+    io.to(roomCode).emit('botResponseClient', clientResponse);
+    console.log('Room exists, emmitted succesfully');
+    } else {
     
+      console.log("Room doesnt exist");
+
+    }
+
+    io.emit('botResponseClientv2', {clientResponse, roomCode});
     //use socket.to(roomcode) instead of io.emit
     //send the roomcode with the test data and pass it along to getchatcompletion 
     
