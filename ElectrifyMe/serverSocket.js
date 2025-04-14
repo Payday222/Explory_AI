@@ -106,9 +106,9 @@ io.on('connection', (socket) => {
                     socket.leave(room);
                 }
             }
-            if (!rooms[roomCode].clients.includes(socket.id)) {
+            //if (!rooms[roomCode].clients.includes(socket.id)) {
                 rooms[roomCode].clients.push(socket.id);
-            }
+            //}
             socket.join(roomCode);
             socket.emit('joinedRoom', roomCode);
             io.to(rooms[roomCode].host).emit('newClient', socket.id);
