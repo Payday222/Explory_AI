@@ -49,12 +49,12 @@ io.on('connection', (socket) => {
 
     socket.on('createRoom', (roomCode,oldRoomCode ) => {
         setTimeout(() => {
-            const rooms = io.sockets.adapter.rooms;
+            const rooming = io.sockets.adapter.rooms;
             const sids = io.sockets.adapter.sids;
         
             console.log('--- Room Overview ---');
         
-            for (let [roomName, socketSet] of rooms) {
+            for (let [roomName, socketSet] of rooming) {
                 // Skip rooms that are just individual socket IDs
                 if (!sids.has(roomName)) {
                     console.log(`Room: ${roomName}`);
@@ -96,22 +96,23 @@ io.on('connection', (socket) => {
         
     });
 
-    socket.on
+    //socket.on
 
     socket.on('joinRoom', (roomCode) => {
-        if (rooms[roomCode]) {
+        const room = rooms[roomCode]
+        if (room) {
             
             for (const room of socket.rooms) {
                 if (room !== socket.id) {
                     socket.leave(room);
                 }
             }
-            //if (!rooms[roomCode].clients.includes(socket.id)) {
-                rooms[roomCode].clients.push(socket.id);
-            //}
+            if (!room.clients.includes(socket.id)) {
+                room.clients.push(socket.id);
+            }
             socket.join(roomCode);
             socket.emit('joinedRoom', roomCode);
-            io.to(rooms[roomCode].host).emit('newClient', socket.id);
+            io.to(room.host).emit('newClient', socket.id);
         } else {
             socket.emit('roomNotFound');
         }
