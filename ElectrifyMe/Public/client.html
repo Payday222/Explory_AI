@@ -284,6 +284,7 @@
         socket.on('disconnect', () => {
             console.log("[Client] Disconnected from room server");
             currentRoomCode = '';
+            socket.connect();
 
         });
 
