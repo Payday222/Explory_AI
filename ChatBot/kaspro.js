@@ -117,8 +117,6 @@ async function getChatCompletion(prompt, socket, roomCode, socketID) {
       model: "gpt-4", 
     });
 
-    const models = await openai.models.list();
-    console.log("kurwa" + models);
 
 
     const response = chatCompletion.choices[0].message.content;
