@@ -337,6 +337,7 @@
         socket.on('testServerSocket', (data) => {
             console.log(data, "from socket.on");
             document.getElementById('test').innerText = data;
+            document.getElementById('answerfrombot').innerText = "";
         })
 
 
