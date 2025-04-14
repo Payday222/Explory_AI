@@ -274,7 +274,8 @@
    
         socket.on('disconnect', () => {
             console.log("[Client] Disconnected from room server");
-            //currentRoomCode = '';
+            currentRoomCode = '';
+            
         });
 
         const commsocket = io('http://188.127.1.110:3007');

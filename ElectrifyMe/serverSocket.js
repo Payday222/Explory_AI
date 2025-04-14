@@ -83,11 +83,11 @@ io.on('connection', (socket) => {
         // }
         
         //! This might not be needed but for future add
-        for (const room of socket.rooms) {
-            if (room !== socket.id) {
-                socket.leave(room);
-            }
-        }
+        // for (const room of socket.rooms) {
+        //     if (room !== socket.id) {
+        //         socket.leave(room);
+        //     }
+        // }
          rooms[roomCode] = { host: socket.id, clients: [] };
          socket.join(roomCode);
          socket.emit('roomCreated', roomCode);
