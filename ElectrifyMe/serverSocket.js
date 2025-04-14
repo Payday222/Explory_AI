@@ -72,8 +72,8 @@ io.on('connection', (socket) => {
                 if (socketId !== socket.id) {
                     const clientSocket = io.sockets.sockets.get(socketId);
                     if (clientSocket) {
-                        clientSocket.emit('kicked', 'Host has ended the room.');
-                        clientSocket.disconnect(); // or clientSocket.leave(oldRoomCode)
+                       
+                        clientSocket.leave(oldRoomCode)
                     }
                 }
             }
