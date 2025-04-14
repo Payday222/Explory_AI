@@ -24,7 +24,7 @@ const botSocket = Client('http://188.127.1.110:3007');
 let rooms = {};
 botSocket.on('connection', () => {
 console.log("botSocket connected to serverSocket");
-botSocket.on('botResponseCleintv2', (data) => {
+botSocket.on('botResponseClientv2', (data) => {
     console.log("ServerSocket recieved test: ", data);
 })
 });
