@@ -73,7 +73,7 @@ io.on('connection', (socket) => {
                     const clientSocket = io.sockets.sockets.get(socketId);
                     if (clientSocket) {
                        
-                        clientSocket.leave(oldRoomCode)
+                       // clientSocket.leave(oldRoomCode)
                     }
                 }
             }
