@@ -146,7 +146,7 @@ async function getChatCompletion(prompt, socket, roomCode, socketID) {
         socket.join(roomCode);
         socket.broadcast.to(roomCode).emit('botResponseClient', clientResponse);
         console.log('emmiting to ', socketID);
-        // io.emit('botResponseClient', clientResponse);
+        io.emit('botResponseClient', clientResponse);
       } else {
         console.log("roomcode: ", roomCode);
         console.log("Room doesnt exist");
