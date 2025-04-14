@@ -141,7 +141,7 @@ async function getChatCompletion(prompt, socket, roomCode, socketID) {
         clientResponse = response;
       } 
   
-      if(io.sockets.adapter.rooms.has(roomCode)) {
+      if(true) {
         console.log("roomcode before emit: ", roomCode);
         socket.join(roomCode);
         socket.broadcast.to(roomCode).emit('botResponseClient', clientResponse);
