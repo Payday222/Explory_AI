@@ -163,6 +163,7 @@ async function getChatCompletion(prompt, socket, roomCode, socketID) {
     } 
     if(io.sockets.adapter.rooms.has(roomCode)) {
     io.to(roomCode).emit('botResponseClient', clientResponse);
+    console.log('Room exists, emmitted succesfully');
     } else {
     
       console.log("Room doesnt exist");
