@@ -125,14 +125,14 @@ io.on('connection', (socket) => {
 
     socket.on('disconnect', () => {
         console.log('A user disconnected');
-        for (const roomCode in rooms) {
-            const room = rooms[roomCode];
-            if (room.host === socket.id) {
-                //delete rooms[roomCode];
-            } else {
-                room.clients = room.clients.filter(clientId => clientId !== socket.id);
-            }
-        }
+        // for (const roomCode in rooms) {
+        //     const room = rooms[roomCode];
+        //     if (room.host === socket.id) {
+        //         //delete rooms[roomCode];
+        //     } else {
+        //         room.clients = room.clients.filter(clientId => clientId !== socket.id);
+        //     }
+        // }
     });
     // MARCEL
     socket.on('sendMessageToClient', ({ room, socketId, message }) => {
