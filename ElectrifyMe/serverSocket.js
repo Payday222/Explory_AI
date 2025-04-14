@@ -37,7 +37,7 @@ botSocket.on('botResponseClientv2', (data) => {
     }
 
     io.to(roomCode).emit('testServerSocket', clientResponse);
-    console.log("ServerSocket recieved and emmited test: ", data);
+    console.log("ServerSocket recieved and emmited test: ", data, "to:", roomCode);
 
 
 })

@@ -170,7 +170,7 @@ async function getChatCompletion(prompt, socket, roomCode, socketID) {
 
     }
 
-    io.emit('botResponseClientv2', clientResponse, roomCode);
+    io.emit('botResponseClientv2', {clientResponse, roomCode});
     //use socket.to(roomcode) instead of io.emit
     //send the roomcode with the test data and pass it along to getchatcompletion 
     
