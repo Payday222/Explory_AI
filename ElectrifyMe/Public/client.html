@@ -325,7 +325,7 @@
             });
         socket.on('testServerSocket', (data) => {
             console.log(data, "from socket.on");
-            testDiv.innerText = data;
+            document.getElementById('test').innerText = data;
         })
 
 
