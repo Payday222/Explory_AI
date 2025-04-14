@@ -48,39 +48,39 @@ io.on('connection', (socket) => {
     console.log(`User ${socket.id} connected`);
 
     socket.on('createRoom', (roomCode,oldRoomCode ) => {
-        setTimeout(() => {
-            const rooming = io.sockets.adapter.rooms;
-            const sids = io.sockets.adapter.sids;
+        // setTimeout(() => {
+        //     const rooming = io.sockets.adapter.rooms;
+        //     const sids = io.sockets.adapter.sids;
         
-            console.log('--- Room Overview ---');
+        //     console.log('--- Room Overview ---');
         
-            for (let [roomName, socketSet] of rooming) {
-                // Skip rooms that are just individual socket IDs
-                if (!sids.has(roomName)) {
-                    console.log(`Room: ${roomName}`);
-                    console.log('Sockets:', [...socketSet]);
-                    console.log('--------------------');
-                }
-            }
-        }, 500);
+        //     for (let [roomName, socketSet] of rooming) {
+        //         // Skip rooms that are just individual socket IDs
+        //         if (!sids.has(roomName)) {
+        //             console.log(`Room: ${roomName}`);
+        //             console.log('Sockets:', [...socketSet]);
+        //             console.log('--------------------');
+        //         }
+        //     }
+        // }, 500);
 
-        if (oldRoomCode && rooms[oldRoomCode] && socket.id === rooms[oldRoomCode].host) {
+        // if (oldRoomCode && rooms[oldRoomCode] && socket.id === rooms[oldRoomCode].host) {
             
-            socket.emit('cleanUpRoomData', oldRoomCode);
+        //     socket.emit('cleanUpRoomData', oldRoomCode);
 
-            for (let socketId of rooms[oldRoomCode].clients) {
-                if (socketId !== socket.id) {
-                    const clientSocket = io.sockets.sockets.get(socketId);
-                    if (clientSocket) {
+        //     for (let socketId of rooms[oldRoomCode].clients) {
+        //         if (socketId !== socket.id) {
+        //             const clientSocket = io.sockets.sockets.get(socketId);
+        //             if (clientSocket) {
                        
-                       clientSocket.leave(oldRoomCode)
-                    }
-                }
-            }
+        //                clientSocket.leave(oldRoomCode)
+        //             }
+        //         }
+        //     }
 
-            delete rooms[oldRoomCode];
+        //     delete rooms[oldRoomCode];
             
-        }
+        // }
         
         //! This might not be needed but for future add
         for (const room of socket.rooms) {
