@@ -22,7 +22,7 @@ const botSocket = Client('http://188.127.1.110:3007');
 // io.adapter(redisAdapter({host: 'localhost', port: 3010}));
 
 let rooms = {};
-botSocket.on('connection', () => {
+botSocket.on('connect', () => {
 console.log("botSocket connected to serverSocket");
 botSocket.on('botResponseClientv2', (data) => {
     console.log("ServerSocket recieved test: ", data);
