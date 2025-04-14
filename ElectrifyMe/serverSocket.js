@@ -73,7 +73,7 @@ io.on('connection', (socket) => {
                     const clientSocket = io.sockets.sockets.get(socketId);
                     if (clientSocket) {
                        
-                       // clientSocket.leave(oldRoomCode)
+                       clientSocket.leave(oldRoomCode)
                     }
                 }
             }
@@ -128,7 +128,7 @@ io.on('connection', (socket) => {
         for (const roomCode in rooms) {
             const room = rooms[roomCode];
             if (room.host === socket.id) {
-                delete rooms[roomCode];
+                //delete rooms[roomCode];
             } else {
                 room.clients = room.clients.filter(clientId => clientId !== socket.id);
             }
