@@ -5,7 +5,7 @@ const { Server } = require('socket.io');
 const redisAdapter = require('socket.io-redis');
 const PORT = 3005
 const app = express();
-
+const { io: Client} = require('socket.io-client');
 
 app.use(express.static(path.join(__dirname,'Public')));
 
@@ -17,7 +17,7 @@ const io = new Server(expressServer,{
         origin: process.env.NODE_ENV === "production" ?  false : ["http://localhost:3500", "http://127.0.0.1:3500"]
     }
 })
-const botSocket = io('http://188.127.1.110:3007')
+const botSocket = Client('http://188.127.1.110:3007');
 
 // io.adapter(redisAdapter({host: 'localhost', port: 3010}));
 
