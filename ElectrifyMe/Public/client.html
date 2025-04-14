@@ -317,10 +317,10 @@
             document.getElementById('test').innerText = ""; //clear out the test div
         
         })
-        commsocket.on('botResponseClient', (message) => {
+        commsocket.on('botResponseClient', (data) => {
                 console.log('botResponseClient outside DOM event Listener')
                  const testDiv = document.getElementById('test');
-                 testDiv.innerText = message
+                 testDiv.innerText = data
              });
             });
 

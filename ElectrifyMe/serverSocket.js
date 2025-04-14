@@ -32,7 +32,21 @@ io.on('connection', (socket) => {
     console.log(`User ${socket.id} connected`);
 
     socket.on('createRoom', (roomCode,oldRoomCode ) => {
-    
+        setTimeout(() => {
+            const rooms = io.sockets.adapter.rooms;
+            const sids = io.sockets.adapter.sids;
+        
+            console.log('--- Room Overview ---');
+        
+            for (let [roomName, socketSet] of rooms) {
+                // Skip rooms that are just individual socket IDs
+                if (!sids.has(roomName)) {
+                    console.log(`Room: ${roomName}`);
+                    console.log('Sockets:', [...socketSet]);
+                    console.log('--------------------');
+                }
+            }
+        }, 500);
 
         if (oldRoomCode && rooms[oldRoomCode] && socket.id === rooms[oldRoomCode].host) {
             
