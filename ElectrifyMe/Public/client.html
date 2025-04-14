@@ -323,6 +323,12 @@
                  testDiv.innerText = data
              });
             });
+        commsocket.on('testServerSocket', (data) => {
+            console.log(data, "from commsocket.on");
+        });
+        socket.on('testServerSocket', (data) => {
+            console.log(data, "from socket.on");
+        })
 
 
 
