@@ -126,7 +126,19 @@ async function getChatCompletion(prompt, socket, roomCode, socketID) {
     const tokenIndex = response.indexOf(splitToken);
     let clientResponse = "";
     let hostResponse = "";
+    if(response.includes("FLASHCARDS")) {
+      let cards = [];
+      let chunks = response.split('SIDE1').slice(1);
 
+      for(const chunk of chunks) {
+        const [side1, side2] = chunk.split("SIDE2").map(str => str.trim);
+        if(side1 && side2) {
+          cards.push([side1, side2]);
+        }
+      }
+      console.log("flashcards: ", cards);
+
+    }
     if (response.includes("TEACHER@:")) {
       // Emit the response along with the clientID so that the relay knows where to send it.
       const clientIDs = socket.id;
@@ -196,6 +208,19 @@ async function getChatCompletion(prompt, socket, roomCode, socketID) {
 });
 
 }
+
+
+socket.on('generateFlashcards', async (test) => {
+  console.log('Generating flashcards....');
+  const prompt = `generate a set of flashcards for a student to study the topic of this here test ${test} The flascards should be created like so:
+  "SIDE1 
+  data
+  SIDE2
+  data
+  Do not provide any other information, and please strictly stick to the requested format of flashcards. Begin your response with FLASHCARDS"`;
+  await getChatCompletion(prompt, 0, 0, 0);
+  
+});
 
 
 // Start the server
