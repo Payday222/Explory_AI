@@ -158,7 +158,7 @@ async function getChatCompletion(prompt, socket, roomCode, socketID) {
       io.to(clientIDs).emit('EvaluationResponse', { response }); //? this should be better
       console.log('Emitted EvaluationResponse for clientID:', clientIDs);
     }
-    else
+    else if(!response.includes("FLASHCARDS"))
     {
       if (tokenIndex !== -1) {
         clientResponse = response.substring(0, tokenIndex).trim();
