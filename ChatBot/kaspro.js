@@ -83,7 +83,7 @@ io.on('connection', (socket) => {
     data
     SIDE2
     data
-    Do not provide any other information, and please strictly stick to the requested format of flashcards. Begin your response with FLASHCARDS"`;
+    Do not provide any other information, do not include the answer number from the test, and please strictly stick to the requested format of flashcards. Begin your response with FLASHCARDS"`;
     await GenerateFlashcards(prompt, socket);
     
   });
