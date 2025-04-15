@@ -75,6 +75,18 @@ io.on('connection', (socket) => {
   
     await getChatCompletion(prompt, socket, roomCode);
   });
+
+  socket.on('generateFlashcards', async (test) => {
+    console.log('Generating flashcards....');
+    const prompt = `generate a set of flashcards for a student to study the topic of this here test ${test} The flascards should be created like so:
+    "SIDE1 
+    data
+    SIDE2
+    data
+    Do not provide any other information, and please strictly stick to the requested format of flashcards. Begin your response with FLASHCARDS"`;
+    await getChatCompletion(prompt, 0, 0, 0);
+    
+  });
 });
 
 
@@ -210,17 +222,7 @@ async function getChatCompletion(prompt, socket, roomCode, socketID) {
 }
 
 
-socket.on('generateFlashcards', async (test) => {
-  console.log('Generating flashcards....');
-  const prompt = `generate a set of flashcards for a student to study the topic of this here test ${test} The flascards should be created like so:
-  "SIDE1 
-  data
-  SIDE2
-  data
-  Do not provide any other information, and please strictly stick to the requested format of flashcards. Begin your response with FLASHCARDS"`;
-  await getChatCompletion(prompt, 0, 0, 0);
-  
-});
+
 
 
 // Start the server
