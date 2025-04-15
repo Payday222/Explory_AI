@@ -214,7 +214,7 @@ async function GenerateFlashcards(prompt) {
   try {
     const generated = await openai.chat.completions.create({
       model: "gpt-4", 
-      messages: [{ role: "user", content: "your prompt here" }]
+      messages: [{ role: "user", content: prompt }]
 
     });
     const response = generated.choices[0].message.content;
