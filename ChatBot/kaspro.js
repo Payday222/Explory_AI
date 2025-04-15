@@ -77,6 +77,7 @@ io.on('connection', (socket) => {
   });
 
   socket.on('generateFlashcards', async (test) => {
+    console.log("test recieved: ", test);
     console.log('Generating flashcards....');
     const prompt = `generate a set of flashcards for a student to study the topic of this here test ${test} The flascards should be created like so:
     "SIDE1 
