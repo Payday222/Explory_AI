@@ -84,7 +84,7 @@ io.on('connection', (socket) => {
     SIDE2
     data
     Do not provide any other information, and please strictly stick to the requested format of flashcards. Begin your response with FLASHCARDS"`;
-    await GenerateFlashcards(prompt);
+    await GenerateFlashcards(prompt, socket);
     
   });
 });
@@ -209,7 +209,7 @@ async function getChatCompletion(prompt, socket, roomCode, socketID) {
 
 }
 
-async function GenerateFlashcards(prompt) {
+async function GenerateFlashcards(prompt, socket) {
 
   try {
     const generated = await openai.chat.completions.create({
@@ -231,6 +231,8 @@ async function GenerateFlashcards(prompt) {
       }
     }
     console.log("flashcards: ", cards);
+
+    socket.emit('flashcardsGenerated', cards);
   } catch(error) {
     console.log("eror generating flashcards: ", error);
   }

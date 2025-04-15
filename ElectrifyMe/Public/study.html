@@ -33,6 +33,11 @@
         const test = localStorage.test;
         console.log('data from localstorage: ', test);
         socket.emit('generateFlashcards', test);
+
+
+        socket.on('flashcardsGenerated', (cards) => {
+            console.log("flaschards recieved: ", cards);
+        });
     })
     });
 </script>
