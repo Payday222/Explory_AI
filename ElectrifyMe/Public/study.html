@@ -4,7 +4,7 @@
     <script src="https://cdn.socket.io/4.7.2/socket.io.min.js" crossorigin="anonymous"></script>
 
     <style>
-        /* General Dark Mode Styles */
+        
         body {
             background-color: #121212;
             color: #e0e0e0;
@@ -21,7 +21,7 @@
         }
 
         button {
-            background-color: #6200ea;
+            background-color: #1e8e3e;
             color: #ffffff;
             border: none;
             padding: 12px 20px;
@@ -33,7 +33,7 @@
         }
 
         button:hover {
-            background-color: #3700b3;
+            background-color: #14612a;
         }
 
         button:disabled {
@@ -87,10 +87,10 @@
 
         .flashcard-back {
             transform: rotateY(180deg);
-            background-color: #3a3a6e;
+            background-color: #48e474b9;
         }
 
-        /* Navigation Buttons */
+        
         .nav-buttons {
             text-align: center;
             margin-top: 20px;
@@ -120,7 +120,7 @@
 </body>
 
 <script>
-    //!open this script in localhost
+    
     document.getElementById('flashcards').addEventListener('click', () => {
         const socket = io('http://188.127.1.110:3007');
         socket.on('connect', () => {
@@ -168,10 +168,10 @@
                     currentCardEl = card;
                 }
 
-                // Initial render
+                
                 renderCard(currentCardIndex);
 
-                // Navigation
+                
                 document.getElementById('next-card').onclick = () => {
                     if (currentCardIndex < cards.length - 1) {
                         currentCardIndex++;
@@ -189,7 +189,7 @@
         });
     });
 
-    // Keyboard support
+    // keyboard support cuz its cool
     document.addEventListener('keydown', (e) => {
         if (e.key === 'ArrowRight') {
             document.getElementById('next-card').click();
