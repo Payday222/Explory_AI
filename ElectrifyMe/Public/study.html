@@ -148,6 +148,14 @@
     document.getElementById('flashcards').addEventListener('click', () => {
         
     const socket = io('http://188.127.1.110:3007');
+
+
+    socket.on('connect', () =>{
+
+        console.log('botsocket connected');
+        const test = localStorage.test;
+        console.log("data from localstorage: ", test);
+        socket.emit('generateFlashcards', test);
     socket.on('flashcardsGenerated', (cards) => {
   console.log("flashcards received: ", cards);
 
@@ -235,6 +243,7 @@
   } else if (e.key === 'ArrowLeft') {
     document.getElementById('prev-card').click();
   }
+});
 });
 
 </script>
