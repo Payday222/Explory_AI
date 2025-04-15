@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<head>
+    <title>LearnLabs - Study Mode</title>
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js" crossorigin="anonymous"></script>
+
+    <style>
+
+
+    </style>
+</head>
+
+<body>
+
+<h3> Study Mode</h3><br>
+
+<h4>Please select your preffered learniing method</h4><br>
+
+<button id="flashcards">Flashcards</button>
+<button>UNDER CONSTRUCTION</button>
+</body>
+
+
+</html>
+
+
+<script>
+    //!open this scipt in localhost
+    document.getElementById('flashcards').addEventListener('click', () => {
+        
+    const socket = io('http://188.127.1.110:3007');
+    socket.on('connect', () => {
+        console.log('study.html connected to botSocket');
+        const test = localStorage.test;
+        console.log('data from localstorage: ', test);
+        socket.emit('generateFlashcards', test);
+    })
+    });
+</script>

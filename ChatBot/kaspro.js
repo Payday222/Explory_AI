@@ -84,7 +84,7 @@ io.on('connection', (socket) => {
     SIDE2
     data
     Do not provide any other information, and please strictly stick to the requested format of flashcards. Begin your response with FLASHCARDS"`;
-    await getChatCompletion(prompt, 0, 0, 0);
+    await GenerateFlashcards(prompt);
     
   });
 });
@@ -138,19 +138,7 @@ async function getChatCompletion(prompt, socket, roomCode, socketID) {
     const tokenIndex = response.indexOf(splitToken);
     let clientResponse = "";
     let hostResponse = "";
-    if(response.includes("FLASHCARDS")) {
-      let cards = [];
-      let chunks = response.split('SIDE1').slice(1);
-
-      for(const chunk of chunks) {
-        const [side1, side2] = chunk.split("SIDE2").map(str => str.trim);
-        if(side1 && side2) {
-          cards.push([side1, side2]);
-        }
-      }
-      console.log("flashcards: ", cards);
-
-    }
+   
     if (response.includes("TEACHER@:")) {
       // Emit the response along with the clientID so that the relay knows where to send it.
       const clientIDs = socket.id;
@@ -158,7 +146,7 @@ async function getChatCompletion(prompt, socket, roomCode, socketID) {
       io.to(clientIDs).emit('EvaluationResponse', { response }); //? this should be better
       console.log('Emitted EvaluationResponse for clientID:', clientIDs);
     }
-    else if(!response.includes("FLASHCARDS"))
+    else 
     {
       if (tokenIndex !== -1) {
         clientResponse = response.substring(0, tokenIndex).trim();
@@ -221,7 +209,38 @@ async function getChatCompletion(prompt, socket, roomCode, socketID) {
 
 }
 
+async function GenerateFlashcards(prompt) {
 
+  try {
+    const generated = await openai.chat.completions.create({
+      model: "gpt-4", 
+      messages: [{ role: "user", content: "your prompt here" }]
+
+    });
+    const response = generated.choices[0].message.content;
+
+
+
+    let cards = [];
+    let chunks = response.split('SIDE1').slice(1);
+
+    for(const chunk of chunks) {
+      const [side1, side2] = chunk.split("SIDE2").map(str => str.trim());
+      if(side1 && side2) {
+        cards.push([side1, side2]);
+      }
+    }
+    console.log("flashcards: ", cards);
+  } catch(error) {
+    console.log("eror generating flashcards: ", error);
+  }
+
+
+
+
+
+
+}
 
 
 

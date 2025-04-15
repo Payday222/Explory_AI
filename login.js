@@ -107,7 +107,7 @@ passReset = document.getElementById('forgot-password');
 passReset.addEventListener('click', () => {
 
     const email = "";
-    if(!validateEmail) {
+    if(!validateEmail()) {
         popup.textContent = "Please insert your email first";
         popup.style.height = "100px";
         popup.style.width = "400px";
