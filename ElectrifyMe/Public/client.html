@@ -159,12 +159,16 @@
             cursor: pointer;
         }
 
+        #study {
+            margin-left: 100px;
+            margin-top: 18px;
+        }
     </style>
 </head>
 <body>
 
     <button id="togglePanelButton">☰</button>
-
+    <button id="study">Study</button>
     <div id="panel">
         <div id="panelContent">
             <h1>Student Room</h1>
@@ -214,15 +218,24 @@
 
         
         document.getElementById('joinRoom').onclick = () => {
-            const roomCode = document.getElementById('roomCodeInput').value;
-            console.log("[Client] Attempting to join room:", roomCode);
-            socket.emit('joinRoom', roomCode);
+            const newRoomCode = document.getElementById('roomCodeInput').value.trim();
+
+            if(!newRoomCode || newRoomCode === currentRoomCode) return;
+
+            console.log("[Client] Attempting to join room:", newRoomCode);
+            socket.emit('joinRoom', newRoomCode);
             
         };
 
         
         socket.on('joinedRoom', (roomCode) => {
             console.log("[Client] Successfully joined room:", roomCode);
+
+            if (currentRoomCode) {
+                socket.emit('leave-room', currentRoom); 
+                
+            }
+            
             currentRoomCode = roomCode;
             document.getElementById('status').innerText = `Joined Room: ${roomCode}`;
 
@@ -275,6 +288,8 @@
         socket.on('disconnect', () => {
             console.log("[Client] Disconnected from room server");
             currentRoomCode = '';
+            socket.connect();
+
         });
 
         const commsocket = io('http://188.127.1.110:3007');
@@ -321,13 +336,18 @@
                 console.log('botResponseClient outside DOM event Listener')
                  const testDiv = document.getElementById('test');
                  testDiv.innerText = data
+                 localStorage.test = data; // sotre it for study mode
+                 console.log("Storing data in localstorage: ", data)
              });
             });
         socket.on('testServerSocket', (data) => {
             console.log(data, "from socket.on");
             document.getElementById('test').innerText = data;
+            document.getElementById('answerfrombot').innerText = "";
         })
-
+        document.getElementById('study').addEventListener('click', () => {
+            window.open('study.html', '_blank');
+        })
 
 
         

@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<head>
+    <title>LearnLabs - Study Mode</title>
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js" crossorigin="anonymous"></script>
+
+    <style>
+        
+        body {
+            background-color: #121212;
+            color: #e0e0e0;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        h3, h4 {
+            color: #ffffff;
+            text-align: center;
+            font-size: 24px;
+            margin-top: 20px;
+        }
+
+        button {
+            background-color: #1e8e3e;
+            color: #ffffff;
+            border: none;
+            padding: 12px 20px;
+            margin: 10px;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #14612a;
+        }
+
+        button:disabled {
+            background-color: #9e9e9e;
+        }
+
+        #flashcard-wrapper {
+            display: flex;
+            justify-content: center;
+            margin-top: 40px;
+        }
+
+        .flashcard-container {
+            perspective: 1000px;
+            width: 300px;
+            height: 200px;
+            margin: 50px auto;
+        }
+
+        .flashcard {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+            cursor: pointer;
+        }
+
+        .flashcard.flip {
+            transform: rotateY(180deg);
+        }
+
+        .flashcard-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            border: 2px solid #ffffff;
+            border-radius: 10px;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+
+        .flashcard-front {
+            background-color: #333333;
+        }
+
+        .flashcard-back {
+            transform: rotateY(180deg);
+            background-color: #48e474b9;
+        }
+
+        
+        .nav-buttons {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .nav-buttons button {
+            margin: 0 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h3>Study Mode</h3>
+    <h4>Please select your preferred learning method</h4>
+
+    <button id="flashcards">Flashcards</button>
+    <button>UNDER CONSTRUCTION</button>
+
+    <div id="flashcard-wrapper"></div>
+
+    <div class="nav-buttons">
+        <button id="prev-card">Previous</button>
+        <button id="next-card">Next</button>
+    </div>
+
+</body>
+
+<script>
+    
+    document.getElementById('flashcards').addEventListener('click', () => {
+        const socket = io('http://188.127.1.110:3007');
+        socket.on('connect', () => {
+            console.log('study.html connected to botSocket');
+            const test = localStorage.test;
+            console.log('data from localstorage: ', test);
+            socket.emit('generateFlashcards', test);
+
+            socket.on('flashcardsGenerated', (cards) => {
+                console.log("flashcards received: ", cards);
+
+                const wrapper = document.getElementById('flashcard-wrapper');
+                wrapper.innerHTML = ''; // Clear previous cards
+
+                let currentCardIndex = 0;
+                let currentCardEl;
+
+                function renderCard(index) {
+                    wrapper.innerHTML = '';
+
+                    const [front, back] = cards[index];
+                    const container = document.createElement('div');
+                    container.className = 'flashcard-container';
+
+                    const card = document.createElement('div');
+                    card.className = 'flashcard';
+
+                    const frontFace = document.createElement('div');
+                    frontFace.className = 'flashcard-face flashcard-front';
+                    frontFace.textContent = front;
+
+                    const backFace = document.createElement('div');
+                    backFace.className = 'flashcard-face flashcard-back';
+                    backFace.textContent = back;
+
+                    card.appendChild(frontFace);
+                    card.appendChild(backFace);
+                    container.appendChild(card);
+                    wrapper.appendChild(container);
+
+                    card.addEventListener('click', () => {
+                        card.classList.toggle('flip');
+                    });
+
+                    currentCardEl = card;
+                }
+
+                
+                renderCard(currentCardIndex);
+
+                
+                document.getElementById('next-card').onclick = () => {
+                    if (currentCardIndex < cards.length - 1) {
+                        currentCardIndex++;
+                        renderCard(currentCardIndex);
+                    }
+                };
+
+                document.getElementById('prev-card').onclick = () => {
+                    if (currentCardIndex > 0) {
+                        currentCardIndex--;
+                        renderCard(currentCardIndex);
+                    }
+                };
+            });
+        });
+    });
+
+    // keyboard support cuz its cool
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight') {
+            document.getElementById('next-card').click();
+        } else if (e.key === 'ArrowLeft') {
+            document.getElementById('prev-card').click();
+        }
+    });
+</script>
+
+</html>
