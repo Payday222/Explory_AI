@@ -33,10 +33,10 @@ function sqlInsert(email, password, res) {
         const userId = result.insertId;
 
 
-        res.status(200).json({ message: 'User registered successfully', userId });
+        // res.status(200).json({ message: 'User registered successfully', userId });
         res.cookie('email', email, { httpOnly: true, sameSite: 'Lax', secure: false });
 
-        res.status(200).json({ message: 'User registered successfully', userId });
+        // res.status(200).json({ message: 'User registered successfully', userId });
     });
 
     conn.end(err => {
