@@ -146,6 +146,25 @@
             cursor: pointer;
             width: 95%;
         }
+        #numberOfPeople{
+            background-color: #333;
+            width: 150px;
+            height: 35px;  
+            display: flex;
+            align-items: center;
+            justify-content: left;
+            border-radius: 40px;
+            align-self: end;
+            position: relative;
+            top: 10px;
+            
+        }
+        .countText{
+            position: relative;
+            left: 5px;
+            font-size: 14px;
+            font-weight: bold;
+        }
     </style>
 </head>
 
@@ -170,6 +189,7 @@
     </div>
 
     <div id="rightSide">
+        <div id="numberOfPeople"> <p class="countText">Room Count: 0</p>   </div>
         <h1>Message LearnLabs AI</h1>
         <!-- <img id="logo" src="../../images/learnlabslogo.png"> -->
         <h4>Topic of the Test</h4>
@@ -191,6 +211,8 @@
 
         let nameSocketId = new Map();
         let roomCode = "0000";
+
+        let numberClients = 0;
         // Create separate socket connections
         const socket = io('http://188.127.1.110:3005'); // Connect to the room handling server
     
@@ -203,6 +225,10 @@
             document.getElementById('roomCode').innerText = `Room Code: ${roomCode}`;
             
         });
+        socket.on('newClient', (num) => {
+            document.getElementById().innerText = `Room Count: ${num}`;
+        });
+
         socket.on('sendAnswers', (data) => {
             console.log('Answer received from client:', data);
             const { answer } = data;
