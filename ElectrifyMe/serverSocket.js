@@ -103,7 +103,7 @@ io.on('connection', (socket) => {
             room.clients.push(socket.id);
             socket.emit('joinedRoom', roomCode);
             const numsock = io.sockets.adapter.rooms.get(roomCode)?.size || 0;
-            io.to(roomCode).emit('newClient', roomCode,rooms);
+            io.to(roomCode).emit('newClient', numsock);
         } else {
             socket.emit('roomNotFound');
         }
