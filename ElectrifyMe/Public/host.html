@@ -226,7 +226,8 @@
             
         });
         socket.on('newClient', (num) => {
-            console.log(num,typeof num);
+            const numsock = io.sockets.adapter.rooms.get(num)?.size || 0;
+            
             document.getElementById("CountingClient").innerText = `Room Count: ${num}`;
         });
 

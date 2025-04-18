@@ -82,12 +82,6 @@ io.on('connection', (socket) => {
             
         // }
         
-        //! This might not be needed but for future add
-        // for (const room of socket.rooms) {
-        //     if (room !== socket.id) {
-        //         socket.leave(room);
-        //     }
-        // }
 
         
 
@@ -105,19 +99,11 @@ io.on('connection', (socket) => {
         const room = rooms[roomCode]
         if (room) {
             
-            // for (const room of socket.rooms) {
-            //     if (room !== socket.id) {
-            //         socket.leave(room);
-            //     }
-            // }
-            // if (!room.clients.includes(socket.id)) {
-            //     room.clients.push(socket.id);
-            // }
             socket.join(roomCode);
             room.clients.push(socket.id);
             socket.emit('joinedRoom', roomCode);
-            const numsock = io.sockets.adapter.rooms.get(roomCode)?.size || 0;
-            io.to(roomCode).emit('newClient', numsock);
+            //const numsock = io.sockets.adapter.rooms.get(roomCode)?.size || 0;
+            io.to(roomCode).emit('newClient', roomCode);
         } else {
             socket.emit('roomNotFound');
         }
@@ -128,10 +114,10 @@ io.on('connection', (socket) => {
         if(room){
             socket.leave(roomCode);
             room.clients = room.clients.filter(id => id !== socket.id);
-            const numsock = io.sockets.adapter.rooms.get(roomCode)?.size || 0;
+            //!const numsock = io.sockets.adapter.rooms.get(roomCode)?.size || 0;
             
 
-            io.to(roomCode).emit('newClient', numsock);
+            io.to(roomCode).emit('newClient', roomCode);
             
         }
         
