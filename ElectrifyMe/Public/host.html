@@ -189,7 +189,7 @@
     </div>
 
     <div id="rightSide">
-        <div id="numberOfPeople"> <p class="countText">Room Count: 0</p>   </div>
+        <div id="numberOfPeople"> <p class="countText" id="CountingClient">Room Count: 0</p>   </div>
         <h1>Message LearnLabs AI</h1>
         <!-- <img id="logo" src="../../images/learnlabslogo.png"> -->
         <h4>Topic of the Test</h4>
@@ -226,8 +226,8 @@
             
         });
         socket.on('newClient', (num) => {
-            console.log("UGIHH");
-            document.getElementById().innerText = `Room Count: ${num}`;
+            
+            document.getElementById("CountingClient").innerText = `Room Count: ${num}`;
         });
 
         socket.on('sendAnswers', (data) => {
