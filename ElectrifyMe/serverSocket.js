@@ -117,9 +117,7 @@ io.on('connection', (socket) => {
             room.clients.push(socket.id);
             socket.emit('joinedRoom', roomCode);
             const numsock =  io.sockets.adapter.rooms.get(roomCode).size
-            const idk1 = io.sockets.adapter.rooms.get(roomCode);
-            const numer = idk1.size;
-            io.to(roomCode).emit('newClient', numsock,numer);
+            io.to(roomCode).emit('newClient', numsock);
         } else {
             socket.emit('roomNotFound');
         }
@@ -130,10 +128,10 @@ io.on('connection', (socket) => {
         if(room){
             socket.leave(roomCode);
             room.clients = room.clients.filter(id => id !== socket.id);
-            const numsock =  io.sockets.adapter.rooms.get(roomCode).size();
+            const numsock =  io.sockets.adapter.rooms.get(roomCode).size;
             
 
-            io.to(roomCode).emit('newClient', numsock,numsock);
+            io.to(roomCode).emit('newClient', numsock);
             
         }
         

@@ -225,9 +225,8 @@
             document.getElementById('roomCode').innerText = `Room Code: ${roomCode}`;
             
         });
-        socket.on('newClient', (num,num2) => {
-            console.log(num);
-            console.log(num2);
+        socket.on('newClient', (num) => {
+            console.log(num,typeof num);
             document.getElementById("CountingClient").innerText = `Room Count: ${num}`;
         });
 
