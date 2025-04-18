@@ -226,8 +226,11 @@
             
         });
         socket.on('newClient', (num) => {
-            
-            numberClients += num;
+            console.log(num)
+            const parsed = parseInt(num)
+            console.log(num)
+            numberClients += parsed;
+            console.log(numberClients)
             document.getElementById("CountingClient").innerText = `Room Count: ${numberClients}`;
         });
 
