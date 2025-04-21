@@ -95,20 +95,7 @@ io.on('connection', (socket) => {
 
     //socket.on
 
-    socket.on('joinRoom', (roomCode) => {
-        const room = rooms[roomCode]
-        if (room) {
-            
-            socket.join(roomCode);
-            room.clients.push(socket.id);
-            socket.emit('joinedRoom', roomCode);
-            
-            io.to(rooms[roomCode].host).emit('newClient123');
-            
-        } else {
-            socket.emit('roomNotFound');
-        }
-    });
+    
 //! added could be bullshit
     socket.on('leave-room', (roomCode) => {
         const room = rooms[roomCode];
@@ -128,6 +115,21 @@ io.on('connection', (socket) => {
     socket.on('sendMessage', (data) => {
         const { roomCode, message, name } = data;
         io.to(rooms[roomCode].host).emit('messageReceived', { clientId: socket.id, message, name });
+    });
+
+    socket.on('joinRoom', (roomCode) => {
+        const room = rooms[roomCode]
+        if (room) {
+            
+            socket.join(roomCode);
+            room.clients.push(socket.id);
+            socket.emit('joinedRoom', roomCode);
+            
+            io.to(rooms[roomCode].host).emit('newClient123');
+            
+        } else {
+            socket.emit('roomNotFound');
+        }
     });
 
     socket.on('disconnect', () => {
