@@ -19,14 +19,6 @@ app.use(cookieParser());
 
 const pool = mysql.createPool(config);
 
-pool.connect((err) => {
-    if (err) {
-        console.error('Error connecting to the database:', err);
-        return;
-    }
-    console.log('Connected to the MySQL database!');
-});
-
 
 app.get('/set-cookie', (req, res) => {
     const userId = req.query.userId;
