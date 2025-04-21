@@ -249,7 +249,8 @@
         
         socket.on('messageReceived', (data) => {
             console.log('Message Received:', data);
-            
+            numberClients+=1;
+            document.getElementById("CountingClient").innerText = `Room Count: ${numberClients}`;
             if (!data.clientId) {
                 console.error('Received message without clientId');
                 return;
