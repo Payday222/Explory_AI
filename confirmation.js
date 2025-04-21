@@ -62,7 +62,6 @@ app.get('/register', (req, res) => {
 
     const query = 'SELECT id FROM users WHERE email = ?';
     const q_values = [email];
-    let userId = 0; 
 
     pool.query(query, q_values, (err, results) => {
         if (err) {
@@ -70,37 +69,32 @@ app.get('/register', (req, res) => {
             return res.status(500).json({ message: 'Database error.', error: err });
         }
 
-        if (results.length > 0) {
-            userId = results[0].id; 
-            console.log('userId:', userId);
-
-            
-            const sql = 'UPDATE users SET verified = ? WHERE id = ?';
-            const values = [true, userId];
-
-            pool.query(sql, values, (err, updateResult) => {
-                if (err) {
-                    console.error('Error executing update query:', err);
-                    return res.status(500).json({ message: 'Error updating user.', error: err });
-                }
-
-                console.log('User verified:', updateResult);
-                return res.status(200).json({ message: 'User verified successfully', result: updateResult });
-            });
-        } else {
+        if (results.length === 0) {
             console.error('No user found with the provided email.');
             return res.status(404).json({ message: 'User not found.' });
         }
+
+        const userId = results[0].id; 
+        console.log('Received request to register user:', userId, 'with email:', email);
+
+        const sql = 'UPDATE users SET verified = ? WHERE id = ?';
+        const values = [true, userId];
+
+        pool.query(sql, values, (err, updateResult) => {
+            if (err) {
+                console.error('Error executing update query:', err);
+                return res.status(500).json({ message: 'Error updating user.', error: err });
+            }
+
+            console.log('User verified:', updateResult);
+            return res.status(200).json({ 
+                message: 'User verified successfully', 
+                result: updateResult, 
+                userId, 
+                email 
+            });
+        });
     });
-
-
-    
-    // if (!userId) {
-    //     console.log(userId);
-    //     res.status(400).json({ message: 'Invalid userId' });
-    //     return;
-    // }
-
 });
 
 const port = 3002;
