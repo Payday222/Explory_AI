@@ -228,9 +228,14 @@
         socket.on('newClient123', () => {
            
             
-            numberClients += 1;
-            console.log(numberClients + "wow")
-            document.getElementById("CountingClient").innerText = `Room Count: ${numberClients}`;
+            //numberClients += 1;
+            console.log("wow")
+            //document.getElementById("CountingClient").innerText = `Room Count: ${numberClients}`;
+        });
+        socket.on('newClient321', () =>  {
+
+            console.log("kurwa")
+
         });
 
         socket.on('sendAnswers', (data) => {
