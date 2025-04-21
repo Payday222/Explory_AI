@@ -17,9 +17,9 @@ const app = express();
 app.use(bodyParser.json());
 app.use(cookieParser());
 
-const conn = mysql.createConnection(config);
+const pool = mysql.createPool(config);
 
-conn.connect((err) => {
+pool.connect((err) => {
     if (err) {
         console.error('Error connecting to the database:', err);
         return;
@@ -64,7 +64,7 @@ app.get('/register', (req, res) => {
     const q_values = [email];
     let userId = 0; 
 
-    conn.query(query, q_values, (err, results) => {
+    pool.query(query, q_values, (err, results) => {
         if (err) {
             console.error('Error while retrieving userId from db:', err);
             return res.status(500).json({ message: 'Database error.', error: err });
@@ -78,7 +78,7 @@ app.get('/register', (req, res) => {
             const sql = 'UPDATE users SET verified = ? WHERE id = ?';
             const values = [true, userId];
 
-            conn.query(sql, values, (err, updateResult) => {
+            pool.query(sql, values, (err, updateResult) => {
                 if (err) {
                     console.error('Error executing update query:', err);
                     return res.status(500).json({ message: 'Error updating user.', error: err });
@@ -101,24 +101,6 @@ app.get('/register', (req, res) => {
     //     return;
     // }
 
-    console.log('Received request to register user:', userId, 'with email:', email);
-
-    const sql = 'UPDATE users SET verified = ? WHERE id = ?';
-    const values = [true, userId];
-
-    conn.query(sql, values, (err, result) => {
-        if (err) {
-            console.error('Error executing query:', err);
-            // res.status(500).json({ message: 'Error executing query', error: err });
-            //here redirect user to error with confirmation site
-            // window.open('error_confirmation.html');
-        } else {
-            console.log('User  verified:', result);
-            res.status(200).json({ message: 'User  verified', result, userId, email });
-            //here redirect user to confirmed site
-            // window.open('confirmed.html');
-        }
-    });
 });
 
 const port = 3002;
