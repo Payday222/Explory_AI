@@ -104,7 +104,7 @@ io.on('connection', (socket) => {
             socket.emit('joinedRoom', roomCode);
             
             io.to(rooms[roomCode].host).emit('newClient123');
-            io.to(rooms[roomCode].host).emit('newClient321');
+            
         } else {
             socket.emit('roomNotFound');
         }

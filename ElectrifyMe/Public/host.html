@@ -225,18 +225,7 @@
             document.getElementById('roomCode').innerText = `Room Code: ${roomCode}`;
             
         });
-        socket.on('newClient123', () => {
-           
-            
-            //numberClients += 1;
-            console.log("wow")
-            //document.getElementById("CountingClient").innerText = `Room Count: ${numberClients}`;
-        });
-        socket.on('newClient321', () =>  {
-
-            console.log("kurwa")
-
-        });
+        
 
         socket.on('sendAnswers', (data) => {
             console.log('Answer received from client:', data);
@@ -249,8 +238,7 @@
         
         socket.on('messageReceived', (data) => {
             console.log('Message Received:', data);
-            numberClients+=1;
-            document.getElementById("CountingClient").innerText = `Room Count: ${numberClients}`;
+            
             if (!data.clientId) {
                 console.error('Received message without clientId');
                 return;
@@ -298,6 +286,16 @@
             
             
         };
+        
+        socket.on('newClient123', () => {
+           
+            
+           //numberClients += 1;
+           console.log("wow")
+           numberClients+=1;
+           document.getElementById("CountingClient").innerText = `Room Count: ${numberClients}`;
+       });
+
     
         document.getElementById('sendMessageAdmin').onclick = () => {
             const message = document.getElementById('clientMessage').value;
@@ -395,6 +393,15 @@
             console.log("Host Response: ", message);
             // Handle the response for the host
         })
+
+        commsocket.on('newClient123', () => {
+           
+            
+           //numberClients += 1;
+           console.log("kurwa")
+           //numberClients+=1;
+           //document.getElementById("CountingClient").innerText = `Room Count: ${numberClients}`;
+       });
     </script>
 </body>
 </html>
