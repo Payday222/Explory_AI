@@ -103,7 +103,7 @@ io.on('connection', (socket) => {
             room.clients.push(socket.id);
             socket.emit('joinedRoom', roomCode);
             
-            io.emit('newClient123');
+            io.to(room.host).emit('newClient123');
         } else {
             socket.emit('roomNotFound');
         }
