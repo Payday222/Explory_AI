@@ -101,7 +101,7 @@ io.on('connection', (socket) => {
         const room = rooms[roomCode];
         if(room){
 
-            io.to(room.host).emit('newClient123');
+            io.to(room.host).emit('newClient123',-1);
 
             socket.leave(roomCode);
             room.clients = room.clients.filter(id => id !== socket.id);
@@ -126,8 +126,9 @@ io.on('connection', (socket) => {
             
             socket.join(roomCode);
 
-            
-            io.to(room.host).emit('newClient123');
+            let high = 1;
+            io.to(room.host).emit('newClient123',high);
+            io.to(room.host).emit('newClient123',1);
 
 
             room.clients.push(socket.id);
