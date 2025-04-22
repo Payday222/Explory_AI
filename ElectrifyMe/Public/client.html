@@ -232,12 +232,12 @@
             console.log("[Client] Successfully joined room:", roomCode);
 
             if (currentRoomCode) {
-                socket.emit('leave-room', currentRoom); 
-                
+                socket.emit('leave-room', currentRoomCode); 
+            
             }
             
             currentRoomCode = roomCode;
-            document.getElementById('status').innerText = `Joined Room: ${roomCode}`;
+            document.getElementById('status').innerText = `Joined Room: ${currentRoomCode}`;
 
         });
 
