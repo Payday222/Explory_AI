@@ -103,15 +103,16 @@ io.on('connection', (socket) => {
         if(room){
             io.to(room.host).emit('newClient321');
             socket.leave(roomCode);
+            io.to(room.host).emit('newClient321');
             room.clients = room.clients.filter(id => id !== socket.id);
             
-            
+            io.to(room.host).emit('newClient321');
 
            
             
         }
         
-       
+        io.to(room.host).emit('newClient321');
     });
 
     socket.on('sendMessage', (data) => {
