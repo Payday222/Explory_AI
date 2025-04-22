@@ -117,9 +117,9 @@ io.on('connection', (socket) => {
 
     socket.on('sendMessage', (data) => {
         const { roomCode, message, name } = data;
-        io.to(room.host).emit('newClient321');
+        io.emit('newClient321');
         io.to(rooms[roomCode].host).emit('messageReceived', { clientId: socket.id, message, name });
-        io.to(room.host).emit('newClient321');
+        io.emit('newClient321');
     });
 
     socket.on('joinRoom', (roomCode) => {
