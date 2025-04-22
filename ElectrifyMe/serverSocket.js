@@ -123,11 +123,13 @@ io.on('connection', (socket) => {
             
             socket.join(roomCode);
 
-            io.emit("newClient123");
+            //io.emit("newClient123");
+            io.to(room.host).emit('newClient123');
+
 
             room.clients.push(socket.id);
 
-            io.to(room.host).emit('newClient123');
+            
             
 
 
