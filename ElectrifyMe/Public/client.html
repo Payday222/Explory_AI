@@ -163,6 +163,16 @@
             margin-left: 100px;
             margin-top: 18px;
         }
+        #leave-room {
+            margin-top: 0px;
+            padding: 16px 32px;
+            background-color: rgb(155, 5, 5);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-size: medium;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -179,6 +189,7 @@
             <input type="text" id="messageInput" placeholder="Type your message" />
             <button id="sendMessage">Send Message</button>
             <div id="receive"></div>
+            <button id="leave-room">Leave Room</button>
             <!-- <button id="saveHistory">Save history</button> -->
         </div>
     </div>
@@ -200,6 +211,10 @@
 
 
     <script>
+
+        document.getElementById('leave-room').addEventListener('click', () => {
+            socket.leave(currentRoomCode);
+        })
         const togglePanelButton = document.getElementById('togglePanelButton');
         const panel = document.getElementById('panel');
 
