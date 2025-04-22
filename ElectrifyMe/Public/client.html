@@ -232,6 +232,7 @@
             console.log("[Client] Successfully joined room:", roomCode);
 
             if (currentRoomCode) {
+                console.log("cyka")
                 socket.emit('leave-room', currentRoomCode); 
             
             }
