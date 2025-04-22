@@ -164,7 +164,7 @@
 <body>
 
     <button id="togglePanelButton">☰</button>
-
+    <button id="study">Study</button>
     <div id="panel">
         <div id="panelContent">
             <h1>Student Room</h1>
@@ -331,7 +331,9 @@
         commsocket.on('botResponseClient', (data) => {
                 console.log('botResponseClient outside DOM event Listener')
                  const testDiv = document.getElementById('test');
-                 testDiv.innerText = data
+                 testDiv.innerText = data;
+                 localStorage.test = data; // sotre it for study mode
+                 console.log("Storing data in localstorage: ", data)
              });
             });
         socket.on('testServerSocket', (data) => {
@@ -341,7 +343,9 @@
 
 
 
-        
+        document.getElementById('study').addEventListener('click', () => {
+            window.open('study.html', '_blank');
+        })
     </script>
 </body>
 </html>

@@ -75,6 +75,19 @@ io.on('connection', (socket) => {
   
     await getChatCompletion(prompt, socket, roomCode);
   });
+
+
+  socket.on('generateFlashcards', async (test) => {
+    console.log('Generating flashcards....');
+    const prompt = `generate a set of flashcards for a student to study the topic of this here test ${test} The flascards should be created like so:
+    "SIDE1 
+    data
+    SIDE2
+    data
+    Do not provide any other information, and please strictly stick to the requested format of flashcards. Begin your response with FLASHCARDS"`;
+    await GenerateFlashcards(prompt, socket);
+    
+  });
 });
 
 
@@ -196,7 +209,40 @@ async function getChatCompletion(prompt, socket, roomCode, socketID) {
 });
 
 }
+async function GenerateFlashcards(prompt, socket) {
 
+  try {
+    const generated = await openai.chat.completions.create({
+      model: "gpt-4", 
+      messages: [{ role: "user", content: prompt }]
+
+    });
+    const response = generated.choices[0].message.content;
+
+
+
+    let cards = [];
+    let chunks = response.split('SIDE1').slice(1);
+
+    for(const chunk of chunks) {
+      const [side1, side2] = chunk.split("SIDE2").map(str => str.trim());
+      if(side1 && side2) {
+        cards.push([side1, side2]);
+      }
+    }
+    console.log("flashcards: ", cards);
+
+    socket.emit('flashcardsGenerated', cards);
+  } catch(error) {
+    console.log("eror generating flashcards: ", error);
+  }
+
+
+
+
+
+
+}
 
 // Start the server
 server.listen(3007, () => {
