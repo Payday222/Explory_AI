@@ -122,10 +122,18 @@ io.on('connection', (socket) => {
         if (room) {
             
             socket.join(roomCode);
+
+            io.emit("newClient123");
+
             room.clients.push(socket.id);
+
+            io.to(room.host).emit('newClient123');
+            
+
+
             socket.emit('joinedRoom', roomCode);
             
-            io.to(rooms[roomCode].host).emit('newClient123');
+            
             
         } else {
             socket.emit('roomNotFound');
