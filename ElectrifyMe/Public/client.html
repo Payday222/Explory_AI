@@ -332,13 +332,14 @@
                 console.log('botResponseClient outside DOM event Listener')
                  const testDiv = document.getElementById('test');
                  testDiv.innerText = data;
-                 localStorage.test = data; // sotre it for study mode
-                 console.log("Storing data in localstorage: ", data)
+                 
              });
             });
         socket.on('testServerSocket', (data) => {
             console.log(data, "from socket.on");
             document.getElementById('test').innerText = data;
+            localStorage.test = data; // sotre it for study mode
+                 console.log("Storing data in localstorage: ", data)
         })
 
 
