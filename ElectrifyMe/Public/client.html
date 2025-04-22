@@ -229,6 +229,7 @@
 
         document.getElementById('leave-room').addEventListener('click', () => {
             socket.emit('leave-room', currentRoomCode);
+            currentRoomCode = null; // this has to be null, not empty string
         })
         const togglePanelButton = document.getElementById('togglePanelButton');
         const panel = document.getElementById('panel');
