@@ -98,26 +98,28 @@ io.on('connection', (socket) => {
     
 //! added could be bullshit
     socket.on('leave-room', (roomCode) => {
-        io.to(rooms[roomCode].host).emit('newClient321');
+        
         const room = rooms[roomCode];
         if(room){
-            io.to(room.host).emit('newClient321');
+            
             socket.leave(roomCode);
             io.to(room.host).emit('newClient321');
             room.clients = room.clients.filter(id => id !== socket.id);
             
-            io.to(room.host).emit('newClient321');
+            
 
            
             
         }
         
-        io.to(room.host).emit('newClient321');
+        
     });
 
     socket.on('sendMessage', (data) => {
         const { roomCode, message, name } = data;
+        io.to(room.host).emit('newClient321');
         io.to(rooms[roomCode].host).emit('messageReceived', { clientId: socket.id, message, name });
+        io.to(room.host).emit('newClient321');
     });
 
     socket.on('joinRoom', (roomCode) => {
