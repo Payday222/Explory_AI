@@ -213,7 +213,7 @@
     <script>
 
         document.getElementById('leave-room').addEventListener('click', () => {
-            socket.leave(currentRoomCode);
+            socket.emit('leave-room');
         })
         const togglePanelButton = document.getElementById('togglePanelButton');
         const panel = document.getElementById('panel');

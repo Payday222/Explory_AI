@@ -100,6 +100,8 @@ io.on('connection', (socket) => {
     socket.on('leave-room', (roomCode) => {
         
         const room = rooms[roomCode];
+        console.log("code: ", roomCode);
+        console.log("rooms[roomcode]: ", rooms[roomCode]);
         if(room){
             
             socket.leave(roomCode);
