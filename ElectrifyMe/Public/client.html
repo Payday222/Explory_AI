@@ -248,7 +248,7 @@
 
         
         document.getElementById('joinRoom').onclick = () => {
-            if(currentRoomCode !== "") {
+            if(!currentRoomCode) {
             const newRoomCode = document.getElementById('roomCodeInput').value.trim();
 
             if(!newRoomCode || newRoomCode === currentRoomCode) return;
