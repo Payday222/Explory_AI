@@ -5,7 +5,7 @@ const { Server } = require('socket.io');
 const redisAdapter = require('socket.io-redis');
 const PORT = 3005
 const app = express();
-const { io: Client} = require('socket.io-client');
+
 
 app.use(express.static(path.join(__dirname,'Public')));
 
@@ -17,70 +17,35 @@ const io = new Server(expressServer,{
         origin: process.env.NODE_ENV === "production" ?  false : ["http://localhost:3500", "http://127.0.0.1:3500"]
     }
 })
-const botSocket = Client('http://188.127.1.110:3007');
 
 // io.adapter(redisAdapter({host: 'localhost', port: 3010}));
 
+
 let rooms = {};
-
-
-botSocket.on('connect', () => {
-console.log("botSocket connected to serverSocket");
-botSocket.on('botResponseClientv2', (data) => { 
-    const {roomCode, clientResponse} = data;
-
-    if(!roomCode) {
-        console.log('roomCode null');
-    }
-    if(!clientResponse) {
-        console.log('clientResponse null');
-    }
-
-    io.to(roomCode).emit('testServerSocket', clientResponse);
-    console.log("ServerSocket recieved and emmited test: ", data, "to:", roomCode);
-
-
-})
-});
-
 
 io.on('connection', (socket) => {
     console.log(`User ${socket.id} connected`);
 
     socket.on('createRoom', (roomCode,oldRoomCode ) => {
-        // setTimeout(() => {
-        //     const rooming = io.sockets.adapter.rooms;
-        //     const sids = io.sockets.adapter.sids;
-        
-        //     console.log('--- Room Overview ---');
-        
-        //     for (let [roomName, socketSet] of rooming) {
-        //         // Skip rooms that are just individual socket IDs
-        //         if (!sids.has(roomName)) {
-        //             console.log(`Room: ${roomName}`);
-        //             console.log('Sockets:', [...socketSet]);
-        //             console.log('--------------------');
-        //         }
-        //     }
-        // }, 500);
+    
 
-        // if (oldRoomCode && rooms[oldRoomCode] && socket.id === rooms[oldRoomCode].host) {
+        if (oldRoomCode && rooms[oldRoomCode] && socket.id === rooms[oldRoomCode].host) {
             
-        //     socket.emit('cleanUpRoomData', oldRoomCode);
+            socket.emit('cleanUpRoomData', oldRoomCode);
 
-        //     for (let socketId of rooms[oldRoomCode].clients) {
-        //         if (socketId !== socket.id) {
-        //             const clientSocket = io.sockets.sockets.get(socketId);
-        //             if (clientSocket) {
-                       
-        //                clientSocket.leave(oldRoomCode)
-        //             }
-        //         }
-        //     }
+            for (let socketId of rooms[oldRoomCode].clients) {
+                if (socketId !== socket.id) {
+                    const clientSocket = io.sockets.sockets.get(socketId);
+                    if (clientSocket) {
+                        clientSocket.emit('kicked', 'Host has ended the room.');
+                        clientSocket.disconnect(); // or clientSocket.leave(oldRoomCode)
+                    }
+                }
+            }
 
-        //     delete rooms[oldRoomCode];
+            delete rooms[oldRoomCode];
             
-        // }
+        }
         
 
         
@@ -156,7 +121,7 @@ io.on('connection', (socket) => {
             if (room.host === socket.id) {
                 delete rooms[roomCode];
             } else {
-               // room.clients = room.clients.filter(clientId => clientId !== socket.id);
+                room.clients = room.clients.filter(clientId => clientId !== socket.id);
             }
         }
     });
