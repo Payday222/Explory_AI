@@ -100,12 +100,15 @@ io.on('connection', (socket) => {
     socket.on('leave-room', (roomCode) => {
         const room = rooms[roomCode];
         if(room){
+
+            io.to(room.host).emit('newClient123');
+
             socket.leave(roomCode);
             room.clients = room.clients.filter(id => id !== socket.id);
             
             
 
-           // io.to(roomCode).emit('newClient',-1);
+           
             
         }
         
@@ -123,7 +126,7 @@ io.on('connection', (socket) => {
             
             socket.join(roomCode);
 
-            //io.emit("newClient123");
+            
             io.to(room.host).emit('newClient123');
 
 
