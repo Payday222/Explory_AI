@@ -295,8 +295,8 @@
            document.getElementById("CountingClient").innerText = `Room Count: ${numberClients}`;
        });
        socket.on('newClient321', () => {
-
-        numberClients-=1;
+        console.log("one bro is leaving ya");
+        numberClients -=1;
         document.getElementById("CountingClient").innerText = `Room Count: ${numberClients}`;
         });
 
