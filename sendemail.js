@@ -30,7 +30,6 @@ function getUserIdByEmail(email) {
     return new Promise((resolve, reject) => {
         const sql = 'SELECT id FROM users WHERE email = ? LIMIT 1';
         conn.query(sql, [email], (err, results) => {
-            conn.end(); // Close the connection
             if (err) {
                 return reject(err);
             }
