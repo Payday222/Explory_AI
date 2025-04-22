@@ -187,6 +187,7 @@
             <div id="status"></div>
             <input type="text" id="nameInput" placeholder="Enter your name" required/>
             <input type="text" id="messageInput" placeholder="Type your message" />
+            <div id="errorpopup"></div>
             <button id="sendMessage">Send Message</button>
             <div id="receive"></div>
             <button id="leave-room">Leave Room</button>
@@ -211,9 +212,23 @@
 
 
     <script>
+        function showErrorPopup(text) {
+            const popup = document.getElementById('errorpopup');
+            popup.textContent = text;
+            popup.style.display = 'block';
+            popup.style.opacity = '1';
+
+            setTimeout(() => {
+                popup.style.opacity = '0';
+                setTimeout(() => {
+                    popup.style.display = 'none';
+                }, 500); // match transition duration
+            }, 3000); // visible for 3 seconds
+        }
+
 
         document.getElementById('leave-room').addEventListener('click', () => {
-            socket.emit('leave-room');
+            socket.emit('leave-room', currentRoomCode);
         })
         const togglePanelButton = document.getElementById('togglePanelButton');
         const panel = document.getElementById('panel');
@@ -233,13 +248,17 @@
 
         
         document.getElementById('joinRoom').onclick = () => {
+            if(currentRoomCode !== "") {
             const newRoomCode = document.getElementById('roomCodeInput').value.trim();
 
             if(!newRoomCode || newRoomCode === currentRoomCode) return;
 
             console.log("[Client] Attempting to join room:", newRoomCode);
             socket.emit('joinRoom', newRoomCode);
-            
+            } else {
+                const text = "You need to leave the current room in order to join a new one";
+                showErrorPopup(text);
+            }
         };
 
         
