@@ -278,6 +278,8 @@
     
         document.getElementById('createRoom').onclick = () => {
             roomCode = Math.random().toString(36).substring(2, 8);
+            document.getElementById("CountingClient").innerText = `Room Count: 0`;
+            numberClients = 0;
 
             if(roomCode !== currentRoomCode){
                 socket.emit('createRoom', roomCode,currentRoomCode);
@@ -287,16 +289,16 @@
             
         };
         
-        socket.on('newClient123', (num) => {
-           
-            const number = parseInt(num, 10);
-           //numberClients += 1;
+        socket.on('newClient123', () => {
 
-           
-           console.log(number)
-           numberClients+=number;
+           numberClients+=1;
            document.getElementById("CountingClient").innerText = `Room Count: ${numberClients}`;
        });
+       socket.on('newClient321', () => {
+
+        numberClients-=1;
+        document.getElementById("CountingClient").innerText = `Room Count: ${numberClients}`;
+        });
 
     
         document.getElementById('sendMessageAdmin').onclick = () => {
