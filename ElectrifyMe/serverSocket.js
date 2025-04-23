@@ -116,6 +116,7 @@ io.on('connection', (socket) => {
             socket.join(roomCode);
             room.clients.push(socket.id);
             socket.emit('joinedRoom', roomCode);
+            console.log('joinedRoom emmited');
             //io.to(room.host).emit('newClient', socket.id);
         } else {
             socket.emit('roomNotFound');
