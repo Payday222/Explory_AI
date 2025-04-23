@@ -92,7 +92,7 @@ io.on('connection', (socket) => {
   socket.on('generateFlashcards', async (test) => {
     console.log("test recieved: ", test);
     console.log('Generating flashcards....');
-    const prompt = `generate a set of flashcards for a student to study the topic of this here test ${test} The flascards should be created like so:
+    const prompt = `generate a set of flashcards for a student to study the topic of this here test ${test} The flashcards should be created like so:
     "SIDE1 
     data
     SIDE2
@@ -248,7 +248,7 @@ async function GenerateFlashcards(prompt, socket) {
     }
     console.log("flashcards: ", cards);
 
-    socket.emit('flashcardsGenerated', cards);
+    socket.id.emit('flashcardsGenerated', cards);
   } catch(error) {
     console.log("eror generating flashcards: ", error);
   }
