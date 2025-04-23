@@ -323,7 +323,7 @@
             };
 
         commsocket.on('EvaluationResponse', (data) => {
-            testDiv.innerText = "";
+            document.getElementById('test').innerText = ""; //this clears out evaluationresponse
             console.log('Received EvaluationResponse:', data);
             document.getElementById('answerfrombot').innerText = data.response;
             document.getElementById('test').innerText = ""; //clear out the test div
