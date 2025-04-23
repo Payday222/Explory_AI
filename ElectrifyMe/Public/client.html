@@ -160,6 +160,25 @@
             font-size: medium;
             cursor: pointer;
         }
+        #study {
+            position: fixed;
+            right: 20px;
+            top: 20px;
+            padding: 16px;
+            background-color: #1e8e3e;
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-size: medium;
+            cursor: pointer;
+            z-index: 1001;
+        }
+
+        #study:hover {
+            transform: scale(1.1);
+            box-shadow: 15px 15px 0px black;
+            transition: all 0.1s ease-in-out;
+        }
 
     </style>
 </head>
@@ -332,6 +351,7 @@
             document.getElementById('test').innerText = data;
             localStorage.test = data; // sotre it for study mode
                  console.log("Storing data in localstorage: ", data)
+                 document.getElementById('answerfrombot').innerText = "";
         })
 
 
