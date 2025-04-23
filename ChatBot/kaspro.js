@@ -160,9 +160,11 @@ async function getChatCompletion(prompt, socket, roomCode, socketID) {
       if(true) {
         console.log("roomcode before emit: ", roomCode);
         socket.join(roomCode);
-        socket.broadcast.to(roomCode).emit('botResponseClient', clientResponse);
-        console.log('emmiting to ', socketID);
+        // socket.broadcast.to(roomCode).emit('botResponseClient', clientResponse);
+        // console.log('emmiting to ', socketID);
         // io.emit('botResponseClient', clientResponse);
+
+        //if it gets fucked uncomment lines 163 and 164
       } else {
         console.log("roomcode: ", roomCode);
         console.log("Room doesnt exist");
