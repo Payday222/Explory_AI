@@ -147,6 +147,7 @@ async function getChatCompletion(prompt, socket, roomCode, socketID) {
       //!  socket.emit('EvaluationResponse', { response, clientIDs }); - maybe change back
       io.to(clientIDs).emit('EvaluationResponse', { response }); //? this should be better
       console.log('Emitted EvaluationResponse for clientID:', clientIDs);
+      return;
     }
     else
     {
