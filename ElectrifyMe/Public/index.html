@@ -40,7 +40,23 @@
 </head>
 <body>
     <h1>Welcome to LearnLabs.AI Class</h1>
-    <button onclick="location.href='host.html'">Host a Room</button>
-    <button onclick="location.href='client.html'">Join a Room</button>
+    <button onclick="OpenFullScreenWindow('host.html')">Host a Room</button>
+    <button onclick="OpenFullScreenWindow('client.html')">Join a Room</button>
 </body>
 </html>
+
+<script>
+
+
+    function OpenFullScreenWindow(link) {
+        const screenHeight = screen.availHeight;
+        const screenWidth = screen.availWidth;
+        const newWindow = window.open(
+            `${link}`,
+            '_blank',
+            `width=${screenWidth},height=${screenHeight},top=0,left=0`
+        );
+
+        newWindow.focus();
+    }
+</script>
