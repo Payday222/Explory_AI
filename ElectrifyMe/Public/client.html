@@ -293,11 +293,7 @@
         document.addEventListener('DOMContentLoaded',() => {
             commsocket.on('connect', () => {
              console.log('[Client]: Connected to botsocket');
-             commsocket.on('botResponseClient', (message) => {
-                console.log('botResponseClient outside DOM event Listener')
-                 const testDiv = document.getElementById('test');
-                 testDiv.innerText = message
-             });
+             
             });
 
             document.getElementById('sendans').onclick = () => {
@@ -327,12 +323,7 @@
             document.getElementById('answerfrombot').innerText = data.response;
         
         })
-        commsocket.on('botResponseClient', (data) => {
-                console.log('botResponseClient outside DOM event Listener')
-                 const testDiv = document.getElementById('test');
-                 testDiv.innerText = data;
-                 
-             });
+        
             });
         socket.on('testServerSocket', (data) => {
             console.log(data, "from socket.on");
