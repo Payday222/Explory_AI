@@ -248,7 +248,7 @@ async function GenerateFlashcards(prompt, socket) {
     }
     console.log("flashcards: ", cards);
 
-    socket.id.emit('flashcardsGenerated', cards);
+    socket.emit('flashcardsGenerated', cards);
   } catch(error) {
     console.log("eror generating flashcards: ", error);
   }
