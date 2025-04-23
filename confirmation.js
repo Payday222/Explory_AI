@@ -17,16 +17,7 @@ const app = express();
 app.use(bodyParser.json());
 app.use(cookieParser());
 
-const conn = mysql.createConnection(config);
-
-conn.connect((err) => {
-    if (err) {
-        console.error('Error connecting to the database:', err);
-        return;
-    }
-    console.log('Connected to the MySQL database!');
-});
-
+const pool = mysql.createPool(config);
 
 app.get('/set-cookie', (req, res) => {
     const userId = req.query.userId;
@@ -37,87 +28,47 @@ app.get('/set-cookie', (req, res) => {
         return;
     }
 
-    //Set cookies for userId and email
-     if (userId) {
-         res.cookie('userId', userId, { httpOnly: true, sameSite: 'Lax', secure: false });
-     }
-     res.cookie('email', email, { httpOnly: true, sameSite: 'Lax', secure: false });
+    if (userId) {
+        res.cookie('userId', userId, { httpOnly: true, sameSite: 'Lax', secure: false });
+    }
+    res.cookie('email', email, { httpOnly: true, sameSite: 'Lax', secure: false });
 
-     console.log('Cookies set for email:', email);
-
-     // Redirect to /register endpoint
-     res.redirect('/register');
+    console.log('Cookies set for email:', email);
+    res.redirect('/register');
 });
 
-
-// Register endpoint
 app.get('/register', (req, res) => {
-    console.log('Cookies:', req.cookies); 
-    const email = req.cookies.email; 
+    console.log('Cookies:', req.cookies);
+    const email = req.cookies.email;
 
     if (!email) {
-        console.error('Email cookie is missing.');
         return res.status(400).json({ message: 'Email cookie is required.' });
     }
 
     const query = 'SELECT id FROM users WHERE email = ?';
-    const q_values = [email];
-    let userId = 0; 
-
-    conn.query(query, q_values, (err, results) => {
+    pool.query(query, [email], (err, results) => {
         if (err) {
             console.error('Error while retrieving userId from db:', err);
             return res.status(500).json({ message: 'Database error.', error: err });
         }
 
-        if (results.length > 0) {
-            userId = results[0].id; 
-            console.log('userId:', userId);
-
-            
-            const sql = 'UPDATE users SET verified = ? WHERE id = ?';
-            const values = [true, userId];
-
-            conn.query(sql, values, (err, updateResult) => {
-                if (err) {
-                    console.error('Error executing update query:', err);
-                    return res.status(500).json({ message: 'Error updating user.', error: err });
-                }
-
-                console.log('User verified:', updateResult);
-                return res.status(200).json({ message: 'User verified successfully', result: updateResult });
-            });
-        } else {
-            console.error('No user found with the provided email.');
+        if (results.length === 0) {
             return res.status(404).json({ message: 'User not found.' });
         }
-    });
 
+        const userId = results[0].id;
+        console.log('Verifying user:', userId, 'with email:', email);
 
-    
-    // if (!userId) {
-    //     console.log(userId);
-    //     res.status(400).json({ message: 'Invalid userId' });
-    //     return;
-    // }
+        const sql = 'UPDATE users SET verified = ? WHERE id = ?';
+        pool.query(sql, [true, userId], (err, updateResult) => {
+            if (err) {
+                console.error('Error updating user:', err);
+                return res.status(500).json({ message: 'Error updating user.', error: err });
+            }
 
-    console.log('Received request to register user:', userId, 'with email:', email);
-
-    const sql = 'UPDATE users SET verified = ? WHERE id = ?';
-    const values = [true, userId];
-
-    conn.query(sql, values, (err, result) => {
-        if (err) {
-            console.error('Error executing query:', err);
-            // res.status(500).json({ message: 'Error executing query', error: err });
-            //here redirect user to error with confirmation site
-            window.open('error_confirmation.html');
-        } else {
-            console.log('User  verified:', result);
-            res.status(200).json({ message: 'User  verified', result, userId, email });
-            //here redirect user to confirmed site
-            window.open('confirmed.html');
-        }
+            console.log('User verified:', updateResult);
+            res.status(200).json({ message: 'User verified successfully', result: updateResult });
+        });
     });
 });
 
