@@ -101,6 +101,13 @@ io.on('connection', (socket) => {
     await GenerateFlashcards(prompt, socket);
     
   });
+
+  socket.on('GenerateArticle', async (test) => {
+    console.log('test recieved for article: ', test);
+    const prompt = `Generate a semi-scientific article for a student to study the topic of this test ${test} Include data from the test, but also intertwine it with other bits
+    of information for the student to learn more, about the current topic. The Article should have a title and headlines, and be written with the purpose to pass information.`
+    await GenerateArticle(test, socket);
+  });
 });
 
 
@@ -258,6 +265,21 @@ async function GenerateFlashcards(prompt, socket) {
 
 
 
+}
+
+async function  GenerateArticle(prompt, socket) {
+  console.log('Generating article....');
+  try {
+    const generated = await openai.chat.completions.create({
+      model: "gpt-4",
+      messages: [{ role: "user", content: prompt }]
+    });
+    const response = generated.choices[0].message.content;
+    console.log('Generated article: ', response);
+    io.to(socket).emit('ArticleGenerated', response);
+  } catch (error) {
+    console.log('Error generating article in the try catch block');
+  }
 }
 
 // Start the server

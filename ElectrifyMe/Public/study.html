@@ -88,6 +88,7 @@
 <h4>Please select your preffered learniing method</h4><br>
 
 <button id="flashcards">Flashcards</button>
+<button id="article">Article</button>
 <button>UNDER CONSTRUCTION</button>
 
 <div id="flashcard-wrapper"></div>
@@ -178,5 +179,19 @@
         } else if (e.key === 'ArrowLeft') {
             document.getElementById('prev-card').click();
         }
+    });
+
+    document.getElementById('article').addEventListener('click', () => {
+        socket.on('connect', () => {
+            console.log('Socket connected to study');
+        });
+
+        let test = localStorage.test;
+        socket.emit('GenerateArticle', test, this.socket.id);
+        socket.on('ArticleGenerated', (article) => {
+            const displaydiv = document.getElementById('flashcard-wrapper');
+            displaydiv.innerText = article;
+        });
+        
     });
 </script>
