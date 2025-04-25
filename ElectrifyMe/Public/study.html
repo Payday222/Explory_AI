@@ -108,6 +108,9 @@
     const socket = io('http://188.127.1.110:3007');
     socket.on('connect', () => {
         console.log('study.html connected to botSocket');
+    });
+
+    
         const test = localStorage.test;
         console.log('data from localstorage: ', test);
         socket.emit('generateFlashcards', test);
@@ -170,7 +173,6 @@
             };
           });
         });
-    });
 
     //keyboard support cuz its cool
     document.addEventListener('keydown', (e) => {
