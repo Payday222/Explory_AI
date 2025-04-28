@@ -78,6 +78,21 @@
             margin-top: 20px;
         }
 
+        #error-popup {
+            display: none;
+            background-color: #ffcccc;
+            color: #660000;
+            padding: 20px;
+            border-radius: 15px;
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            z-index: 1000;
+            font-family: Arial, sans-serif;
+            font-size: 18px;
+        }
     </style>
 </head>
 
@@ -90,7 +105,7 @@
 <button id="flashcards">Flashcards</button>
 <button id="article">Article</button>
 <button>UNDER CONSTRUCTION</button>
-
+<div id="error-popup"></div>
 <div id="flashcard-wrapper"></div>
 <div style="text-align: center; margin-top: 20px;">
     <button id="prev-card">Previous</button>
@@ -117,6 +132,10 @@
 
         socket.on('flashcardsGenerated', (cards) => {
             console.log("flashcards received: ", cards);
+
+            if(!cards || cards.length === 0) {
+                document.getElementById('error-popup').style.display = 'block';
+            }
 
             const wrapper = document.getElementById('flashcard-wrapper');
             wrapper.innerHTML = ''; // Clear previous cards
