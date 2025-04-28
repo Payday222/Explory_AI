@@ -134,7 +134,11 @@
             console.log("flashcards received: ", cards);
 
             if(!cards || cards.length === 0) {
+                const test = localStorage.test;
+                socket.emit('generateFlashcards', test);
                 document.getElementById('error-popup').style.display = 'block';
+                //or just emit generateflashcards again
+
             }
 
             const wrapper = document.getElementById('flashcard-wrapper');
