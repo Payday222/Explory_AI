@@ -245,7 +245,7 @@
         };
 
         
-        socket.on('joinedRoom', (roomCode, cachedTest) => {
+        socket.on('joinedRoom', (roomCode, testCache) => {
             console.log("[Client] Successfully joined room:", roomCode);
             console.log('Cached test = ', testCache);
 

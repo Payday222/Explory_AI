@@ -23,6 +23,8 @@ const botSocket = Client('http://188.127.1.110:3007');
 
 let rooms = {};
 
+let testCache = "";
+
 
 botSocket.on('connect', () => {
 console.log("botSocket connected to serverSocket");
@@ -39,7 +41,7 @@ botSocket.on('botResponseClientv2', (data) => {
     io.to(roomCode).emit('testServerSocket', clientResponse);
     console.log("ServerSocket recieved and emmited test: ", data, "to:", roomCode);
     
-    localStorage.testCache = clientResponse;
+   testCache = clientResponse;
 
 })
 });
@@ -116,8 +118,8 @@ io.on('connection', (socket) => {
             // }
             socket.join(roomCode);
             room.clients.push(socket.id);
-            cachedTest = localStorage.testCache;
-            socket.emit('joinedRoom', roomCode, cachedTest);
+            cachedest = localStorage.testCache;
+            socket.emit('joinedRoom', roomCode, testCache);
             console.log('joinedRoom emmited');
             //io.to(room.host).emit('newClient', socket.id);
         } else {
