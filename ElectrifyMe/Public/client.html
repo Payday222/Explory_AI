@@ -249,8 +249,9 @@
             console.log("[Client] Successfully joined room:", roomCode);
             console.log('Cached test = ', testCache);
             if(testCache) {
+                console.log('found cached test');
                 document.getElementById('test').innerText = testCache;
-                localStorage.test = testCache;
+                localStorage.test = JSON.stringify(testCache);
             }
 
             if (currentRoomCode) {
