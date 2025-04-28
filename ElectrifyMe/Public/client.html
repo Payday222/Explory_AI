@@ -245,8 +245,9 @@
         };
 
         
-        socket.on('joinedRoom', (roomCode) => {
+        socket.on('joinedRoom', (roomCode, testCache) => {
             console.log("[Client] Successfully joined room:", roomCode);
+            console.log('Cached test = ', testCache);
 
             if (currentRoomCode) {
                 socket.emit('leave-room', currentRoomCode); 
