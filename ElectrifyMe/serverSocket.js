@@ -118,7 +118,6 @@ io.on('connection', (socket) => {
             // }
             socket.join(roomCode);
             room.clients.push(socket.id);
-            cachedest = localStorage.testCache;
             socket.emit('joinedRoom', roomCode, testCache);
             console.log('joinedRoom emmited');
             //io.to(room.host).emit('newClient', socket.id);
