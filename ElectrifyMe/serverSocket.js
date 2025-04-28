@@ -38,9 +38,8 @@ botSocket.on('botResponseClientv2', (data) => {
 
     io.to(roomCode).emit('testServerSocket', clientResponse);
     console.log("ServerSocket recieved and emmited test: ", data, "to:", roomCode);
-
-    const testCache = clientResponse;
-
+    
+    localStorage.testCache = clientResponse;
 
 })
 });
@@ -117,7 +116,8 @@ io.on('connection', (socket) => {
             // }
             socket.join(roomCode);
             room.clients.push(socket.id);
-            socket.emit('joinedRoom', roomCode, testCache);
+            cachedTest = localStorage.testCache;
+            socket.emit('joinedRoom', roomCode, cachedTest);
             console.log('joinedRoom emmited');
             //io.to(room.host).emit('newClient', socket.id);
         } else {
