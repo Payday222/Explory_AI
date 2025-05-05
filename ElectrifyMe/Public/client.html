@@ -217,6 +217,11 @@
 
 
     <script>
+        const originalLog =console.log;
+console.log = (...args) => {
+  const now = new Date().toLocaleTimeString();
+  originalLog(`[${now}]`, ...args);
+}
         const togglePanelButton = document.getElementById('togglePanelButton');
         const panel = document.getElementById('panel');
 

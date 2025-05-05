@@ -9,6 +9,11 @@ const redisAdapter = require('socket.io-redis');
 
 dotenv.config();
 
+const originalLog =console.log;
+console.log = (...args) => {
+  const now = new Date().toLocaleTimeString();
+  originalLog(`[${now}]`, ...args);
+}
 // Initialize Express and HTTP server
 const app = express();
 const server = http.createServer(app);
