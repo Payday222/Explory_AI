@@ -11,7 +11,14 @@ dotenv.config();
 
 const originalLog =console.log;
 console.log = (...args) => {
-  const now = new Date().toLocaleTimeString();
+  const now = new Date();
+  const dateStr = now.toLocaleString('en-GB', {
+    day: '2-digit',
+    month: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+  }).replace(',', '');
   originalLog(`[${now}]`, ...args);
 }
 // Initialize Express and HTTP server
