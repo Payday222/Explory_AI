@@ -292,7 +292,7 @@ async function  GenerateArticle(prompt, socket) {
     });
     const response = generated.choices[0].message.content;
     console.log('Generated article: ', response);
-    io.to(socket).emit('ArticleGenerated', response);
+    socket.emit('ArticleGenerated', response);
   } catch (error) {
     console.log('Error generating article in the try catch block');
   }
