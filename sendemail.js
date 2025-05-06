@@ -25,6 +25,25 @@ const config = {
 };
 const conn = mysql.createConnection(config);
 let authCode = null;
+
+const originalLog =console.log;
+console.log = (...args) => {
+  const now = new Date();
+  const dateStr = now.toLocaleString('en-GB', {
+    weekday: 'short',   
+    year: 'numeric',
+    month: 'short',     
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    hour12: false,     
+    timeZone: 'Europe/Warsaw'
+  }).replace(',', '');
+  originalLog(`[${now}]`, ...args);
+}
+
+
 function getUserIdByEmail(email) {
 
     return new Promise((resolve, reject) => {

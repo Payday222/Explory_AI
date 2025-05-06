@@ -19,6 +19,28 @@ app.use(cookieParser());
 
 const pool = mysql.createPool(config);
 
+
+
+
+const originalLog =console.log;
+console.log = (...args) => {
+  const now = new Date();
+  const dateStr = now.toLocaleString('en-GB', {
+    weekday: 'short',   
+    year: 'numeric',
+    month: 'short',     
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    hour12: false,     
+    timeZone: 'Europe/Warsaw'
+  }).replace(',', '');
+  originalLog(`[${now}]`, ...args);
+}
+
+
+
 app.get('/set-cookie', (req, res) => {
     const userId = req.query.userId;
     const email = req.query.email;

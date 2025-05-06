@@ -20,6 +20,24 @@ app.use(cookieParser());
 
 const conn = mysql.createConnection(config);
 
+const originalLog =console.log;
+console.log = (...args) => {
+  const now = new Date();
+  const dateStr = now.toLocaleString('en-GB', {
+    weekday: 'short',   
+    year: 'numeric',
+    month: 'short',     
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    hour12: false,     
+    timeZone: 'Europe/Warsaw'
+  }).replace(',', '');
+  originalLog(`[${now}]`, ...args);
+}
+
+
 app.post('/reset-pass', (req, res) => {
     const { code, pass } = req.body;
 
