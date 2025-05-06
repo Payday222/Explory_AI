@@ -229,7 +229,7 @@ const socket = io('http://188.127.1.110:3007');
         });
 
         let test = localStorage.test;
-        socket.emit('GenerateArticle', test, this.socket.id);
+        socket.emit('GenerateArticle', test, socket.id);
         socket.on('ArticleGenerated', (article) => {
             const displaydiv = document.getElementById('flashcard-wrapper');
             displaydiv.innerText = article;
